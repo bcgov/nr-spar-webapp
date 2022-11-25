@@ -1,14 +1,7 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Tile,
-  Button,
-  FlexGrid,
-  Column,
-  Row,
-  Stack
-} from '@carbon/react';
+import { Tile, Button, FlexGrid, Column, Row, Stack } from '@carbon/react';
+
 import { ArrowRight } from '@carbon/icons-react';
 
 const Home = () => {
@@ -30,9 +23,10 @@ const Home = () => {
             <Stack gap={3}>
               <h1 data-testid="home-title">NR Front End Testing App</h1>
               <p data-testid="home-desc">
-                This is a sample application with the purpose of checking BC Gov&apos;s design
-                system, themes and react components. The app will also be used to validate
-                code style, infrastructe, tech stack, tests, deployment and others.
+                This is a sample application with the purpose of checking BC
+                Gov&apos;s design system, themes and react components. The app
+                will also be used to validate code style, infrastructe, tech
+                stack, tests, deployment and others.
               </p>
             </Stack>
           </Column>

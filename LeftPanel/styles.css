@@ -1,0 +1,9 @@
+.top-container {
+    position: 'inherit';
+}
+
+.bottom-container {
+    position: 'absolute';
+    bottom: 0;
+    left: 0
+}
