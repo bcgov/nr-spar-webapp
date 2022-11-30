@@ -118,3 +118,16 @@ $bcgov-prefix: 'bcgov';
   margin: 4px;
   border: 0;
 }
+
+//Left panel
+.#{$bcgov-prefix}--side-nav__menu .#{$bcgov-prefix}--side-nav__menu-item a.#{$bcgov-prefix}--side-nav__link,
+button.#{$bcgov-prefix}--side-nav__submenu,
+.#{$bcgov-prefix}--side-nav__link
+{
+    height: 48px;
+}
+
+div.#{$bcgov-prefix}--side-nav__icon > svg{
+    fill: var(--#{$bcgov-prefix}-link-secondary)}
+
+//
