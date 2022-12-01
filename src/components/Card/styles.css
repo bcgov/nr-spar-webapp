@@ -1,0 +1,46 @@
+.card-main {
+    box-sizing: border-box;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+
+    /* position: absolute; */
+    width: 234px;
+    height: 158px;
+    left: 20px;
+    top: 20px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #DFDFE1;
+    border-radius: 4px;
+}
+
+.card-main, h3 {
+        /* Seedling request */
+
+        width: 202px;
+        height: 24px;
+
+        /* Fixed heading styles/heading-02 */
+        font-family: 'BC Sans';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        /* identical to box height, or 150% */
+
+        /* Light Theme/Text/$text-primary */
+        color: #131315;
+
+
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        align-self: stretch;
+        flex-grow: 0;
+    }
