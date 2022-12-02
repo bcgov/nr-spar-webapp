@@ -8,22 +8,21 @@ import {
   TabList,
   Tab,
   TabPanels,
-  TabPanel,
+  TabPanel
 } from '@carbon/react';
 import ActivityTable from '../ActivityTable';
 
 import RecentActivityItems from '../../mock-data/RecentActivityItems';
 
-import "./styles.css"
+import './styles.css';
 
 const RecentActivities = () => {
   const listItems = RecentActivityItems;
 
   const navigate = useNavigate();
 
-  const goToActivity = (request_id: string) => {
-    console.log(request_id);
-    navigate('/activity/' + request_id);
+  const goToActivity = (requestId: string) => {
+    navigate(`/activity/${requestId}`);
   };
 
   const tableHeaders: string[] = [
@@ -32,11 +31,11 @@ const RecentActivities = () => {
     'Request ID',
     'Created at',
     'Last viewed',
-    'View',
+    'View'
   ];
 
   return (
-    <React.Fragment>
+    <>
       <Row className="main-content recent-activity">
         <Column sm={4}>
           <h3>My recent activities</h3>
@@ -65,7 +64,7 @@ const RecentActivities = () => {
           </Tabs>
         </Column>
       </Row>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -14,20 +14,21 @@ interface CardProps {
 const Card = ({ icon, header, description }: CardProps) => {
   const Icon = Icons[icon];
   return (
-  <Tile className="card-main">
-    <span className="card-header">
-      <Icon className="card-icon" />
-      <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
-        <OverflowMenuItem itemText="Item 1" />
-        <OverflowMenuItem itemText="Item 2" />
-        <OverflowMenuItem itemText="Item 3" />
-      </OverflowMenu>
-    </span>
-    <div className='card-content'>
-      <h5>{header}</h5>
-      <p>{description}</p>
-    </div>
-  </Tile>
-)};
+    <Tile className="card-main">
+      <span className="card-header">
+        <Icon className="card-icon" />
+        <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
+          <OverflowMenuItem itemText="Item 1" />
+          <OverflowMenuItem itemText="Item 2" />
+          <OverflowMenuItem itemText="Item 3" />
+        </OverflowMenu>
+      </span>
+      <div className="card-content">
+        <h5>{header}</h5>
+        <p>{description}</p>
+      </div>
+    </Tile>
+  );
+};
 
 export default Card;

@@ -5,7 +5,7 @@ import {
   HeaderName,
   HeaderGlobalBar,
   HeaderGlobalAction,
-  Theme,
+  Theme
 } from '@carbon/react';
 import { Search, Notification, Switcher } from '@carbon/icons-react';
 

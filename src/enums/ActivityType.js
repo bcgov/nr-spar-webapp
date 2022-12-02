@@ -1,6 +1,8 @@
-export const ACTIVITY_STATUS = {
-    SEEDLING_REQUEST: {
-        description: "Seedling request",
-        icon: "CropGrowth"
-    },
-}
+const ACTIVITY_TYPE = {
+  SEEDLING_REQUEST: {
+    description: 'Seedling request',
+    icon: 'CropGrowth'
+  }
+};
+
+export default ACTIVITY_TYPE;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './styles.css';
 
-import { ACTIVITY_STATUS } from '../../enums/ActivityStatus';
+import ACTIVITY_STATUS from '../../enums/ActivityStatus';
 
 const statusClass = (param: number) => {
   switch (param) {
@@ -12,6 +12,8 @@ const statusClass = (param: number) => {
       return 'status-item-approved';
     case 3:
       return 'status-item-canceled';
+    default:
+      return '';
   }
 };
 
