@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import {
   BrowserRouter, Routes, Route
@@ -5,28 +6,72 @@ import {
 
 import './custom.scss';
 
-
-import './index.css';
-
-import Layout from './layout/PublicLayout';
-import Home from './views/Home';
+import Landing from './views/Landing';
 import Form from './views/Form';
 import Table from './views/Table';
+import Home from './views/Home';
+import ProtectedRoute from './routes/ProtectedRoute';
+import { useAuth } from './contexts/AuthContext';
+import SilentCheckSso from './components/SilentCheckSso';
+import Logout from './components/Logout';
+import Layout from './layout/PublicLayout';
 import Dashboard from './views/Dashboard/dashboard';
 
-function App() {
+/**
+ * Create an app structure conaining all the routes.
+ *
+ * @returns {JSX.Element} instance of the app ready to use.
+ */
+const App: React.FC = () => {
+  const { signed } = useAuth();
+
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/form" element={<Form />} />
-          <Route path="/table" element={<Table />} />
+          <Route path="/silent-check-sso" element={<SilentCheckSso />} />
+          <Route path="/logout" element={<Logout />} />
+
+          <Route
+            path="/dashboard"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <Dashboard />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
+            path="/home"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <Home />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
+            path="/form"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <Form />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
+            path="/table"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <Table />
+              </ProtectedRoute>
+            )}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

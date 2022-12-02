@@ -1,23 +1,13 @@
 FROM node:16-bullseye
+LABEL maintainer="Paulo Gomes da Cruz Junior <paulo.cruz@encora.com>"
 
-ARG REACT_APP_NRFESAMPLEAPP_VERSION
-ARG REACT_APP_SERVER_URL
+RUN yarn global add serve@14.1.2 react-inject-env@2.1.0
 
 WORKDIR /app
-COPY . .
-
-ENV DISABLE_ESLINT_PLUGIN=true
-ENV REACT_APP_NRFESAMPLEAPP_VERSION=$REACT_APP_NRFESAMPLEAPP_VERSION
-ENV REACT_APP_SERVER_URL=$REACT_APP_SERVER_URL
-
-RUN yarn global add serve
-
-# Install dependencies
-RUN yarn install --frozen-lockfile
-
-# Build to production
-RUN yarn build:production
+COPY build/ .
 
 EXPOSE 3000
 
-CMD serve -s build
+RUN chmod -R g+w .
+
+CMD react-inject-env set -d . && serve -s .
