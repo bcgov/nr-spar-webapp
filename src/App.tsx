@@ -5,6 +5,9 @@ import {
 
 import './custom.scss';
 
+
+import './index.css';
+
 import Layout from './layout/PublicLayout';
 import Home from './views/Home';
 import Form from './views/Form';

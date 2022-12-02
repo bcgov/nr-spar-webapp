@@ -1,9 +1,17 @@
-.top-container {
-    position: 'inherit';
+.left-panel {
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 0px 16px
 }
 
+.top-container {}
+
 .bottom-container {
-    position: 'absolute';
-    bottom: 0;
-    left: 0
+    align-self: flex-end;
+    margin-top: auto;
+}
+
+.sub-item {
+    padding: 16px 0px !important;
 }

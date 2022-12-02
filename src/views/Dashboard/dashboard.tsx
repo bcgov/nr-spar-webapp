@@ -4,9 +4,11 @@ import { FlexGrid, Column, Row, Stack } from '@carbon/react';
 import FavoriteActivities from '../../components/FavoriteActivities';
 import RecentActivities from '../../components/RecentActivities';
 
+import './styles.css';
+
 const Dashboard = () => {
   return (
-    <FlexGrid container spacing={4}>
+    <FlexGrid className="main-container" spacing={4}>
       <Stack gap={6}>
         <Row>
           <Column sm={4} md={4}>

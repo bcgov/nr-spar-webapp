@@ -1,6 +1,6 @@
 type Activity = {
     type: string;
-    status: string;
+    status: number;
     request_id: string;
     created_at: string;
     last_viewed: string;

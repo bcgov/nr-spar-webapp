@@ -18,7 +18,7 @@ const Layout = () => (
     <BCHeader />
     <div className="mainContainer">
       <LeftPanel listItems={listItems} />
-      <Content>
+      <Content className="page-content">
         <Outlet />
       </Content>
     </div>

@@ -15,6 +15,7 @@ import { DataViewAlt } from '@carbon/icons-react';
 import { hashObject } from 'react-hash-string';
 
 import Activity from '../../types/Activity';
+import { ACTIVITY_STATUS } from '../../enums/ActivityStatus';
 
 
 interface TableProps {
@@ -45,7 +46,12 @@ const ActivityTable = ({ elements, clickFn, headers }: TableProps) => {
         {elements.map((item, idx) => (
           <TableRow key={hashObject(item)} id={`row${idx}`}>
             <TableCell>{item.type}</TableCell>
-            <TableCell>{item.status}</TableCell>
+            <TableCell>
+              <div className='status-item'>
+
+              {Object.values(ACTIVITY_STATUS)[item.status]}
+              </div>
+              </TableCell>
             <TableCell>{item.request_id}</TableCell>
             <TableCell>{item.created_at}</TableCell>
             <TableCell>{item.last_viewed}</TableCell>

@@ -14,6 +14,8 @@ import ActivityTable from '../ActivityTable';
 
 import RecentActivityItems from '../../mock-data/RecentActivityItems';
 
+import "./styles.css"
+
 const RecentActivities = () => {
   const listItems = RecentActivityItems;
 
@@ -35,13 +37,12 @@ const RecentActivities = () => {
 
   return (
     <React.Fragment>
-      <Row>
+      <Row className="main-content recent-activity">
         <Column sm={4}>
           <h3>My recent activities</h3>
         </Column>
         <Column sm={4}>
-          {' '}
-          <p>Check your recent requests and files</p>
+          <h4>Check your recent requests and files</h4>
         </Column>
       </Row>
       <Row>
