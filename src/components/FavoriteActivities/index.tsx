@@ -17,15 +17,20 @@ const FavoriteActivities = () => (
         <h3>My favorite activities</h3>
         <h4>
           Quick access to your favorite activities.
-          <Tooltip label="Info">
+          <Tooltip
+            align="top"
+            tabIndex={0}
+            label="You can add a shortcut to your favorite activity by clicking on the hearth icon inside each page."
+          >
             <Information />
           </Tooltip>
         </h4>
       </Column>
       <Column lg={12}>
         <Row>
-          {cards.map((card) => (
+          {cards.map((card, idx) => (
             <Card
+              key={idx}
               icon={card.icon}
               header={card.header}
               description={card.description}
