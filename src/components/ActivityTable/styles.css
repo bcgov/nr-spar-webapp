@@ -2,14 +2,3 @@ a {
     color: inherit;
     text-decoration: inherit
 }
-
-.status-item {
-    height: 24px;
-    padding: 0px;
-    display: inline-block;
-    padding: 3px 8px 5px 8px;
-
-    /* Light Theme/Tag/Gray background */
-    background: #DFDFE1;
-    border-radius: 1000px;
-}

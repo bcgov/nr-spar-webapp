@@ -15,3 +15,7 @@
 .sub-item {
     padding: 16px 0px !important;
 }
+
+.sub-item:hover {
+    padding: 16px 0px !important;
+}

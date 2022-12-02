@@ -8,27 +8,26 @@ import {
   TableHeader,
   TableRow,
   TableBody,
-  TableCell
+  TableCell,
 } from '@carbon/react';
 import { DataViewAlt } from '@carbon/icons-react';
 
 import { hashObject } from 'react-hash-string';
 
 import Activity from '../../types/Activity';
-import { ACTIVITY_STATUS } from '../../enums/ActivityStatus';
-
+import StatusItem from '../StatusItem';
 
 interface TableProps {
-  elements: Activity[],
-  clickFn: Function,
-  headers: string[]
+  elements: Activity[];
+  clickFn: Function;
+  headers: string[];
 }
 
 const ActivityTable = ({ elements, clickFn, headers }: TableProps) => {
   const loadingStatus = {
     loading: 'Deleting...',
     success: 'Deleted!',
-    error: 'Error'
+    error: 'Error',
   };
 
   return (
@@ -36,7 +35,11 @@ const ActivityTable = ({ elements, clickFn, headers }: TableProps) => {
       <TableHead>
         <TableRow>
           {headers.map((header, idx) => (
-            <TableHeader key={header} id={`header-${header}-${idx}`} data-testid={`header-${header}-${idx}`}>
+            <TableHeader
+              key={header}
+              id={`header-${header}-${idx}`}
+              data-testid={`header-${header}-${idx}`}
+            >
               {header}
             </TableHeader>
           ))}
@@ -47,16 +50,15 @@ const ActivityTable = ({ elements, clickFn, headers }: TableProps) => {
           <TableRow key={hashObject(item)} id={`row${idx}`}>
             <TableCell>{item.type}</TableCell>
             <TableCell>
-              <div className='status-item'>
-
-              {Object.values(ACTIVITY_STATUS)[item.status]}
-              </div>
-              </TableCell>
+              <StatusItem status={item.status} />
+            </TableCell>
             <TableCell>{item.request_id}</TableCell>
             <TableCell>{item.created_at}</TableCell>
             <TableCell>{item.last_viewed}</TableCell>
             <TableCell>
-              <a href='#'><DataViewAlt onClick={() => clickFn(item.request_id)} /></a>
+              <a href="#">
+                <DataViewAlt onClick={() => clickFn(item.request_id)} />
+              </a>
             </TableCell>
           </TableRow>
         ))}
