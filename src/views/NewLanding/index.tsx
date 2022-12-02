@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Button,
@@ -6,14 +6,51 @@ import {
   Column
 } from '@carbon/react';
 import { Login } from '@carbon/icons-react';
+import { KeycloakLoginOptions } from 'keycloak-js';
+import { useNavigate } from 'react-router-dom';
+
 import BCGovLogo from '../../components/BCGovLogo';
 import Seeding from '../../assets/img/seeding.png';
 import './styles.css';
+import { useAuth } from '../../contexts/AuthContext';
+import LoginProviders from '../../types/LoginProviders';
 
 const NewLanding = () => {
-  const idirLogin = () => {
-    window.alert('IDIR login!');
+  const { startKeycloak, login, signed } = useAuth();
+  const navigate = useNavigate();
+
+  const getPageParam = (): string => {
+    let page: string = '/home';
+    const paramString = window.location.search.split('?')[1];
+    const queryString = new URLSearchParams(paramString);
+    if (queryString.has('page')) {
+      page = queryString.get('page') || '/home';
+    }
+    return page;
   };
+
+  const handleLogin = (provider: LoginProviders) => {
+    if (signed) {
+      navigate(getPageParam());
+      return;
+    }
+
+    const idpHint = provider === 'idir' ? 'idir' : 'bceid-business';
+    const loginOptions: KeycloakLoginOptions = {
+      redirectUri: `${window.location.origin}/home`,
+      idpHint
+    };
+
+    login(loginOptions);
+  };
+
+  useEffect(() => {
+    if (signed) {
+      navigate(getPageParam());
+    } else {
+      startKeycloak();
+    }
+  }, [signed]);
 
   return (
     <Grid fullWidth>
@@ -37,7 +74,7 @@ const NewLanding = () => {
 
         {/* Login buttons */}
         <Button
-          onClick={idirLogin}
+          onClick={() => { handleLogin(LoginProviders.IDIR); }}
           size="md"
           renderIcon={Login}
           data-testid="landing-button__idir"
@@ -48,7 +85,7 @@ const NewLanding = () => {
         &nbsp;
         <Button
           kind="tertiary"
-          onClick={idirLogin}
+          onClick={() => { handleLogin(LoginProviders.BCEID_BUSINESS); }}
           size="md"
           renderIcon={Login}
           data-testid="landing-button__bceid"
