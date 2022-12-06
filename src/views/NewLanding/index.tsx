@@ -8,23 +8,23 @@ import {
 import { Login } from '@carbon/icons-react';
 import { KeycloakLoginOptions } from 'keycloak-js';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../../contexts/AuthContext';
 import BCGovLogo from '../../components/BCGovLogo';
 import Seeding from '../../assets/img/seeding.png';
-import './styles.css';
-import { useAuth } from '../../contexts/AuthContext';
 import LoginProviders from '../../types/LoginProviders';
+import './styles.css';
 
 const NewLanding = () => {
   const { startKeycloak, login, signed } = useAuth();
   const navigate = useNavigate();
+  const homePage = '/home';
 
   const getPageParam = (): string => {
-    let page: string = '/home';
+    let page: string = homePage;
     const paramString = window.location.search.split('?')[1];
     const queryString = new URLSearchParams(paramString);
     if (queryString.has('page')) {
-      page = queryString.get('page') || '/home';
+      page = queryString.get('page') || homePage;
     }
     return page;
   };
@@ -35,9 +35,9 @@ const NewLanding = () => {
       return;
     }
 
-    const idpHint = provider === 'idir' ? 'idir' : 'bceid-business';
+    const idpHint = provider;
     const loginOptions: KeycloakLoginOptions = {
-      redirectUri: `${window.location.origin}/home`,
+      redirectUri: `${window.location.origin}${homePage}`,
       idpHint
     };
 
