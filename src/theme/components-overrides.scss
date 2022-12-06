@@ -4,6 +4,8 @@ $bcgov-prefix: 'bcgov';
   $prefix: $bcgov-prefix
 );
 
+@use './colors.scss' as colors;
+
 @use '@carbon/styles/scss/components/button/vars' with (
   $button-border-radius: 4px
 );
@@ -117,4 +119,56 @@ $bcgov-prefix: 'bcgov';
 .#{$bcgov-prefix}--pagination__control-buttons .#{$bcgov-prefix}--pagination__button {
   margin: 4px;
   border: 0;
+}
+
+// SideNav
+.#{$bcgov-prefix}--side-nav {
+  box-shadow: inset -1px 0px 0px #DFDFE1;
+}
+
+.#{$bcgov-prefix}--side-nav__items {
+  padding: 0px 0px !important;
+}
+
+.#{$bcgov-prefix}--side-nav__link {
+  padding: 16px !important;
+  margin: 0px;
+  width: 256px;
+}
+
+.#{$bcgov-prefix}--grid {
+  padding: 0px !important;
+}
+
+.#{$bcgov-prefix}--row {
+  padding: 0px !important;
+}
+
+.#{$bcgov-prefix}--tab-content {
+  padding: 0px !important;
+}
+
+.#{$bcgov-prefix}--data-table {
+  padding: 0px !important;
+}
+
+.#{$bcgov-prefix}--content {
+  padding: 0px !important;
+}
+
+.#{$bcgov-prefix}--header {
+  background-color: colors.$blue-60 !important;
+}
+
+.#{$bcgov-prefix}--row h1 {
+  font-size: 32px;
+  line-height: 40px;
+  color: #131315;
+}
+
+.#{$bcgov-prefix}--row h4 {
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.16px;
+  color: #606062;
 }

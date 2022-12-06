@@ -9,10 +9,8 @@ import {
 import FavoriteActivities from '../../components/FavoriteActivities';
 import RecentActivities from '../../components/RecentActivities';
 
-import './styles.css';
-
 const Dashboard = () => (
-  <FlexGrid className="main-container" spacing={4}>
+  <FlexGrid>
     <Stack gap={6}>
       <Row>
         <Column sm={4} md={4}>

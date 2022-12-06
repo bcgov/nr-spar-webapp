@@ -45,7 +45,7 @@
 }
 
 .card-main:hover {
-    border: 2px solid #0073E6;
+    outline: 2px solid #0073E6;
     cursor: pointer;
 }
 
@@ -76,6 +76,8 @@
     font-size: 14px;
     line-height: 18px;
     letter-spacing: 0.16px;
+
+    margin-bottom: auto;
 
     color: #606062;
 

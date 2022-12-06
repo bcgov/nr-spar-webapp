@@ -11,30 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.main-container h1 {
-  /* Fixed heading styles/heading-05 */
-  font-family: 'BC Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 40px;
-  /* identical to box height, or 125% */
-
-  /* Light Theme/Text/$text-primary */
-  color: #131315;
-}
-
-.main-container h4 {
-  /* Body styles/body-compact-01 */
-  font-family: 'BC Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  /* identical to box height, or 129% */
-  letter-spacing: 0.16px;
-
-  /* Light Theme/Text/$text-secondary */
-  color: #606062;
-}
