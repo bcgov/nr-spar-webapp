@@ -13,25 +13,16 @@ import BCGovLogo from '../../components/BCGovLogo';
 import Seeding from '../../assets/img/seeding.png';
 import LoginProviders from '../../types/LoginProviders';
 import './styles.css';
+import getUrlQueryParam from '../../utils/UrlUtils';
 
 const NewLanding = () => {
   const { startKeycloak, login, signed } = useAuth();
   const navigate = useNavigate();
   const homePage = '/home';
 
-  const getPageParam = (): string => {
-    let page: string = homePage;
-    const paramString = window.location.search.split('?')[1];
-    const queryString = new URLSearchParams(paramString);
-    if (queryString.has('page')) {
-      page = queryString.get('page') || homePage;
-    }
-    return page;
-  };
-
   const handleLogin = (provider: LoginProviders) => {
     if (signed) {
-      navigate(getPageParam());
+      navigate(getUrlQueryParam(window.location, 'page') || homePage);
       return;
     }
 
@@ -46,7 +37,7 @@ const NewLanding = () => {
 
   useEffect(() => {
     if (signed) {
-      navigate(getPageParam());
+      navigate(getUrlQueryParam(window.location, 'page') || homePage);
     } else {
       startKeycloak();
     }

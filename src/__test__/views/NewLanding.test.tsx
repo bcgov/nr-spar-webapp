@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import NewLanding from '../../views/NewLanding';
 import { AuthProvider } from '../../contexts/AuthContext';
 
@@ -29,5 +30,18 @@ describe('NewLanding component test', () => {
     expect(getByTestId('landing-desc').textContent).toBe(content.description);
     expect(getByTestId('landing-button__idir').textContent).toBe(content.idir_btn);
     expect(getByTestId('landing-button__bceid').textContent).toBe(content.bceid_btn);
+  });
+
+  it('should match the snapshot', () => {
+    const newLanding = renderer
+      .create(
+        <BrowserRouter>
+          <AuthProvider>
+            <NewLanding />
+          </AuthProvider>
+        </BrowserRouter>
+      ).toJSON();
+
+    expect(newLanding).toMatchSnapshot();
   });
 });
