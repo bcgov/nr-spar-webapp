@@ -6,16 +6,15 @@ import {
 
 import './custom.scss';
 
-import Landing from './views/Landing';
 import Form from './views/Form';
 import Table from './views/Table';
-import Home from './views/Home';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { useAuth } from './contexts/AuthContext';
 import SilentCheckSso from './components/SilentCheckSso';
 import Logout from './components/Logout';
 import Layout from './layout/PublicLayout';
 import Dashboard from './views/Dashboard/dashboard';
+import NewLanding from './views/NewLanding';
 
 /**
  * Create an app structure conaining all the routes.
@@ -28,7 +27,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<NewLanding />} />
         <Route path="/" element={<Layout />}>
           <Route path="/silent-check-sso" element={<SilentCheckSso />} />
           <Route path="/logout" element={<Logout />} />
@@ -38,15 +37,6 @@ const App: React.FC = () => {
             element={(
               <ProtectedRoute signed={signed}>
                 <Dashboard />
-              </ProtectedRoute>
-            )}
-          />
-
-          <Route
-            path="/home"
-            element={(
-              <ProtectedRoute signed={signed}>
-                <Home />
               </ProtectedRoute>
             )}
           />

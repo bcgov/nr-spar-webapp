@@ -8,7 +8,7 @@ const LeftPanel = ({ listItems }: any) => (
   <SideNav isFixedNav expanded isChildOfHeader aria-label="Side navigation">
     <SideNavItems>
       {listItems.map((item: any) => (
-        <div>
+        <div key={item.name}>
           <SideNavLink key={item.name} title={item.name} disabled>
             {item.name}
           </SideNavLink>
