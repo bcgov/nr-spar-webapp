@@ -52,16 +52,16 @@ const NewLanding = () => {
 
         {/* Welcome - Title and Subtitle */}
         <h1 data-testid="landing-title" className="landing-title">Welcome to SPAR</h1>
-        <p data-testid="landing-subtitle" className="landing-subtitle">
+        <h2 data-testid="landing-subtitle" className="landing-subtitle">
           Seed Planning and Registry Application
-        </p>
+        </h2>
 
         {/* Description */}
-        <h3 data-testid="landing-desc" className="landing-desc">
+        <p data-testid="landing-desc" className="landing-desc">
           Register and storage your seed and meet your annual
           reforestation needs using
           <span className="spar-span"> SPAR</span>
-        </h3>
+        </p>
 
         {/* Login buttons */}
         <Button
@@ -73,7 +73,7 @@ const NewLanding = () => {
         >
           Login with IDIR
         </Button>
-        &nbsp;
+
         <Button
           kind="tertiary"
           onClick={() => { handleLogin(LoginProviders.BCEID_BUSINESS); }}
@@ -88,7 +88,11 @@ const NewLanding = () => {
 
       {/* Second - Column */}
       <Column lg={5}>
-        <img src={Seeding} alt="Seeding" className="seeding-img" />
+        <img
+          src={Seeding}
+          alt="Small green seedling on the dirt and watered"
+          className="seeding-img"
+        />
       </Column>
     </Grid>
   );

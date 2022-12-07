@@ -25,4 +25,16 @@ describe('Url Utils test', () => {
 
     expect(pageParam).toBe(null);
   });
+
+  it('location without query search', () => {
+    const url = 'http://spar-webapp.com';
+    global.window = Object.create(window);
+    Object.defineProperty(window, 'location', {
+      value: { search: url }
+    });
+
+    const pageParam = getUrlQueryParam(window.location, 'name');
+
+    expect(pageParam).toBe(null);
+  });
 });

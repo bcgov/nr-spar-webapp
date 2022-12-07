@@ -19,13 +19,13 @@ exports[`NewLanding component test should match the snapshot 1`] = `
     >
       Welcome to SPAR
     </h1>
-    <p
+    <h2
       className="landing-subtitle"
       data-testid="landing-subtitle"
     >
       Seed Planning and Registry Application
-    </p>
-    <h3
+    </h2>
+    <p
       className="landing-desc"
       data-testid="landing-desc"
     >
@@ -35,7 +35,7 @@ exports[`NewLanding component test should match the snapshot 1`] = `
       >
          SPAR
       </span>
-    </h3>
+    </p>
     <button
       aria-describedby={null}
       aria-pressed={null}
@@ -66,7 +66,6 @@ exports[`NewLanding component test should match the snapshot 1`] = `
         />
       </svg>
     </button>
-     
     <button
       aria-describedby={null}
       aria-pressed={null}
@@ -102,7 +101,7 @@ exports[`NewLanding component test should match the snapshot 1`] = `
     className="cds--lg:col-span-5 cds--css-grid-column"
   >
     <img
-      alt="Seeding"
+      alt="Small green seedling on the dirt and watered"
       className="seeding-img"
       src=""
     />
