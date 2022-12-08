@@ -1,7 +1,13 @@
 @use './theme/light-theme.scss' as light;
 @use './theme/colors.scss' as colors;
+@use './theme/type-family.scss' as types;
 
 @use './theme/components-overrides.scss';
+
+@use '@carbon/type/scss/_font-family.scss' with (
+  $font-families: types.$type-family,
+  $font-weights: types.$font-weights
+);
 
 // Set the correct light theme
 @use '@carbon/react/scss/themes';
@@ -21,9 +27,6 @@
 @use '@carbon/react/scss/components/tag/tokens' as tag-tokens;
 @use './theme/tags.scss' as tag-overrides;
 
-@use '@carbon/react/scss/components/notification/tokens' as notification-tokens;
-@use './theme/notifications.scss' as notification-overrides;
-
 @use '@carbon/react';
 @use '@carbon/grid';
 
@@ -37,14 +40,8 @@ $tag-tokens: utilities.merge(
   tag-overrides.$tag-token-overrides
 );
 
-$notification-tokens: utilities.merge(
-  notification-tokens.$notification-tokens,
-  notification-overrides.$notification-token-overrides
-);
-
 @include theme.add-component-tokens($button-tokens);
 @include theme.add-component-tokens($tag-tokens);
-@include theme.add-component-tokens($notification-tokens);
 
 // Emit the flex-grid styles
 @include grid.flex-grid();
