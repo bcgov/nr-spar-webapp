@@ -119,7 +119,6 @@ $bcgov-prefix: 'bcgov';
   border: 0;
 }
 
-//Notifications
 .#{$bcgov-prefix}--inline-notification,
 .#{$bcgov-prefix}--toast-notification {
   border-radius: 4px;
@@ -157,5 +156,5 @@ $types: 'error', 'info', 'success', 'warning';
     border-bottom-color: var(--bcgov-notification-border-#{$notificationType});
     border-right-color: var(--bcgov-notification-border-#{$notificationType})}
 }
-//
+
 
