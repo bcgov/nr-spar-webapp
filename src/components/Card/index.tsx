@@ -14,7 +14,7 @@ interface CardProps {
 const Card = ({ icon, header, description }: CardProps) => {
   const Icon = Icons[icon];
   return (
-    <Tile className="card-main">
+    <Tile className="card-main" tabIndex="0">
       <span className="card-header">
         <Icon className="card-icon" />
         <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
