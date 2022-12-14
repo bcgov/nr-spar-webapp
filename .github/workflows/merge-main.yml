@@ -141,7 +141,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           output-file: 'CHANGELOG.md'
-          skip-version-file: 'true'
+          skip-version-file: 'false'
           skip-commit: 'true'
           git-push: 'false'
 
