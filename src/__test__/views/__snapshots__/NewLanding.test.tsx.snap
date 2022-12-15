@@ -15,19 +15,16 @@ exports[`NewLanding component test should match the snapshot 1`] = `
     />
     <h1
       className="landing-title"
-      data-testid="landing-title"
     >
       Welcome to SPAR
     </h1>
     <h2
       className="landing-subtitle"
-      data-testid="landing-subtitle"
     >
       Seed Planning and Registry Application
     </h2>
     <p
       className="landing-desc"
-      data-testid="landing-desc"
     >
       Register and storage your seed and meet your annual reforestation needs using
       <span
@@ -40,7 +37,6 @@ exports[`NewLanding component test should match the snapshot 1`] = `
       aria-describedby={null}
       aria-pressed={null}
       className="btn-landing cds--btn cds--btn--md cds--btn--primary"
-      data-testid="landing-button__idir"
       disabled={false}
       onClick={[Function]}
       tabIndex={0}
@@ -70,7 +66,6 @@ exports[`NewLanding component test should match the snapshot 1`] = `
       aria-describedby={null}
       aria-pressed={null}
       className="btn-landing cds--btn cds--btn--md cds--btn--tertiary"
-      data-testid="landing-button__bceid"
       disabled={false}
       onClick={[Function]}
       tabIndex={0}
@@ -101,7 +96,7 @@ exports[`NewLanding component test should match the snapshot 1`] = `
     className="cds--lg:col-span-5 cds--css-grid-column"
   >
     <img
-      alt="Small green seedling on the dirt and watered"
+      alt=""
       className="seeding-img"
       src=""
     />

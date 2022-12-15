@@ -51,13 +51,13 @@ const NewLanding = () => {
         <BCGovLogo />
 
         {/* Welcome - Title and Subtitle */}
-        <h1 data-testid="landing-title" className="landing-title">Welcome to SPAR</h1>
-        <h2 data-testid="landing-subtitle" className="landing-subtitle">
+        <h1 className="landing-title">Welcome to SPAR</h1>
+        <h2 className="landing-subtitle">
           Seed Planning and Registry Application
         </h2>
 
         {/* Description */}
-        <p data-testid="landing-desc" className="landing-desc">
+        <p className="landing-desc">
           Register and storage your seed and meet your annual
           reforestation needs using
           <span className="spar-span"> SPAR</span>
@@ -68,7 +68,6 @@ const NewLanding = () => {
           onClick={() => { handleLogin(LoginProviders.IDIR); }}
           size="md"
           renderIcon={Login}
-          data-testid="landing-button__idir"
           className="btn-landing"
         >
           Login with IDIR
@@ -79,7 +78,6 @@ const NewLanding = () => {
           onClick={() => { handleLogin(LoginProviders.BCEID_BUSINESS); }}
           size="md"
           renderIcon={Login}
-          data-testid="landing-button__bceid"
           className="btn-landing"
         >
           Login with Business BCeID
@@ -90,7 +88,7 @@ const NewLanding = () => {
       <Column lg={5}>
         <img
           src={Seeding}
-          alt="Small green seedling on the dirt and watered"
+          alt=""
           className="seeding-img"
         />
       </Column>
