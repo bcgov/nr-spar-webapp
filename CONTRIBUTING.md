@@ -84,8 +84,19 @@ reviewers, assign to yourself and add a label.
 
 ## Follow our best practices
 
-- Typescript source code must be formatted according to
-[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html),
-as mentioned. There's a pipeline to ensure all of our code is good to go.
+- TypeScript source code must be formatted according to Airbnb ESLint,
+as mentioned. Make sure to follow this rule and you're good to go.
 - We use [conventional commits](https://www.conventionalcommits.org/)
 because it makes the process of generating changelogs possible. If that's new for you, please take a moment to read it. You can start with the [summary](https://www.conventionalcommits.org/en/v1.0.0/#summary) and go from there.
+  - Basically you need to write your commits messages starting with a tag
+  that is related with the change that you're doing. Tags can be one of:
+  - **build**: Changes that affect the build system or external dependencies
+  - **ci**: Changes to our CI configuration files and scripts
+  - **docs**: Documentation only changes
+  - **feat**: A new feature
+  - **fix**: A bug fix
+  - **perf**: A code change that improves performance
+  - **refactor**: A code change that neither fixes a bug nor adds a feature
+  - **test**: Adding missing tests or correcting existing tests
+  
+Take a look [here](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#-commit-message-format) to read more about the commit message format.
