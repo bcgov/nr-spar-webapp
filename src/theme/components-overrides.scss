@@ -172,3 +172,24 @@ $bcgov-prefix: 'bcgov';
   letter-spacing: 0.16px;
   color: #606062;
 }
+
+.card-overflow{
+  border-radius: 4px;
+}
+
+.#{$bcgov-prefix}--overflow-menu.bcgov--overflow-menu--open{
+  border-radius: 4px 4px 0 0;
+}
+
+.#{$bcgov-prefix}--overflow-menu-options{
+  border-radius: 0 4px 4px 4px;
+}
+
+li.#{$bcgov-prefix}--overflow-menu-options__option:first-child{
+  border-radius: 0 4px 0 0;
+}
+
+li.#{$bcgov-prefix}--overflow-menu-options__option:last-child{
+  border-radius: 0 0 4px 4px;
+}
+
