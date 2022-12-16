@@ -10,6 +10,10 @@ import FavoriteActivitiesCardItems from '../../mock-data/FavoriteActivitiesCardI
 
 const cards = FavoriteActivitiesCardItems;
 
+const highlightFunction = () => {
+
+};
+
 const FavoriteActivities = () => (
   <Row className="main-content">
     <Column lg={4}>
@@ -33,6 +37,10 @@ const FavoriteActivities = () => (
             icon={card.icon}
             header={card.header}
             description={card.description}
+            highlighted={card.highlighted}
+            highlightFunction={() => {
+              highlightFunction();
+            }}
           />
         ))}
       </Row>
