@@ -4,6 +4,8 @@ import { SideNav, SideNavItems, SideNavLink } from '@carbon/react';
 
 import * as Icons from '@carbon/icons-react';
 
+import './styles.scss';
+
 interface ListItem {
   name: string;
   icon: string;
@@ -42,9 +44,10 @@ const LeftPanel = ({ listItems }: LeftPanelProps) => (
           })}
         </div>
       ))}
-
-      <SideNavLink disabled>Support</SideNavLink>
-      <SideNavLink renderIcon={Icons.Help}>Need help?</SideNavLink>
+      <div className="support-section">
+        <SideNavLink disabled>Support</SideNavLink>
+        <SideNavLink renderIcon={Icons.Help}>Need help?</SideNavLink>
+      </div>
     </SideNavItems>
   </SideNav>
 );
