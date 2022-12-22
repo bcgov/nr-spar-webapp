@@ -24,7 +24,7 @@ interface LeftPanelProps {
 
 const LeftPanel = ({ listItems }: LeftPanelProps) => {
   const version: string = `Version: ${env.REACT_APP_NRFESAMPLEAPP_VERSION}`;
-  
+
   return (
     <SideNav isFixedNav expanded isChildOfHeader aria-label="Side navigation">
       <SideNavItems>
