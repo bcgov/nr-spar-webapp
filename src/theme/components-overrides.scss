@@ -6,8 +6,6 @@
   $prefix: variables.$bcgov-prefix
 );
 
-@use './colors.scss' as colors;
-
 @use '@carbon/styles/scss/components/button/vars' with (
   $button-border-radius: 4px
 );
@@ -230,18 +228,18 @@ $types: 'error', 'info', 'success', 'warning';
   border-radius: 4px;
 }
 
-.#{$bcgov-prefix}--overflow-menu.bcgov--overflow-menu--open{
+.#{variables.$bcgov-prefix}--overflow-menu.bcgov--overflow-menu--open{
   border-radius: 4px 4px 0 0;
 }
 
-.#{$bcgov-prefix}--overflow-menu-options{
+.#{variables.$bcgov-prefix}--overflow-menu-options{
   border-radius: 0 4px 4px 4px;
 }
 
-li.#{$bcgov-prefix}--overflow-menu-options__option:first-child{
+li.#{variables.$bcgov-prefix}--overflow-menu-options__option:first-child{
   border-radius: 0 4px 0 0;
 }
 
-li.#{$bcgov-prefix}--overflow-menu-options__option:last-child{
+li.#{variables.$bcgov-prefix}--overflow-menu-options__option:last-child{
   border-radius: 0 0 4px 4px;
 }
