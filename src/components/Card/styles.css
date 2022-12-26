@@ -14,7 +14,6 @@
 }
 
 .card-overflow {
-    margin-left: auto;
     padding: 0px !important;
     margin: 0px !important;
     width: 32px;
@@ -32,15 +31,11 @@
     align-items: flex-start;
     padding: 20px 16px;
     margin: 8px;
-
     width: 234px;
     height: 158px;
-
     background: #FFFFFF;
-
     border: 1px solid #DFDFE1;
     border-radius: 4px;
-
     flex: none;
     order: 0;
     flex-grow: 0;
@@ -57,13 +52,12 @@
 }
 
 .card-content>h5 {
-    font-family: 'BC Sans';
+    font-family: 'BC Sans', 'IBM Plex Sans', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
     color: #131315;
-
     display: block;
     white-space: nowrap;
     overflow: hidden;
@@ -72,17 +66,14 @@
 }
 
 .card-content>p {
-    font-family: 'BC Sans';
+    font-family: 'BC Sans', 'IBM Plex Sans', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 18px;
     letter-spacing: 0.16px;
-
     margin-bottom: auto;
-
     color: #606062;
-
     display: -webkit-box;
     max-width: 200px;
     -webkit-line-clamp: 3;

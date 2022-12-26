@@ -130,15 +130,15 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.exclusions=**/__test__/**,.github/**/*
-            -Dsonar.coverage.exclusions=**/__test__/**,.github/**/*
             -Dsonar.organization=bcgov-sonarcloud
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.cobertura.reportPaths=coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=false
             -Dsonar.projectKey=bcgov_nr-spar-webapp
-            -Dsonar.sources=.
-            -Dsonar.tests=src/__test__/components
+            -Dsonar.sources=src/
+            -Dsonar.exclusions=src/**/__test__/**/*
+            -Dsonar.tests=src/
+            -Dsonar.test.inclusions=src/**/__test__/**/*
 
   security:
     name: Security checks
@@ -284,7 +284,7 @@ jobs:
     env:
       COMPONENT: app
       ZONE: ${{ github.event.number }}
-      REACT_APP_NRFESAMPLEAPP_VERSION: snapshot-${{ github.event.number }}
+      REACT_APP_NRSPARWEBAPP_VERSION: snapshot-${{ github.event.number }}
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
     needs:
@@ -310,7 +310,7 @@ jobs:
         run: yarn build:production
         env:
           DISABLE_ESLINT_PLUGIN: true
-          REACT_APP_NRFESAMPLEAPP_VERSION: ${{ env.REACT_APP_NRFESAMPLEAPP_VERSION }}
+          REACT_APP_NRSPARWEBAPP_VERSION: ${{ env.REACT_APP_NRSPARWEBAPP_VERSION }}
           REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
           REACT_APP_KC_URL: ${{ secrets.REACT_APP_KC_URL }}
           REACT_APP_KC_REALM: ${{ secrets.REACT_APP_KC_REALM }}
@@ -350,7 +350,7 @@ jobs:
     timeout-minutes: 15
     env:
       ZONE: ${{ github.event.number }}
-      REACT_APP_NRFESAMPLEAPP_VERSION: snapshot-${{ github.event.number }}
+      REACT_APP_NRSPARWEBAPP_VERSION: snapshot-${{ github.event.number }}
     steps:
       - uses: actions/checkout@v2
       - name: Deploy
@@ -369,7 +369,7 @@ jobs:
 
           # Process and apply template
           oc process -f .github/openshift/deploy.frontend.yml -p ZONE=${{ env.ZONE }} \
-            -p REACT_APP_NRFESAMPLEAPP_VERSION=${{ env.REACT_APP_NRFESAMPLEAPP_VERSION }} \
+            -p REACT_APP_NRSPARWEBAPP_VERSION=${{ env.REACT_APP_NRSPARWEBAPP_VERSION }} \
             -p REACT_APP_SERVER_URL=${{ secrets.REACT_APP_SERVER_URL }} \
             -p REACT_APP_KC_URL=${{ secrets.REACT_APP_KC_URL }} \
             -p REACT_APP_KC_REALM=${{ secrets.REACT_APP_KC_REALM }} \

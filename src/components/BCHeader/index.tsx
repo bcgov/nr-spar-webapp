@@ -10,10 +10,10 @@ import {
 import {
   Search,
   Notification,
-  Switcher
+  UserAvatar
 } from '@carbon/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
-import './styles.css';
+import './styles.scss';
 
 const BCHeader = () => {
   const navigate = useNavigate();
@@ -26,7 +26,8 @@ const BCHeader = () => {
     <Theme theme="g100">
       <Header aria-label="BC Gov's NR Sample App" data-testid="header">
         <Link to="/dashboard" className="header-link" data-testid="header-name">
-          SPAR Seed Planning and Registry System
+          SPAR
+          <span className="header-full-name"> Seed Planning and Registry System</span>
         </Link>
         <HeaderGlobalBar>
           <Button
@@ -41,8 +42,8 @@ const BCHeader = () => {
           <HeaderGlobalAction aria-label="Notifications" data-testid="header-button__notifications">
             <Notification size={20} />
           </HeaderGlobalAction>
-          <HeaderGlobalAction aria-label="App Switcher" tooltipAlignment="end" data-testid="header-button__switcher">
-            <Switcher size={20} />
+          <HeaderGlobalAction aria-label="User Settings" tooltipAlignment="end" data-testid="header-button__user">
+            <UserAvatar size={20} />
           </HeaderGlobalAction>
         </HeaderGlobalBar>
       </Header>
