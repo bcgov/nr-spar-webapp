@@ -9,7 +9,7 @@ interface CardProps {
   icon: string;
   header: string;
   description: string;
-  highlighted: boolean;
+  highlighted?: boolean;
   highlightFunction?: any;
 }
 
@@ -22,7 +22,7 @@ const Card = ({
       <span className="card-header">
         <Icon className="card-icon" />
         <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
-          {highlighted ? (<OverflowMenuItem itemText="Unhighlight item" />) : <OverflowMenuItem itemText="Highlight item" onClick={highlightFunction} />}
+          {highlighted ? (<OverflowMenuItem itemText="Dehighlight shortcut" onClick={highlightFunction} />) : <OverflowMenuItem itemText="Highlight shortcut" onClick={highlightFunction} />}
           <OverflowMenuItem itemText="Item 2" />
           <OverflowMenuItem itemText="Item 3" />
         </OverflowMenu>
