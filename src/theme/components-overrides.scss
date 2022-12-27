@@ -224,10 +224,6 @@ $types: 'error', 'info', 'success', 'warning';
     border-right-color: var(--bcgov-notification-border-#{$notificationType})}
 }
 
-.card-overflow{
-  border-radius: 4px;
-}
-
 .#{variables.$bcgov-prefix}--overflow-menu.bcgov--overflow-menu--open{
   border-radius: 4px 4px 0 0;
 }
