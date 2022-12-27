@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './styles.css';
+import './styles.scss';
 
 import { Tile, OverflowMenu, OverflowMenuItem } from '@carbon/react';
 import * as Icons from '@carbon/icons-react';
@@ -10,7 +10,7 @@ interface CardProps {
   header: string;
   description: string;
   highlighted?: boolean;
-  highlightFunction?: any;
+  highlightFunction?: () => void;
 }
 
 const Card = ({
@@ -22,7 +22,7 @@ const Card = ({
       <span className="card-header">
         <Icon className="card-icon" />
         <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
-          {highlighted ? (<OverflowMenuItem itemText="Dehighlight shortcut" onClick={highlightFunction} />) : <OverflowMenuItem itemText="Highlight shortcut" onClick={highlightFunction} />}
+          <OverflowMenuItem tabIndex="0" itemText={highlighted ? 'Dehighlight shortcut' : 'Highlight shortcut'} onClick={highlightFunction} />
           <OverflowMenuItem itemText="Item 2" />
           <OverflowMenuItem itemText="Item 3" />
         </OverflowMenu>

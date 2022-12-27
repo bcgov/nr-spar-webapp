@@ -35,7 +35,7 @@ const App: React.FC = () => {
           <Route
             path="/dashboard"
             element={(
-              <ProtectedRoute signed={signed}>
+              <ProtectedRoute signed>
                 <Dashboard />
               </ProtectedRoute>
             )}

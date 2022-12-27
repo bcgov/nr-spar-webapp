@@ -4,8 +4,8 @@ import { Tooltip, Row, Column } from '@carbon/react';
 import { Information } from '@carbon/icons-react';
 import Card from '../Card';
 
-import './styles.css';
 import CardType from '../../types/Card';
+import './styles.css';
 import FavoriteActivitiesCardItems from '../../mock-data/FavoriteActivitiesCardItems';
 
 const FavoriteActivities = () => {
@@ -17,7 +17,9 @@ const FavoriteActivities = () => {
     if (target.highlighted === false) {
       newCards.forEach((item, i) => {
         const card = item;
-        if (card.id !== target.id) { card.highlighted = false; } else {
+        if (card.id !== target.id) {
+          card.highlighted = false;
+        } else {
           newCards.splice(i, 1);
           newCards.unshift(item);
           newCards[0].highlighted = true;
