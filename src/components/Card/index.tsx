@@ -12,7 +12,6 @@ interface CardProps {
   highlighted?: boolean;
   highlightFunction?: () => void;
   deleteFunction?: () => void;
-
 }
 
 const Card = ({
