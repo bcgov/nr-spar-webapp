@@ -9,17 +9,21 @@ interface CardProps {
   icon: string;
   header: string;
   description: string;
+  highlighted?: boolean;
+  highlightFunction?: () => void;
 }
 
-const Card = ({ icon, header, description }: CardProps) => {
+const Card = ({
+  icon, header, description, highlighted, highlightFunction
+}: CardProps) => {
   const Icon = Icons[icon];
   return (
-    <Tile className="card-main" tabIndex="0">
+    <Tile className={highlighted ? 'card-main-highlighted' : 'card-main'}>
       <div className="card-header">
         <Icon className="card-icon" />
         <h5 className="card-title__small">{header}</h5>
         <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
-          <OverflowMenuItem itemText="Item 1" />
+          <OverflowMenuItem tabIndex="0" itemText={highlighted ? 'Dehighlight shortcut' : 'Highlight shortcut'} onClick={highlightFunction} />
           <OverflowMenuItem itemText="Item 2" />
           <OverflowMenuItem itemText="Item 3" />
         </OverflowMenu>
