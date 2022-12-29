@@ -12,7 +12,7 @@ const cards = FavoriteActivitiesCardItems;
 
 const FavoriteActivities = () => (
   <Row className="favorite-activities">
-    <Column lg={4} className="favorite-activities-title">
+    <Column lg={4} className="favorite-activities__title">
       <h3>My favorite activities</h3>
       <h4>
         Quick access to your favorite activities.
@@ -25,8 +25,8 @@ const FavoriteActivities = () => (
         </Tooltip>
       </h4>
     </Column>
-    <Column lg={12}>
-      <Row>
+    <Column sm={4} md={8} lg={12} className="favorite-activities__cards">
+      <Row className="cards-row">
         {cards.map((card) => (
           <Card
             key={card.header}
