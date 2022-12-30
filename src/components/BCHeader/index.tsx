@@ -96,7 +96,9 @@ const BCHeader = () => {
                       <SideNavLink
                         key={subItem.name}
                         renderIcon={IconComponent || ''}
-                        href={!subItem.disabled ? subItem.link : null}
+                        onClick={() => {
+                          navigate(`${subItem.link}`);
+                        }}
                         isActive={window.location.pathname === subItem.link}
                       >
                         {subItem.name}
