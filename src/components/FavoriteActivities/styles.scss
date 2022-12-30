@@ -5,28 +5,28 @@
   padding: 2rem 0;
 }
 
-.favorite-activities__title {
+.favorite-activities-title {
   padding-left: 3.5rem;
 }
 
 @media only screen and (max-width: 1584px) {
-  .favorite-activities__title {
+  .favorite-activities-title {
     padding-left: 3rem;
   }
 }
 
 @media only screen and (max-width: 1056px) {
-  .favorite-activities__cards {
+  .favorite-activities-cards {
     padding-left: 3.5rem;
   }
 }
 
 @media only screen and (max-width: 672px) {
-  .favorite-activities__title {
+  .favorite-activities-title {
     padding-left: 2rem;
   }
 
-  .favorite-activities__cards {
+  .favorite-activities-cards {
     padding-left: 2.5rem;
   }
 

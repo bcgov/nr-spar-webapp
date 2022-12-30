@@ -23,7 +23,7 @@ const Card = ({
       <div className="card-header">
         <Icon className="card-icon" />
         <h5 className="card-title__small">{header}</h5>
-        <OverflowMenu className="card-overflow" ariaLabel="overflow-menu">
+        <OverflowMenu className="card-overflow" ariaLabel="overflow-menu" flipped>
           <OverflowMenuItem tabIndex="0" itemText={highlighted ? 'Dehighlight shortcut' : 'Highlight shortcut'} onClick={highlightFunction} />
           <OverflowMenuItem itemText="Delete shortcut" onClick={deleteFunction} />
         </OverflowMenu>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -12,14 +13,8 @@ import {
   SideNavItems,
   SideNavLink
 } from '@carbon/react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  Search,
-  Notification,
-  UserAvatar
-} from '@carbon/icons-react';
-
 import * as Icons from '@carbon/icons-react';
+
 import { env } from '../../env';
 
 import PanelSectionName from '../PanelSectionName';
@@ -76,13 +71,13 @@ const BCHeader = () => {
               Logout
             </Button>
             <HeaderGlobalAction aria-label="Search" data-testid="header-button__search">
-              <Search size={20} />
+              <Icons.Search size={20} />
             </HeaderGlobalAction>
             <HeaderGlobalAction aria-label="Notifications" data-testid="header-button__notifications">
-              <Notification size={20} />
+              <Icons.Notification size={20} />
             </HeaderGlobalAction>
             <HeaderGlobalAction aria-label="User Settings" tooltipAlignment="end" data-testid="header-button__user">
-              <UserAvatar size={20} />
+              <Icons.UserAvatar size={20} />
             </HeaderGlobalAction>
           </HeaderGlobalBar>
           <SideNav isChildOfHeader expanded={isSideNavExpanded} aria-label="Side menu">

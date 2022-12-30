@@ -52,7 +52,7 @@ const FavoriteActivities = () => {
           </Tooltip>
         </h4>
       </Column>
-      <Column lg={12}>
+      <Column lg={12} className="favorite-activities-cards">
         <Row>
           {cards.map((card, index) => (
             <Card
