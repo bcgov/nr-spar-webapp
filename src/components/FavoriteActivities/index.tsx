@@ -31,6 +31,12 @@ const FavoriteActivities = () => {
     setCards(newCards);
   };
 
+  const deleteHighlight = (index:number) => {
+    const newCards = [...cards];
+    newCards.splice(index, 1);
+    setCards(newCards);
+  };
+
   return (
     <Row className="favorite-activities">
       <Column lg={4} className="favorite-activities-title">
@@ -55,9 +61,8 @@ const FavoriteActivities = () => {
               header={card.header}
               description={card.description}
               highlighted={card.highlighted}
-              highlightFunction={() => {
-                highlightFunction(index);
-              }}
+              highlightFunction={() => { highlightFunction(index); }}
+              deleteFunction={() => { deleteHighlight(index); }}
             />
           ))}
         </Row>
