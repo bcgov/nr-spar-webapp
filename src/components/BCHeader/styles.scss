@@ -45,7 +45,7 @@ button.#{vars.$bcgov-prefix}--header__action.#{vars.$bcgov-prefix}--header__acti
   fill: colors.$gray-100;
 }
 
-/* Small - Up to 320px */
+/* Medium - Up to 672px */
 @media only screen and (max-width: 672px) {
   .header-full-name {
     display: none;
