@@ -1,11 +1,11 @@
-@use '../../theme/variables.scss' as vars;
+@use '../../theme/colors.scss' as colors;
 
 .empty-section-icon {
-  width: 48px !important;
-  height: 48px !important;
+  width: 3rem !important;
+  height: 3rem !important;
   padding: 0px !important;
-  color: grey;
-  margin-bottom: 16px;
+  color: colors.$gray-70;
+  margin-bottom: 1rem;
 }
 
 .empty-section-container {
@@ -19,9 +19,9 @@
 
 }
 .empty-section-container > p{
-  font-family: 'BC Sans';
+  font-family: 'BC Sans', 'IBM Plex Sans', sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 16px;
-  padding-bottom: 8px;
+  font-size: 1rem;
+  padding-bottom: 0.5rem;
 }

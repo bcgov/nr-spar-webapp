@@ -15,7 +15,7 @@ const EmptySection = ({
 }: EmptySectionProps) => {
   const Icon = Icons[icon];
   return (
-    <div className="empty-section-container" style={padding ? { padding: `${padding}px 16px` } : { padding: '38px 16px ' }}>
+    <div className="empty-section-container" style={padding ? { padding: `${padding}px 1rem` } : { padding: '2.375rem 1rem' }}>
       <Icon className="empty-section-icon" />
       <p>
         {title}
@@ -23,7 +23,6 @@ const EmptySection = ({
       <h4>
         {description}
       </h4>
-
     </div>
   );
 };
