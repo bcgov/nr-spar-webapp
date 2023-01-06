@@ -55,12 +55,14 @@ const RecentActivities = () => {
                 headers={tableHeaders}
               />
               {(listItems.length === 0) && (
-              <EmptySection
-                icon="Application"
-                title="There is no activity to show yet!"
-                description="Your recent requests will appear here once you generate one"
-                padding={93}
-              />
+              <div className="empty-recent-activities">
+                <EmptySection
+                  icon="Application"
+                  title="There is no activity to show yet!"
+                  description="Your recent requests will appear here once you generate one"
+                />
+              </div>
+
               )}
             </TabPanel>
             <TabPanel>Placeholder</TabPanel>

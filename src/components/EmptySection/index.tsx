@@ -7,15 +7,14 @@ interface EmptySectionProps {
   icon: string;
   title: string;
   description: string;
-  padding?: number;
 }
 
 const EmptySection = ({
-  icon, title, description, padding
+  icon, title, description
 }: EmptySectionProps) => {
   const Icon = Icons[icon];
   return (
-    <div className="empty-section-container" style={padding ? { padding: `${padding}px 1rem` } : { padding: '2.375rem 1rem' }}>
+    <div className="empty-section-container">
       <Icon className="empty-section-icon" />
       <p>
         {title}
