@@ -40,7 +40,8 @@ interface ListItems {
 const listItems = LeftPanelItems;
 
 const BCHeader = () => {
-  const version: string = `Version: ${env.REACT_APP_NRFESAMPLEAPP_VERSION}`;
+
+  const version: string = `Version: ${env.REACT_APP_NRSPARWEBAPP_VERSION}`;
   const [myProfile, setMyProfile] = React.useState<boolean>(false);
   const [notifications, setNotifications] = React.useState<boolean>(false);
   const [overlay, setOverlay] = React.useState<boolean>(false);
