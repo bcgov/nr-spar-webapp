@@ -45,7 +45,7 @@ const BCHeader = () => {
   const [notifications, setNotifications] = React.useState<boolean>(false);
   const [overlay, setOverlay] = React.useState<boolean>(false);
 
-  const handleNotificationsPanel = (): void => {
+  const handleNotificationsPanel = React.useCallback((): void => {
     if (notifications) {
       setOverlay(false);
       setNotifications(false);
@@ -54,9 +54,9 @@ const BCHeader = () => {
       setNotifications(true);
     }
     setMyProfile(false);
-  };
+  }, [notifications]);
 
-  const handleMyProfilePanel = (): void => {
+  const handleMyProfilePanel = React.useCallback((): void => {
     if (myProfile) {
       setOverlay(false);
       setMyProfile(false);
@@ -65,17 +65,17 @@ const BCHeader = () => {
       setMyProfile(true);
     }
     setNotifications(false);
-  };
+  }, [myProfile]);
 
-  const closeNotificationsPanel = (): void => {
+  const closeNotificationsPanel = React.useCallback((): void => {
     setOverlay(false);
     setNotifications(false);
-  };
+  }, []);
 
-  const closeMyProfilePanel = (): void => {
+  const closeMyProfilePanel = React.useCallback((): void => {
     setOverlay(false);
     setMyProfile(false);
-  };
+  }, []);
 
   const navigate = useNavigate();
 

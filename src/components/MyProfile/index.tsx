@@ -17,9 +17,13 @@ import './style.scss';
 const MyProfile = () => {
   const navigate = useNavigate();
 
-  const goOut = () => {
+  const goTo = React.useCallback((url: string) => {
+    navigate(url);
+  }, []);
+
+  const goOut = React.useCallback(() => {
     navigate('/logout');
-  };
+  }, []);
 
   return (
     <>
@@ -43,9 +47,7 @@ const MyProfile = () => {
               <SideNavLink
                 key={option.header}
                 renderIcon={IconComponent || ''}
-                onClick={() => {
-                  navigate(`${option.url}`);
-                }}
+                onClick={goTo(option.url)}
               >
                 {option.header}
               </SideNavLink>
