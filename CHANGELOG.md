@@ -1,3 +1,16 @@
+## [0.4.4](https://github.com/bcgov/nr-frontend-starting-app/compare/v0.4.3...v0.4.4) (2023-01-06)
+
+
+
+## [0.4.3](https://github.com/bcgov/nr-frontend-starting-app/compare/v0.4.2...v0.4.3) (2023-01-06)
+
+
+### Bug Fixes
+
+* fixed env var name ([#28](https://github.com/bcgov/nr-frontend-starting-app/issues/28)) ([c2e3b6a](https://github.com/bcgov/nr-frontend-starting-app/commit/c2e3b6a86c82237f24103df4c22aa814b3060516))
+
+
+
 ## [0.4.2](https://github.com/bcgov/nr-frontend-starting-app/compare/v0.4.1...v0.4.2) (2023-01-04)
 
 
@@ -22,24 +35,6 @@
 ### Features
 
 * dashboard breakpoints  ([#23](https://github.com/bcgov/nr-frontend-starting-app/issues/23)) ([c183ce0](https://github.com/bcgov/nr-frontend-starting-app/commit/c183ce01f9ced95c35e8997ed5b4a6ca5bf6c962))
-
-
-
-# [0.3.0](https://github.com/bcgov/nr-frontend-starting-app/compare/v0.2.2...v0.3.0) (2022-12-29)
-
-
-### Features
-
-* delete favorite activities function created ([#22](https://github.com/bcgov/nr-frontend-starting-app/issues/22)) ([3eec51b](https://github.com/bcgov/nr-frontend-starting-app/commit/3eec51bb4b9dc500310b265c3bccbbeb9619a19f))
-
-
-
-## [0.2.2](https://github.com/bcgov/nr-frontend-starting-app/compare/v0.2.1...v0.2.2) (2022-12-29)
-
-
-### Bug Fixes
-
-* navigation added to left panel ([#24](https://github.com/bcgov/nr-frontend-starting-app/issues/24)) ([f9d3064](https://github.com/bcgov/nr-frontend-starting-app/commit/f9d30646991992881bef691a284bde1755658d39))
 
 
 
