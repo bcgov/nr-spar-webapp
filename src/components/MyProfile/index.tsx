@@ -6,15 +6,18 @@ import {
 } from '@carbon/react';
 import * as Icons from '@carbon/icons-react';
 
+import KeycloakService from '../../service/KeycloakService';
+
 import AvatarImage from '../AvatarImage';
 import PanelSectionName from '../PanelSectionName';
 
-import UserData from '../../mock-data/UserData';
 import AccountOptions from '../../mock-data/AccountOptions';
 
 import './style.scss';
 
 const MyProfile = () => {
+  const userData = KeycloakService.getUser();
+
   const navigate = useNavigate();
 
   const goTo = React.useCallback((url: string) => {
@@ -29,12 +32,12 @@ const MyProfile = () => {
     <>
       <div className="user-info-section">
         <div className="user-image">
-          <AvatarImage userName={UserData.name} size="large" />
+          <AvatarImage userName={`${userData.firstName} ${userData.lastName}`} size="large" />
         </div>
         <div className="user-data">
-          <p className="user-name">{UserData.name}</p>
-          <p>{`IDIR: ${UserData.idir}`}</p>
-          <p>{UserData.email}</p>
+          <p className="user-name">{`${userData.firstName} ${userData.lastName}`}</p>
+          <p>{`IDIR: ${userData.idirUsername}`}</p>
+          <p>{userData.email}</p>
         </div>
       </div>
       <hr className="divisory" />
