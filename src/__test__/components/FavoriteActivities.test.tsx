@@ -12,4 +12,13 @@ describe('Test the Favorite Activities component', () => {
 
     expect(screen.getByText('My favorite activities')).toBeInTheDocument();
   });
+
+  it('should render 8 cards', () => {
+    const { container } = render(
+      <FavoriteActivities />
+    );
+
+    const cards = container.getElementsByClassName('card-main');
+    expect(cards).toHaveLength(8);
+  });
 });
