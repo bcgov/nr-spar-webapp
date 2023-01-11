@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Card from '../../components/Card/index';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -18,11 +18,9 @@ describe('Test the card component', () => {
     expect(headers[0]).toHaveClass('card-title__small');
     expect(headers[1]).toHaveClass('card-title__large');
   });
-});
 
-describe('Test when card is highlighted', () => {
-  it('should render card highlighted with different style', async () => {
-    render(
+  it('should render card highlighted with different style', () => {
+    const { container } = render(
       <Card
         header="Test"
         description="For testing"
@@ -31,7 +29,21 @@ describe('Test when card is highlighted', () => {
       />
     );
 
-    const headers = await screen.findAllByText('Test');
-    expect(headers[0]).toHaveStyle('color: white');
+    expect(container.firstChild).not.toHaveClass('card-main');
+    expect(container.firstChild).toHaveClass('card-main-highlighted');
+  });
+
+  it('should click in the button', () => {
+    const { container } = render(
+      <Card
+        header="Test"
+        description="For testing"
+        icon="SoilMoistureField"
+      />
+    );
+
+    const buttonElement = container.getElementsByClassName('card-overflow');
+    fireEvent.click(buttonElement[0]);
+    expect(screen.getByText('Delete shortcut')).toBeInTheDocument();
   });
 });
