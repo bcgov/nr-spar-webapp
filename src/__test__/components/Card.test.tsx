@@ -33,7 +33,7 @@ describe('Test the card component', () => {
     expect(container.firstChild).toHaveClass('card-main-highlighted');
   });
 
-  it('should click in the button', () => {
+  it('should click in the button and open the options', () => {
     const { container } = render(
       <Card
         header="Test"
@@ -45,5 +45,20 @@ describe('Test the card component', () => {
     const buttonElement = container.getElementsByClassName('card-overflow');
     fireEvent.click(buttonElement[0]);
     expect(screen.getByText('Delete shortcut')).toBeInTheDocument();
+  });
+
+  it('should close the dropdown menu when click outside', () => {
+    const { container } = render(
+      <Card
+        header="Test"
+        description="For testing"
+        icon="SoilMoistureField"
+      />
+    );
+
+    const buttonElement = container.getElementsByClassName('card-overflow');
+    fireEvent.click(buttonElement[0]);
+    fireEvent.click(document);
+    expect(screen.queryByText('Delete shortcut')).toBeNull();
   });
 });
