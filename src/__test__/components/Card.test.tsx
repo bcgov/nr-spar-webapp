@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 describe('Test the card component', () => {
   it('should render correctly with headers', async () => {
-    render(
+    const { container } = render(
       <Card
         header="Test"
         description="For testing"
@@ -17,6 +17,9 @@ describe('Test the card component', () => {
     const headers = await screen.findAllByText('Test');
     expect(headers[0]).toHaveClass('card-title__small');
     expect(headers[1]).toHaveClass('card-title__large');
+    expect(screen.getByText('For testing')).toBeInTheDocument();
+    const icon = container.getElementsByClassName('card-icon');
+    expect(icon[0]).toBeInTheDocument();
   });
 
   it('should render card highlighted with different style', () => {
