@@ -47,6 +47,7 @@ describe('Test the card component', () => {
 
     const buttonElement = container.getElementsByClassName('card-overflow');
     fireEvent.click(buttonElement[0]);
+    expect(screen.getByText('Highlight shortcut')).toBeInTheDocument();
     expect(screen.getByText('Delete shortcut')).toBeInTheDocument();
   });
 
@@ -62,6 +63,7 @@ describe('Test the card component', () => {
     const buttonElement = container.getElementsByClassName('card-overflow');
     fireEvent.click(buttonElement[0]);
     fireEvent.click(document);
+    expect(screen.queryByText('Highlight shortcut')).toBeNull();
     expect(screen.queryByText('Delete shortcut')).toBeNull();
   });
 });

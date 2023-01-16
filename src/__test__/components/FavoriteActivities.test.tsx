@@ -12,6 +12,7 @@ describe('Test the Favorite Activities component', () => {
     );
 
     expect(screen.getByText('My favorite activities')).toBeInTheDocument();
+    expect(screen.getByText('Quick access to your favorite activities.')).toBeInTheDocument();
   });
 
   it('should render exactly 8 cards', () => {
