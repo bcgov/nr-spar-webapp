@@ -7,12 +7,13 @@ import '@testing-library/jest-dom';
 // empty section should be tested in the future
 describe('Test the Favorite Activities component', () => {
   it('should render correctly', () => {
-    render(
+    const { container } = render(
       <FavoriteActivities />
     );
 
     expect(screen.getByText('My favorite activities')).toBeInTheDocument();
     expect(screen.getByText('Quick access to your favorite activities.')).toBeInTheDocument();
+    expect(container.getElementsByTagName('svg')).toBeDefined();
   });
 
   it('should render exactly 8 cards', () => {
