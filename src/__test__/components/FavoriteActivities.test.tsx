@@ -5,7 +5,7 @@ import FavoriteActivities from '../../components/FavoriteActivities/index';
 import '@testing-library/jest-dom';
 
 // empty section should be tested in the future
-describe('Test the Favorite Activities component', () => {
+describe('the Favorite Activities component', () => {
   it('should render correctly', () => {
     const { container } = render(
       <FavoriteActivities />
