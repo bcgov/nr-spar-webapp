@@ -10,9 +10,10 @@ import {
   TableCell
 } from '@carbon/react';
 
+import Participants from '../Participants';
 import StatusItem from '../StatusItem';
 
-import Seedlot from '../../types/Seedlot'
+import Seedlot from '../../types/Seedlot';
 
 import './styles.css';
 
@@ -21,39 +22,51 @@ interface TableProps {
   headers: string[];
 }
 
-const SeedlotTable = ({ elements, headers }: TableProps) => (
-  <Table size="lg" useZebraStyles={false} className="seedlot-table">
-    <TableHead>
-      <TableRow>
-        {headers.map((header, idx) => (
-          <TableHeader
-            key={header}
-            id={`header-${header}-${idx}`}
-            data-testid={`header-${header}-${idx}`}
-          >
-            {header}
-          </TableHeader>
-        ))}
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {elements.map((item, idx) => (
-        <TableRow key={hashObject(item)} id={`row${idx}`}>
-          <TableCell>{item.number}</TableCell>
-          <TableCell>{item.class}</TableCell>
-          <TableCell>{item.lot_species}</TableCell>
-          <TableCell>{item.form_step}</TableCell>
-          <TableCell>
-            <StatusItem status={item.status} />
-          </TableCell>
-          <TableCell>{item.participants}</TableCell>
-          <TableCell>{item.created_at}</TableCell>
-          <TableCell>{item.last_modified}</TableCell>
-          <TableCell>{item.approved_at}</TableCell>
+const SeedlotTable = ({ elements, headers }: TableProps) => {
+  const formatDate = (date: string) => {
+    if (typeof date !== 'undefined' && date) {
+      const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(`${date}T00:00:00-08:00`).toLocaleDateString([], options);
+    }
+    return '--';
+  };
+
+  return (
+    <Table size="lg" useZebraStyles={false} className="seedlot-table">
+      <TableHead>
+        <TableRow>
+          {headers.map((header, idx) => (
+            <TableHeader
+              key={header}
+              id={`header-${header}-${idx}`}
+              data-testid={`header-${header}-${idx}`}
+            >
+              {header}
+            </TableHeader>
+          ))}
         </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-);
+      </TableHead>
+      <TableBody>
+        {elements.map((item, idx) => (
+          <TableRow key={hashObject(item)} id={`row${idx}`}>
+            <TableCell>{item.number}</TableCell>
+            <TableCell>{`${item.class} class`}</TableCell>
+            <TableCell>{item.lot_species}</TableCell>
+            <TableCell>{item.form_step}</TableCell>
+            <TableCell>
+              <StatusItem status={item.status} />
+            </TableCell>
+            <TableCell>
+              <Participants elements={item.participants} number={item.number} />
+            </TableCell>
+            <TableCell>{formatDate(item.created_at)}</TableCell>
+            <TableCell>{formatDate(item.last_modified)}</TableCell>
+            <TableCell>{formatDate(item.approved_at)}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
 
 export default SeedlotTable;

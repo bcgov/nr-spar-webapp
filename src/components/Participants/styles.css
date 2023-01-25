@@ -1,0 +1,19 @@
+.img-participant1 {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+}
+
+.img-participant2 {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  right: 0.2rem;
+}
+
+.img-participant3 {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  right: 0.4rem;
+}

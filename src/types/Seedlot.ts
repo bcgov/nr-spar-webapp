@@ -4,7 +4,7 @@ type Seedlot = {
   lot_species: string;
   form_step: string;
   status: number;
-  participants: string;
+  participants: string[];
   created_at: string;
   last_modified: string;
   approved_at: string;
