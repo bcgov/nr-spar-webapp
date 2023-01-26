@@ -109,7 +109,7 @@
 .#{variables.$bcgov-prefix}--pagination--lg,
 .#{variables.$bcgov-prefix}--pagination--lg .#{variables.$bcgov-prefix}--pagination__control-buttons .#{variables.$bcgov-prefix}--popover-container {
   height: 3.5rem;
-}
+}feat: 
 
 .#{variables.$bcgov-prefix}--pagination__control-buttons .#{variables.$bcgov-prefix}--popover-container {
   border-left: 1px solid var(--#{variables.$bcgov-prefix}-border-subtle);
@@ -161,6 +161,12 @@ nav.#{variables.$bcgov-prefix}--side-nav {
 
 .#{variables.$bcgov-prefix}--header {
   background-color: var(--bcgov-background-brand) !important;
+}
+
+ul.#{variables.$bcgov-prefix}--accordion {
+  border-left: 1px solid var(--#{variables.$bcgov-prefix}-border-subtle);
+  border-right: 1px solid var(--#{variables.$bcgov-prefix}-border-subtle);
+  border-radius: 4px;
 }
 
 .#{variables.$bcgov-prefix}--row h1 {
