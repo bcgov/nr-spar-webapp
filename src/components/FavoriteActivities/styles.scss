@@ -1,7 +1,7 @@
 @use '../../theme/colors.scss' as colors;
 
 .favorite-activities {
-  background-color: colors.$gray-10;
+  background-color: var(--bcgov-layer-01);
   padding: 2rem 0;
 }
 

@@ -1,5 +1,4 @@
 @use '../../theme/variables.scss' as vars;
-@use '../../theme/colors.scss' as colors;
 
 .card-header {
   display: inline-flex;
@@ -13,9 +12,8 @@
   height: 1.5rem !important;
   padding: 0 !important;
   margin: 0 !important;
-  color: colors.$blue-60;
+  color: var(--bcgov-focus);
 }
-
 .card-overflow {
   padding: 0 !important;
   margin: 0 !important;
@@ -36,16 +34,15 @@
   margin: 0.5rem;
   width: 14.625rem;
   height: 9.875rem;
-  background: colors.$white;
-  border: 1px solid colors.$gray-20;
+  background: var(--bcgov-layer-02);
+  border: 1px solid var(--bcgov-border-subtle-02);
   border-radius: 4px;
   flex: none;
   order: 0;
   flex-grow: 0;
 }
-
 .card-main:hover {
-  outline: 2px solid colors.$blue-60;
+  outline: 2px solid var(--bcgov-focus);
   cursor: pointer;
 }
 
@@ -60,7 +57,7 @@ h5 {
   font-weight: 700;
   font-size: 1rem;
   line-height: 1.5rem;
-  color: colors.$gray-100;
+  color: var(--bcgov-text-primary);
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -76,7 +73,7 @@ h5 {
   line-height: 1.125rem;
   letter-spacing: 0.01rem;
   margin-bottom: auto;
-  color: colors.$gray-70;
+  color: var(--bcgov-text-secondary);
   display: -webkit-box;
   max-width: 12.5rem;
   -webkit-line-clamp: 3;
@@ -86,17 +83,16 @@ h5 {
 }
 
 .card-main-highlighted {
-  background: colors.$blue-60;
+  background: var(--bcgov-button-primary);
 }
 
 .card-main-highlighted .card-icon,
 .card-main-highlighted .card-content>h5,
 .card-main-highlighted .card-content>p {
-  color: colors.$white;
+  color: var(--bcgov-text-on-color)
 }
-
 .card-main-highlighted .card-overflow > svg{
-  fill: colors.$white;
+  fill: var(--bcgov-icon-on-color);
 }
 
 .#{vars.$bcgov-prefix}--overflow-menu.#{vars.$bcgov-prefix}--overflow-menu--open >svg{
@@ -104,8 +100,8 @@ h5 {
 }
 
 .card-main-highlighted:hover {
-  border-color: colors.$white;
-  box-shadow: inset 0 0 0 1px colors.$white, 0 0 0 3px colors.$blue-60 ;
+  border-color: var(--bcgov-icon-on-color);
+  box-shadow: inset 0 0 0 1px var(--bcgov-icon-on-color), 0 0 0 3px var(--bcgov-button-primary);
   cursor: pointer;
 }
 
@@ -122,8 +118,8 @@ h5 {
     padding: 1rem;
     width: 18rem;
     height: 4rem;
-    background: colors.$white;
-    border: 1px solid colors.$gray-20;
+    background: var(--bcgov-layer-02);
+    border: 1px solid var(--bcgov-border-subtle-02);
     border-radius: 4px;
     flex: none;
     order: 0;
