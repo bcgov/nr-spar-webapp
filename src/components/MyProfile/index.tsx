@@ -12,10 +12,12 @@ import AvatarImage from '../AvatarImage';
 import PanelSectionName from '../PanelSectionName';
 
 import AccountOptions from '../../mock-data/AccountOptions';
+import { useThemePreference } from '../../utils/ThemePreference';
 
 import './style.scss';
 
 const MyProfile = () => {
+  const { theme, setTheme } = useThemePreference();
   const userData = KeycloakService.getUser();
 
   const navigate = useNavigate();
@@ -27,6 +29,17 @@ const MyProfile = () => {
   const goOut = React.useCallback(() => {
     navigate('/logout');
   }, []);
+
+  const changeTheme = () => {
+    if (theme === 'g10') {
+      setTheme('g100');
+      localStorage.setItem('mode', 'dark');
+    }
+    if (theme === 'g100') {
+      setTheme('g10');
+      localStorage.setItem('mode', 'light');
+    }
+  };
 
   return (
     <>
@@ -57,6 +70,12 @@ const MyProfile = () => {
             );
           })}
           <PanelSectionName title="Options" />
+          <SideNavLink
+            renderIcon={Icons.DataEnrichment}
+            onClick={() => { changeTheme(); }}
+          >
+            Change theme
+          </SideNavLink>
           <SideNavLink
             renderIcon={Icons.UserFollow}
             onClick={goOut}

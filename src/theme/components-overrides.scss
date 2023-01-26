@@ -120,7 +120,8 @@
   border: 0;
 }
 
-.#{variables.$bcgov-prefix}--side-nav {
+nav.#{variables.$bcgov-prefix}--side-nav {
+  background-color: var(--bcgov-layer-01) ;
   box-shadow: inset -1px 0 0 colors.$gray-20;
 }
 
@@ -159,20 +160,20 @@
 }
 
 .#{variables.$bcgov-prefix}--header {
-  background-color: colors.$blue-60 !important;
+  background-color: var(--bcgov-background-brand) !important;
 }
 
 .#{variables.$bcgov-prefix}--row h1 {
   font-size: 2rem;
   line-height: 2.5rem;
-  color: colors.$gray-100;
+  color: var(--bcgov-text-primary);
 }
 
 .#{variables.$bcgov-prefix}--row h4 {
   font-size: 0.875rem;
   line-height: 1.125rem;
   letter-spacing: 0.01rem;
-  color: colors.$gray-70;
+  color: var(--bcgov-text-secondary);
 }
 
 .#{variables.$bcgov-prefix}--side-nav__menu .#{variables.$bcgov-prefix}--side-nav__menu-item a.#{variables.$bcgov-prefix}--side-nav__link,
