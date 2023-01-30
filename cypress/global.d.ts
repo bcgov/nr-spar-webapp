@@ -32,5 +32,14 @@ declare namespace Cypress {
      * cy.createUser('Jhon', 'Doe')
      */
     createUser(firstname: string, lastname: string): void
+    
+    /**
+     * Custom command to log in on app.
+     *
+     * @example
+     * cy.login()
+     */
+    login(): void
+
   }
 }
