@@ -56,7 +56,7 @@ const MyProfile = () => {
       <hr className="divisory" />
       <nav className="account-nav">
         <ul>
-          <PanelSectionName title="Change account" />
+          <PanelSectionName title="Change account" light />
           {AccountOptions.map((option) => {
             const IconComponent = Icons[option.icon];
             return (
@@ -69,7 +69,7 @@ const MyProfile = () => {
               </SideNavLink>
             );
           })}
-          <PanelSectionName title="Options" />
+          <PanelSectionName title="Options" light />
           <SideNavLink
             renderIcon={Icons.DataEnrichment}
             onClick={() => { changeTheme(); }}
