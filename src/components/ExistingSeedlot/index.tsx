@@ -4,6 +4,7 @@ import { Row, Column } from '@carbon/react';
 
 import SeedlotTable from '../SeedlotTable';
 import EmptySection from '../EmptySection';
+import Subtitle from '../Subtitle';
 
 import ExistingSeedlotItems from '../../mock-data/ExistingSeedlotItems';
 
@@ -25,10 +26,10 @@ const ExistingSeedlot = () => {
   ];
 
   return (
-    <Row className="main-content existing-seedlot">
+    <Row className="existing-seedlot">
       <Column sm={4} className="existing-seedlot-title">
-        <h4>Existing seedlot</h4>
-        <h4 className="existing-seedlot-subtitle">Check a summary of your recent seedlots</h4>
+        <h3>Existing seedlot</h3>
+        <Subtitle text="Check a summary of your recent seedlots" className="existing-seedlot-subtitle" />
       </Column>
       <Column sm={4} className="existing-seedlot-table">
         <SeedlotTable

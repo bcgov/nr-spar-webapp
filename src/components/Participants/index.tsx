@@ -10,7 +10,7 @@ interface ParticipantsProps {
 }
 
 const Participants = ({ elements, number }: ParticipantsProps) => (
-  <div>
+  <div className="participants">
     {elements.map((participant, pidx) => (
       <div
         key={`${number} ${participant}`}
@@ -19,7 +19,6 @@ const Participants = ({ elements, number }: ParticipantsProps) => (
         <AvatarImage
           userName={participant}
           size="small"
-          key={`${number} ${participant}`}
         />
       </div>
     ))}

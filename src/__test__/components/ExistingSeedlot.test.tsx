@@ -9,8 +9,7 @@ describe('Existing Seedlot component', () => {
   it('should render title and subtitle correctly', () => {
     render(<ExistingSeedlot />);
     
-    const description = screen.getAllByRole('heading', { level: 4 })
-    expect(description[0].textContent).toEqual('Existing seedlot');
-    expect(description[1].textContent).toEqual('Check a summary of your recent seedlots');
+    expect(screen.getByRole('heading', { level: 3 }).textContent).toEqual('Existing seedlot');
+    expect(screen.getByText('Check a summary of your recent seedlots')).toBeInTheDocument();
   });
 });
