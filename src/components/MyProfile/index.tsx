@@ -27,6 +27,10 @@ const MyProfile = () => {
   }, []);
 
   const goOut = React.useCallback(() => {
+    if (theme === 'g100') {
+      setTheme('g10');
+      localStorage.setItem('mode', 'light');
+    }
     navigate('/logout');
   }, []);
 
