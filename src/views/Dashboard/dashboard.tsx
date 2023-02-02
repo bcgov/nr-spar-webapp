@@ -4,7 +4,6 @@ import {
   FlexGrid,
   Row,
   Stack
-
 } from '@carbon/react';
 
 import PageTitle from '../../components/PageTitle';
@@ -24,7 +23,6 @@ const Dashboard = () => (
       <RecentActivities />
     </Stack>
   </FlexGrid>
-
 );
 
 export default Dashboard;
