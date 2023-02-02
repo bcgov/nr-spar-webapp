@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsdoc/require-jsdoc */
-import { GlobalTheme } from '@carbon/react';
 import React, {
   createContext, useContext, useEffect, useState
 } from 'react';
+import { GlobalTheme } from '@carbon/react';
 
 const ThemePreferenceContext = createContext();
 const currentMode = localStorage.getItem('mode');
