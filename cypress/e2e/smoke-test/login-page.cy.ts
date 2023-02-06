@@ -8,6 +8,8 @@ describe('Login page test', () => {
 
   beforeEach(() => {
     cy.visit('/');
+
+    // Clear cookies and local storage
     cy.clearCookies({ log: true })
     cy.clearLocalStorage({ log: true })
 
