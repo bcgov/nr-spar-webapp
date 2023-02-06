@@ -1,24 +1,36 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
-/* eslint-disable react/prop-types */
-/* eslint-disable jsdoc/require-jsdoc */
 import React, {
-  createContext, useContext, useEffect, useState
+  createContext, ReactNode, useContext, useEffect, useMemo, useState
 } from 'react';
 import { GlobalTheme } from '@carbon/react';
 
-const ThemePreferenceContext = createContext();
+interface ThemeContextData {
+  theme: string,
+  setTheme: React.Dispatch<React.SetStateAction<string>>
+}
+
+const ThemePreferenceContext = createContext<ThemeContextData>({} as ThemeContextData);
 const currentMode = localStorage.getItem('mode');
 
+/** */
 function useThemePreference() {
   return useContext(ThemePreferenceContext);
 }
 
-function ThemePreference({ children }) {
+interface ThemePreferenceProps {
+  children?: ReactNode
+}
+
+/**
+ * @param root0
+ * @param root0.children
+ */
+function ThemePreference({ children }:ThemePreferenceProps) {
   const [theme, setTheme] = useState('g10');
-  const value = {
+
+  const value = useMemo(() => ({
     theme,
     setTheme
-  };
+  }), [theme, setTheme]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-carbon-theme', theme);
