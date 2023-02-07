@@ -69,7 +69,7 @@ const FavoriteActivities = () => {
           {cards.map((card, index) => (
             <Card
               key={card.id}
-              icon={card.icon}
+              icon={card.image}
               header={card.header}
               description={card.description}
               highlighted={card.highlighted}

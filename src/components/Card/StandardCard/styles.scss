@@ -1,5 +1,6 @@
 @use '../../../theme/variables.scss' as vars;
 @use '../../../theme/colors.scss' as colors;
+@use '@carbon/type';
 
 .std-card-header {
   display: inline-flex;
@@ -9,6 +10,10 @@
 
 .std-card-title {
   width: 15rem;
+}
+
+p.std-card-title {
+  @include type.type-style('heading-03');
 }
 
 .std-card-icon {
@@ -24,6 +29,7 @@
   display: flex;
   flex-direction: column;
   padding: 1.25rem 1rem;
+  margin: 0.5rem;
   width: 20.25rem;
   height: 22.5625rem;
   background: colors.$white;
@@ -39,7 +45,7 @@
   cursor: pointer;
 }
 
-.std-card-content {
+.std-card-description {
   display: inline-block;
 }
 
@@ -48,7 +54,7 @@
   display: block;
 }
 
-.std-card-content > p {
+.std-card-description > p {
   font-size: 0.875rem;
   margin-bottom: auto;
   color: colors.$gray-70;
@@ -58,6 +64,16 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.std-card-pictogram {
+  width: 9.75rem !important;
+  height: 9.75rem !important;
+  padding: 0rem !important;
+  margin-bottom: 1.25rem !important;
+  color: colors.$blue-60;
+  position: absolute;
+  bottom: 0;
 }
 
 .#{vars.$bcgov-prefix}--overflow-menu.#{vars.$bcgov-prefix}--overflow-menu--open >svg{
