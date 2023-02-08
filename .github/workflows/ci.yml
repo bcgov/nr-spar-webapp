@@ -119,7 +119,7 @@ jobs:
 
       - name: Build
         run: |
-          yarn build --cwd frontend
+          yarn --cwd frontend build
 
       - name: Tests
         run: |
