@@ -38,9 +38,10 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
+          cache-dependency-path: frontend/yarn.lock
 
       - name: Install dependencies
-        run: yarn --prefer-offline
+        run: yarn --prefer-offline --cwd frontend
 
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
@@ -66,9 +67,10 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
+          cache-dependency-path: frontend/yarn.lock
 
       - name: Install dependencies
-        run: yarn --prefer-offline
+        run: yarn --prefer-offline --cwd frontend
 
       - name: Cache for test results
         id: cache-tests
@@ -81,11 +83,11 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          yarn --cwd frontend build
 
       - name: Tests
         run: |
-          yarn test -u --coverage
+          yarn --cwd frontend test -u --coverage
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
@@ -99,10 +101,10 @@ jobs:
             -Dsonar.cobertura.reportPaths=coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=false
             -Dsonar.projectKey=bcgov_nr-spar-webapp
-            -Dsonar.sources=src/
-            -Dsonar.exclusions=src/**/__test__/**/*
-            -Dsonar.tests=src/
-            -Dsonar.test.inclusions=src/**/__test__/**/*
+            -Dsonar.sources=frontend/src/
+            -Dsonar.exclusions=frontend/src/**/__test__/**/*
+            -Dsonar.tests=frontend/src/
+            -Dsonar.test.inclusions=frontend/src/**/__test__/**/*
 
   # Generate release notes and update new version
   release:
@@ -121,6 +123,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
+          cache-dependency-path: frontend/yarn.lock
 
       - name: Conventional Changelog Update
         uses: TriPSs/conventional-changelog-action@v3
