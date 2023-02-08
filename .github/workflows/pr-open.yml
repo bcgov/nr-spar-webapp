@@ -140,10 +140,16 @@ jobs:
 
   e2e-smoke:
     name: E2E Smoke on Chrome
+    env:
+      DOMAIN: apps.silver.devops.gov.bc.ca
+      PREFIX: ${{ github.event.repository.name }}-${{ github.event.number }}
     needs: 
       - deploys
     continue-on-error: true
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -152,7 +158,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
-          config: baseUrl=https://${{ env.NAME }}-${{ github.event.number }}-app.apps.silver.devops.gov.bc.ca
+          config: baseUrl=https://${{ env.PREFIX }}-frontend.${{ env.DOMAIN }}
 
       - name: Upload screenshots on failure
         uses: actions/upload-artifact@v3
@@ -163,7 +169,6 @@ jobs:
 
       - name: Upload videos
         uses: actions/upload-artifact@v3
-        if: always()
         with:
           name: cypress-videos
           path: cypress/videos

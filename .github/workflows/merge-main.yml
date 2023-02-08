@@ -17,6 +17,9 @@ jobs:
   codeql:
     name: Semantic Code Analysis
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     permissions:
       actions: read
       contents: read
@@ -50,6 +53,9 @@ jobs:
   sonarcloud:
     name: Static Analysis
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - uses: actions/checkout@v3
         with:
@@ -130,7 +136,7 @@ jobs:
       - name: Set new version output
         run: |
           echo "::set-output name=version::${{ steps.changelog.outputs.version }}"
-          npm version ${{ steps.changelog.outputs.version }} --git-tag-version false
+          cd frontend && npm version ${{ steps.changelog.outputs.version }} --git-tag-version false
 
       - name: Commit package and changelog
         uses: EndBug/add-and-commit@v9
@@ -138,7 +144,7 @@ jobs:
           author_name: Ci Bot
           author_email: cibot@users.noreply.github.com
           message: 'doc: updating package to ${{ steps.changelog.outputs.version }} [ci skip]'
-          add: '["package.json","CHANGELOG.md"]'
+          add: '["frontend/package.json","frontend/CHANGELOG.md"]'
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -188,6 +194,9 @@ jobs:
     needs: 
       - zap-app
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: frontend
     continue-on-error: true
     steps:
       - name: Checkout
@@ -251,7 +260,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        component: [frontend]
+        component: [ frontend ]
     steps:
       - uses: shrink/actions-docker-registry-tag@v3
         with:
