@@ -11,7 +11,11 @@ interface ThemeContextData {
 const ThemePreferenceContext = createContext<ThemeContextData>({} as ThemeContextData);
 const currentMode = localStorage.getItem('mode');
 
-/** */
+/**
+ * Create useThemePreference hook.
+ *
+ * @returns {ThemeContextData} theme contextS
+ */
 function useThemePreference() {
   return useContext(ThemePreferenceContext);
 }
@@ -21,8 +25,10 @@ interface ThemePreferenceProps {
 }
 
 /**
- * @param root0
- * @param root0.children
+ * Defines the Theme Preference Context and Provider.
+ *
+ * @param {ReactNode} children with nodes to be rendered
+ * @returns {JSX.Element} The Context Provider
  */
 function ThemePreference({ children }:ThemePreferenceProps) {
   const [theme, setTheme] = useState('g10');
