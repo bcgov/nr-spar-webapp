@@ -51,7 +51,7 @@ jobs:
         run: yarn --prefer-offline --cwd frontend
 
       - name: Run lint
-        run: yarn run lint --cwd frontend
+        run: yarn --cwd frontend run lint
 
   run-tests:
     name: Unit Tests
@@ -82,11 +82,11 @@ jobs:
 
       - name: Build
         run: |
-          yarn build --cwd frontend
+          yarn --cwd frontend build
 
       - name: Tests
         run: |
-          yarn test -u --cwd frontend
+          yarn --cwd frontend test -u
 
   sonarcloud:
     name: Static Analysis
@@ -123,7 +123,7 @@ jobs:
 
       - name: Tests
         run: |
-          yarn test -u --coverage --cwd frontend
+          yarn --cwd frontend test -u --coverage 
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
