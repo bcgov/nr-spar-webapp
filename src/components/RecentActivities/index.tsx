@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import axios from 'axios';
+
 import {
   Row,
   Column,
@@ -15,12 +17,19 @@ import ActivityTable from '../ActivityTable';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
-import RecentActivityItems from '../../mock-data/RecentActivityItems';
-
 import './styles.scss';
 
 const RecentActivities = () => {
-  const listItems = RecentActivityItems;
+  const [listItems, setListItems] = React.useState([]);
+
+  React.useEffect(() => {
+    axios.get('/mock-api/recent-activities')
+      .then((response) => {
+        setListItems(response.data);
+      })
+      // eslint-disable-next-line
+      .catch((error) => console.error(`Error: ${error}`));
+  }, []);
 
   const navigate = useNavigate();
 

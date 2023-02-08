@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import { Tooltip, Row, Column } from '@carbon/react';
 import { Information } from '@carbon/icons-react';
@@ -8,37 +9,75 @@ import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
 import CardType from '../../types/Card';
-import FavoriteActivitiesCardItems from '../../mock-data/FavoriteActivitiesCardItems';
 
 import './styles.scss';
 
 const FavoriteActivities = () => {
-  const [cards, setCards] = React.useState<CardType[]>(FavoriteActivitiesCardItems);
+  const [cards, setCards] = React.useState<CardType[]>([]);
 
-  const highlightFunction = (index:number) => {
-    const target = cards[index];
-    const newCards = [...cards];
-    if (target.highlighted === false) {
-      newCards.forEach((item, i) => {
-        const card = item;
-        if (card.id !== target.id) {
-          card.highlighted = false;
-        } else {
-          newCards.splice(i, 1);
-          newCards.unshift(item);
-          newCards[0].highlighted = true;
-        }
+  const getCards = () => {
+    axios.get('/mock-api/favorite-activities')
+      .then((response) => {
+        const newCards = response.data.favorites;
+        newCards.forEach((item: CardType, i: number) => {
+          const card = item;
+          if (card.highlighted) {
+            newCards.splice(i, 1);
+            newCards.unshift(item);
+          }
+        });
+        setCards(newCards);
+      })
+      .catch((error) => {
+        setCards([]);
+        // eslint-disable-next-line
+        console.error(`Error: ${error}`);
       });
-    } else {
-      newCards[0].highlighted = false;
-    }
-    setCards(newCards);
   };
 
-  const deleteHighlight = (index:number) => {
-    const newCards = [...cards];
-    newCards.splice(index, 1);
-    setCards(newCards);
+  const updateCards = (index: number, card: CardType) => {
+    axios.put(`/mock-api/favorite-activities/up/${index}`, card)
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.error(`Error: ${error}`);
+      });
+  };
+
+  React.useEffect(() => {
+    getCards();
+  }, []);
+
+  const highlightFunction = (index: number) => {
+    const target = cards[index];
+
+    // We need to remove the current highlighted card
+    // if it exists, so we can submit new highlighted one
+    cards.forEach((item: CardType, i: number) => {
+      const card = item;
+      if (card.highlighted && card.id !== target.id) {
+        card.highlighted = false;
+        updateCards(i, card);
+      }
+    });
+
+    if (target.highlighted === false) {
+      target.highlighted = true;
+    } else {
+      target.highlighted = false;
+    }
+    updateCards(index, target);
+    getCards();
+  };
+
+  const deleteCard = (index:number) => {
+    axios.delete(`/mock-api/favorite-activities/del/${index}`)
+      .then(() => {
+        getCards();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.error(`Error: ${error}`);
+      });
   };
 
   return (
@@ -74,7 +113,7 @@ const FavoriteActivities = () => {
               description={card.description}
               highlighted={card.highlighted}
               highlightFunction={() => { highlightFunction(index); }}
-              deleteFunction={() => { deleteHighlight(index); }}
+              deleteFunction={() => { deleteCard(index); }}
             />
           ))}
         </Row>
