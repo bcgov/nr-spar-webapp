@@ -1,5 +1,4 @@
 @use '../../theme/variables.scss' as vars;
-@use '../../theme/colors.scss' as colors;
 @use '@carbon/type';
 
 p.existing-seedlot-subtitle {
@@ -7,11 +6,11 @@ p.existing-seedlot-subtitle {
 }
 
 .existing-seedlot {
-  background-color: colors.$white !important;
+  background-color: var(--bcgov-layer-02) !important;
   margin-left: 2rem;
   margin-right: 2rem;
   margin-bottom: 2rem;
-  border: 1px solid colors.$gray-20;
+  border: 1px solid var(--bcgov-border-subtle-02);
   border-radius: 4px;
 }
 

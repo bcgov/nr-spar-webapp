@@ -46,9 +46,11 @@ const ActivityHistory = ({ history }: ActivityHistoryProps) => (
         const status = statusClass(step.status);
         return (
           <ProgressStep
-            key={step.step}
-            complete={status?.complete}
-            current={status?.current}
+            key={step.step.toString()}
+            complete={status.complete}
+            current={status.current}
+            invalid={status.invalid}
+            disabled={status.disabled}
             label={step.description}
             secondaryLabel={formatDate(step.date)}
           />

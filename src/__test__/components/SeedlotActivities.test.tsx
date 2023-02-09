@@ -7,7 +7,11 @@ import '@testing-library/jest-dom';
 
 describe('Seedlot Activities component', () => {
   beforeEach(() => {
-    render(<BrowserRouter><SeedlotActivities /></BrowserRouter>);
+    render(
+      <BrowserRouter>
+        <SeedlotActivities />
+      </BrowserRouter>)
+    ;
   });
 
   it('should render correctly', () => {

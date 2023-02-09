@@ -1,5 +1,4 @@
 @use '../../../theme/variables.scss' as vars;
-@use '../../../theme/colors.scss' as colors;
 @use '@carbon/type';
 
 .std-card-header {
@@ -16,14 +15,6 @@ p.std-card-title {
   @include type.type-style('heading-03');
 }
 
-.std-card-icon {
-  width: 1.5rem !important;
-  height: 1.5rem !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  color: colors.$blue-60;
-}
-
 .std-card-main {
   box-sizing: border-box;
   display: flex;
@@ -32,8 +23,8 @@ p.std-card-title {
   margin: 0.5rem;
   width: 20.25rem;
   height: 22.5625rem;
-  background: colors.$white;
-  border: 1px solid colors.$gray-20;
+  background: var(--bcgov-layer-02);
+  border: 1px solid var(--bcgov-border-subtle-02);
   border-radius: 4px;
   flex: none;
   order: 0;
@@ -41,7 +32,7 @@ p.std-card-title {
 }
 
 .std-card-main:hover {
-  outline: 2px solid colors.$blue-60;
+  outline: 2px solid var(--bcgov-focus);
   cursor: pointer;
 }
 
@@ -57,7 +48,7 @@ p.std-card-title {
 .std-card-description > p {
   font-size: 0.875rem;
   margin-bottom: auto;
-  color: colors.$gray-70;
+  color: var(--bcgov-text-secondary);
   display: -webkit-box;
   max-width: 14.5rem;
   -webkit-line-clamp: 3;
@@ -71,7 +62,7 @@ p.std-card-title {
   height: 9.75rem !important;
   padding: 0rem !important;
   margin-bottom: 1.25rem !important;
-  color: colors.$blue-60;
+  color: var(--bcgov-focus);
   position: absolute;
   bottom: 0;
 }
