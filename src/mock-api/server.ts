@@ -24,7 +24,7 @@ export default function makeServer(environment = 'development') {
     },
     routes() {
       this.namespace = 'mock-api';
-      this.passthrough('https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
+      this.passthrough('https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
     }
   });
 

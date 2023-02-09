@@ -1,10 +1,12 @@
 import { Server } from 'miragejs';
 import AppSchema from '../schema';
+import getUrl from '../../utils/ApiUtils';
+import ApiAddresses from '../../utils/ApiAddresses';
 
 const FavoriteEndpoints = (server: Server) => {
-  server.get('/favorite-activities', (schema: AppSchema) => schema.all('favorites'));
+  server.get(getUrl(ApiAddresses.FavouriteActiviteRetrieveAll, true), (schema: AppSchema) => schema.all('favorites'));
 
-  server.del('/favorite-activities/del/:id', (schema: AppSchema, request) => {
+  server.del(getUrl(ApiAddresses.FavouriteActiviteDelete, true), (schema: AppSchema, request) => {
     const { id } = request.params;
     const card = schema.find('favorites', id);
     if (card !== null) {
@@ -15,7 +17,7 @@ const FavoriteEndpoints = (server: Server) => {
     };
   });
 
-  server.put('/favorite-activities/up/:id', (schema: AppSchema, request) => {
+  server.put(getUrl(ApiAddresses.FavouriteActiviteSave, true), (schema: AppSchema, request) => {
     const { id } = request.params;
     const attrs = JSON.parse(request.requestBody);
     const card = schema.find('favorites', id);
