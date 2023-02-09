@@ -10,8 +10,8 @@ describe('Seedlot Activities component', () => {
     render(
       <BrowserRouter>
         <SeedlotActivities />
-      </BrowserRouter>)
-    ;
+      </BrowserRouter>
+    );
   });
 
   it('should render correctly', () => {
