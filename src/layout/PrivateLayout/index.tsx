@@ -10,7 +10,7 @@ import BCHeader from '../../components/BCHeader';
 
 import './styles.scss';
 
-if (env.REACT_APP_ENVIROMENT !== 'prod') {
+if (env.REACT_APP_ENVIRONMENT !== 'prod') {
   makeServer();
 }
 

@@ -8,10 +8,11 @@ import fixtures from './fixtures';
 import models from './models';
 
 // eslint-disable-next-line
-export default function makeServer() {
+export default function makeServer(environment = 'development') {
   const mirageServer = createServer({
     models,
     fixtures,
+    environment,
     seeds(server) {
       const dbData = localStorage.getItem('spar-mock-db');
 
@@ -23,7 +24,6 @@ export default function makeServer() {
     },
     routes() {
       this.namespace = 'mock-api';
-      this.urlPrefix = 'http://localhost:3000';
       this.passthrough('https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
     }
   });
