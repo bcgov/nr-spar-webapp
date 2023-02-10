@@ -13,11 +13,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <AuthProvider>
-    <ClassPrefix prefix="bcgov">
-      <ThemePreference>
-        <App />
-      </ThemePreference>
-    </ClassPrefix>
+    <React.StrictMode>
+      <ClassPrefix prefix="bcgov">
+        <ThemePreference>
+          <App />
+        </ThemePreference>
+      </ClassPrefix>
+    </React.StrictMode>
   </AuthProvider>
 
 );
