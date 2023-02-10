@@ -6,7 +6,7 @@ import {
   screen,
   waitFor
 } from '@testing-library/react';
-import FavoriteActivities from '../../components/FavoriteActivities/index';
+import FavouriteActivities from '../../components/FavouriteActivities/index';
 import '@testing-library/jest-dom';
 import makeServer from '../../mock-api/server';
 
@@ -20,17 +20,17 @@ describe('the Favorite Activities component', () => {
 
   it('should render correctly', () => {
     const { container } = render(
-      <FavoriteActivities />
+      <FavouriteActivities />
     );
 
-    expect(screen.getByText('My favorite activities')).toBeInTheDocument();
-    expect(screen.getByText('Quick access to your favorite activities.')).toBeInTheDocument();
+    expect(screen.getByText('My favourite activities')).toBeInTheDocument();
+    expect(screen.getByText('Quick access to your favourite activities.')).toBeInTheDocument();
     expect(container.getElementsByTagName('svg')).toBeDefined();
   });
 
   it('should render exactly 8 cards', async () => {
     const { container } = render(
-      <FavoriteActivities />
+      <FavouriteActivities />
     );
 
     const cards = container.getElementsByClassName('fav-card-main');
@@ -41,7 +41,7 @@ describe('the Favorite Activities component', () => {
 
   it('should delete the card', async () => {
     const { container } = render(
-      <FavoriteActivities />
+      <FavouriteActivities />
     );
 
     const cards = container.getElementsByClassName('fav-card-main');
@@ -59,7 +59,7 @@ describe('the Favorite Activities component', () => {
 
   it('should highlight the card', async () => {
     const { container } = render(
-      <FavoriteActivities />
+      <FavouriteActivities />
     );
 
     const buttonElement = container.getElementsByClassName('fav-card-overflow');
