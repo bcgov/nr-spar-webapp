@@ -405,8 +405,8 @@ jobs:
           browser: chrome
           config: baseUrl=https://${{ env.NAME }}-${{ github.event.number }}-app.apps.silver.devops.gov.bc.ca
         env:
-          CYPRESS_USERNAME: ${{ secrets.BCEID_USERNAME }}
-          CYPRESS_PASSWORD: ${{ secrets.BCEID_PASSWORD }}
+          USERNAME: ${{ secrets.BCEID_USERNAME }}
+          PASSWORD: ${{ secrets.BCEID_PASSWORD }}
 
       - name: Upload screenshots on failure
         uses: actions/upload-artifact@v3
