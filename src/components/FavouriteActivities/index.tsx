@@ -11,12 +11,29 @@ import Subtitle from '../Subtitle';
 import CardType from '../../types/Card';
 
 import './styles.scss';
+import getUrl from '../../utils/ApiUtils';
+import ApiAddresses from '../../utils/ApiAddresses';
+import { useAuth } from '../../contexts/AuthContext';
 
 const FavouriteActivities = () => {
+  const { token } = useAuth();
   const [cards, setCards] = React.useState<CardType[]>([]);
 
+  const getAxiosConfig = () => {
+    const axiosConfig = {};
+    if (token) {
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      Object.assign(axiosConfig, headers);
+    }
+    return axiosConfig;
+  };
+
   const getCards = () => {
-    axios.get('/mock-api/favorite-activities')
+    axios.get(getUrl(ApiAddresses.FavouriteActiviteRetrieveAll), getAxiosConfig())
       .then((response) => {
         const newCards = response.data.favorites;
         newCards.forEach((item: CardType, i: number) => {
@@ -36,7 +53,8 @@ const FavouriteActivities = () => {
   };
 
   const updateCards = (index: number, card: CardType) => {
-    axios.put(`/mock-api/favorite-activities/up/${index}`, card)
+    const putUrl = getUrl(ApiAddresses.FavouriteActiviteSave).replace(':id', index.toString());
+    axios.put(putUrl, card, getAxiosConfig())
       .catch((error) => {
         // eslint-disable-next-line
         console.error(`Error: ${error}`);
@@ -70,7 +88,8 @@ const FavouriteActivities = () => {
   };
 
   const deleteCard = (index:number) => {
-    axios.delete(`/mock-api/favorite-activities/del/${index}`)
+    const deleteUrl = getUrl(ApiAddresses.FavouriteActiviteDelete).replace(':id', index.toString());
+    axios.delete(deleteUrl, getAxiosConfig())
       .then(() => {
         getCards();
       })

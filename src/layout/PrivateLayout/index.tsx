@@ -10,7 +10,7 @@ import BCHeader from '../../components/BCHeader';
 
 import './styles.scss';
 
-if (env.REACT_APP_ENVIRONMENT !== 'prod') {
+if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
   makeServer();
 }
 

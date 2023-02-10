@@ -18,12 +18,29 @@ import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
 import './styles.scss';
+import getUrl from '../../utils/ApiUtils';
+import ApiAddresses from '../../utils/ApiAddresses';
+import { useAuth } from '../../contexts/AuthContext';
 
 const RecentActivities = () => {
+  const { token } = useAuth();
   const [listItems, setListItems] = React.useState([]);
 
+  const getAxiosConfig = () => {
+    const axiosConfig = {};
+    if (token) {
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      Object.assign(axiosConfig, headers);
+    }
+    return axiosConfig;
+  };
+
   React.useEffect(() => {
-    axios.get('/mock-api/recent-activities')
+    axios.get(getUrl(ApiAddresses.RecentActivitiesRetrieveAll), getAxiosConfig())
       .then((response) => {
         setListItems(response.data);
       })
