@@ -6,7 +6,7 @@ import SeedlotTable from '../SeedlotTable';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
-import ExistingSeedlotItems from '../../mock-data/ExistingSeedlotItems';
+import ExistingSeedlotItems from '../../mock-api/fixtures/ExistingSeedlotItems';
 
 import './styles.scss';
 
@@ -28,7 +28,7 @@ const ExistingSeedlot = () => {
   return (
     <Row className="existing-seedlot">
       <Column sm={4} className="existing-seedlot-title">
-        <h3>Existing seedlot</h3>
+        <h2>Existing seedlot</h2>
         <Subtitle text="Check a summary of your recent seedlots" className="existing-seedlot-subtitle" />
       </Column>
       <Column sm={4} className="existing-seedlot-table">

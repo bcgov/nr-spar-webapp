@@ -2,11 +2,11 @@ import React from 'react';
 import {
   FlexGrid,
   Row,
-  Column,
   Stack
 } from '@carbon/react';
 
 import PageTitle from '../../components/PageTitle';
+import SeedlotActivities from '../../components/SeedlotActivities';
 import ExistingSeedlot from '../../components/ExistingSeedlot';
 
 import './styles.css';
@@ -18,31 +18,10 @@ const SeedlotDashboard = () => (
         <PageTitle
           title="Seedlots"
           subtitle="Register and manage your seedlots"
-          favorite
+          favourite
         />
       </Row>
-      <Row className="seedlot-dashboard-content">
-        <Column sm={4} md={4} lg={4}>
-          <span>
-            Card Placeholder
-          </span>
-        </Column>
-        <Column sm={4} md={4} lg={4}>
-          <span>
-            Card Placeholder
-          </span>
-        </Column>
-        <Column sm={4} md={4} lg={4}>
-          <span>
-            Card Placeholder
-          </span>
-        </Column>
-        <Column sm={4} md={4} lg={4}>
-          <span>
-            Card Placeholder
-          </span>
-        </Column>
-      </Row>
+      <SeedlotActivities />
       <ExistingSeedlot />
     </Stack>
   </FlexGrid>
