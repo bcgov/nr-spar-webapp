@@ -1,0 +1,45 @@
+@use '@carbon/type';
+
+.scf-row{
+  margin: 130px 129px;
+}
+
+.scf-pic-container{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding-right: 142px;
+}
+
+.scf-pictogram{
+  width: 370px;
+  height: 358px;
+  color: var(--bcgov-focus);
+}
+
+.scf-info-container{
+  display: flex;
+  flex-direction: column;
+}
+.scf-info-container > h2{
+  margin-top: 24px;
+  margin-bottom: 48px;
+}
+
+.seedlot-created-feedback-page h1{
+  @include type.type-style('heading-05');
+}
+.seedlot-created-feedback-page h2{
+  @include type.type-style('heading-04');
+  color: var(--bcgov-text-secondary)
+}
+
+@media only screen and (max-width: 672px) {
+  .seedlot-created-feedback-page{ 
+    padding-left: 1rem;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
