@@ -14,8 +14,6 @@ const SeedlotCreatedFeedback = () => (
       <Column className="scf-pic-container">
         <Pictograms.Growth className="scf-pictogram" />
       </Column>
-
-      {/* segunda coluna */}
       <Column className="scf-info-container">
         <h1> A class seedlot created! </h1>
         <h2>
