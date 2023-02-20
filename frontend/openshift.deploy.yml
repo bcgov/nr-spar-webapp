@@ -44,7 +44,7 @@ parameters:
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
     value: bcgov/nr-spar-webapp/frontend:test
-  - name: REACT_APP_SPAR_BUILD_VERSION
+  - name: BUILD
     description: Current sample app release version
     required: true
     value: nightly
