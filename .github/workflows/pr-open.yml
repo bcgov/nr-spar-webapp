@@ -130,7 +130,7 @@ jobs:
           penetration_test: false
           parameters:
             -p ZONE=${{ github.event.number }} -p NAME=${{ github.event.repository.name }}
-            -p PROMOTE=${{ github.repository }}/${{ matrix.name }}:${{ github.event.number }}
+            -p PROMOTE=${{ github.repository }}/frontend:${{ github.event.number }}
             -p MIN_REPLICAS=1 -p MAX_REPLICAS=2 -p BUILD=snapshot-${{ github.event.number }}
 
   e2e-smoke:
