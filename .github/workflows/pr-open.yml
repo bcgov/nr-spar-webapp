@@ -117,7 +117,7 @@ jobs:
           REACT_APP_KC_URL: ${{ secrets.REACT_APP_KC_URL }}
           REACT_APP_KC_REALM: ${{ secrets.REACT_APP_KC_REALM }}
           REACT_APP_KC_CLIENT_ID: ${{ secrets.REACT_APP_KC_CLIENT_ID }}
-      - uses: bcgov-nr/action-builder-ghcr@v1.0.0
+      - uses: bcgov-nr/action-builder-ghcr@v1.1.0
         with:
           package: ${{ matrix.package }}
           tag: ${{ github.event.number }}
