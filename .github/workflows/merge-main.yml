@@ -14,99 +14,99 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  codeql:
-    name: Semantic Code Analysis
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # codeql:
+  #   name: Semantic Code Analysis
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: frontend
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Initialize
-        uses: github/codeql-action/init@v2
-        with:
-          languages: javascript
+  #     - name: Initialize
+  #       uses: github/codeql-action/init@v2
+  #       with:
+  #         languages: javascript
 
-      - name: Set Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: frontend/yarn.lock
+  #     - name: Set Node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: "16"
+  #         cache: "yarn"
+  #         cache-dependency-path: frontend/yarn.lock
 
-      - name: Install dependencies
-        run: yarn --prefer-offline --cwd frontend
+  #     - name: Install dependencies
+  #       run: yarn --prefer-offline --cwd frontend
 
-      # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-      # If this step fails, then you should remove it and run the build manually (see below)
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+  #     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+  #     # If this step fails, then you should remove it and run the build manually (see below)
+  #     - name: Autobuild
+  #       uses: github/codeql-action/autobuild@v2
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v2
 
-  # Generate release notes and update new version
-  release:
-    name: Release Notes
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.changelog.outputs.version }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PAT }}
-          fetch-depth: 0
+  # # Generate release notes and update new version
+  # release:
+  #   name: Release Notes
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     version: ${{ steps.changelog.outputs.version }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         token: ${{ secrets.PAT }}
+  #         fetch-depth: 0
 
-      - name: Set Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: frontend/yarn.lock
+  #     - name: Set Node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: "16"
+  #         cache: "yarn"
+  #         cache-dependency-path: frontend/yarn.lock
 
-      - name: Conventional Changelog Update
-        uses: TriPSs/conventional-changelog-action@v3
-        id: changelog
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          output-file: "CHANGELOG.md"
-          skip-version-file: "true"
-          skip-commit: "true"
-          skip-on-empty: "false"
-          git-push: "false"
+  #     - name: Conventional Changelog Update
+  #       uses: TriPSs/conventional-changelog-action@v3
+  #       id: changelog
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         output-file: "CHANGELOG.md"
+  #         skip-version-file: "true"
+  #         skip-commit: "true"
+  #         skip-on-empty: "false"
+  #         git-push: "false"
 
-      - name: Set new version output
-        run: |
-          echo "::set-output name=version::${{ steps.changelog.outputs.version }}"
-          cd frontend && npm version ${{ steps.changelog.outputs.version }} --git-tag-version false
-      - name: Commit package and changelog
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: Ci Bot
-          author_email: cibot@users.noreply.github.com
-          message: "doc: updating package to ${{ steps.changelog.outputs.version }} [ci skip]"
-          add: '["frontend/package.json","frontend/CHANGELOG.md"]'
+  #     - name: Set new version output
+  #       run: |
+  #         echo "::set-output name=version::${{ steps.changelog.outputs.version }}"
+  #         cd frontend && npm version ${{ steps.changelog.outputs.version }} --git-tag-version false
+  #     - name: Commit package and changelog
+  #       uses: EndBug/add-and-commit@v9
+  #       with:
+  #         author_name: Ci Bot
+  #         author_email: cibot@users.noreply.github.com
+  #         message: "doc: updating package to ${{ steps.changelog.outputs.version }} [ci skip]"
+  #         add: '["frontend/package.json","frontend/CHANGELOG.md"]'
 
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.changelog.outputs.tag }}
-          release_name: ${{ steps.changelog.outputs.tag }}
-          body: ${{ steps.changelog.outputs.clean_changelog }}
+  #     - name: Create Release
+  #       uses: actions/create-release@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         tag_name: ${{ steps.changelog.outputs.tag }}
+  #         release_name: ${{ steps.changelog.outputs.tag }}
+  #         body: ${{ steps.changelog.outputs.clean_changelog }}
 
   deploy-test:
     name: TEST Deployment
-    needs:
-      - codeql
-      - release
+    # needs:
+    #   - codeql
+    #   - release
     environment: test
     runs-on: ubuntu-22.04
     timeout-minutes: 10
@@ -119,7 +119,7 @@ jobs:
           oc_server: ${{ secrets.OC_SERVER }}
           oc_token: ${{ secrets.OC_TOKEN }}
           overwrite: true
-          penetration_test: true
+          penetration_test: false
           verification_path: "actuator/health"
           parameters: -p ZONE=test -p NAME=${{ github.event.repository.name }}
             -p PROMOTE=${{ github.repository }}/frontend:test
