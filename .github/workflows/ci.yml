@@ -17,128 +17,53 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  install-dependencies:
-    name: Install dependencies
+  tests:
+    name: Lint and Unit Tests
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set Node
-        uses: actions/setup-node@v3
+      - uses: bcgov-nr/action-test-and-analyse@v0.0.1
         with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: frontend/yarn.lock
-
-      - name: Install dependencies
-        run: yarn --prefer-offline --cwd frontend
-
-  validate-lint:
-    name: Validate codestyle
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ubuntu-latest
-    needs:
-      - install-dependencies
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-
-      - name: Install dependencies
-        run: yarn --prefer-offline --cwd frontend
-
-      - name: Run lint
-        run: yarn --cwd frontend run lint
-
-  run-tests:
-    name: Unit Tests
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ubuntu-latest
-    needs:
-      - validate-lint
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: frontend/yarn.lock
-
-      - name: Install dependencies
-        run: yarn --prefer-offline --cwd frontend
-
-      - name: Cache for test results
-        id: cache-tests
-        uses: actions/cache@v3
-        with:
-          path: /coverage
-          key: coverage-${{ github.run_number }}
-          restore-keys: |
-            coverage-
-      - name: Build
-        run: |
-          yarn --cwd frontend build
-      - name: Tests
-        run: |
-          yarn --cwd frontend test -u
-
-  sonarcloud:
-    name: Static Analysis
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    needs:
-      - run-tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: frontend/yarn.lock
-
-      - name: Install dependencies
-        run: yarn --prefer-offline --cwd frontend
-
-      - name: Cache for test results
-        id: cache-tests
-        uses: actions/cache@v3
-        with:
-          path: /coverage
-          key: coverage-${{ github.run_number }}
-          restore-keys: |
-            coverage-
-      - name: Build
-        run: |
-          yarn --cwd frontend build
-      - name: Tests
-        run: |
-          yarn --cwd frontend test -u --coverage
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
+          commands: |
+            yarn --prefer-offline --cwd frontend
+            yarn --cwd frontend run lint
+            yarn --cwd frontend build
+            yarn --cwd frontend test -u --coverage
+          dir: frontend
+          sonar_args: >
             -Dsonar.organization=bcgov-sonarcloud
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.cobertura.reportPaths=coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=false
             -Dsonar.projectKey=bcgov_nr-spar-webapp
-            -Dsonar.sources=frontend/src/
-            -Dsonar.exclusions=frontend/src/**/__test__/**/*
-            -Dsonar.tests=frontend/src/
-            -Dsonar.test.inclusions=frontend/src/**/__test__/**/*
+            -Dsonar.sources=src/
+            -Dsonar.exclusions=src/**/__test__/**/*
+            -Dsonar.tests=src/
+            -Dsonar.test.inclusions=src/**/__test__/**/*
+          sonar_project_token: ${{ secrets.SONAR_TOKEN }}
+
+  # https://github.com/marketplace/actions/aqua-security-trivy
+  trivy:
+    name: Trivy Security Scan
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@0.9.1
+        with:
+          format: "sarif"
+          output: "trivy-results.sarif"
+          ignore-unfixed: true
+          scan-type: "fs"
+          security-checks: "vuln,secret,config"
+          severity: "CRITICAL,HIGH"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "trivy-results.sarif"
 
   security:
     name: Security checks
@@ -168,26 +93,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
-
-  # https://github.com/marketplace/actions/aqua-security-trivy
-  trivy:
-    name: Trivy Security Scan
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@0.9.1
-        with:
-          format: "sarif"
-          output: "trivy-results.sarif"
-          ignore-unfixed: true
-          scan-type: "fs"
-          security-checks: "vuln,secret,config"
-          severity: "CRITICAL,HIGH"
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
