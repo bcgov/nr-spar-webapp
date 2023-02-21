@@ -126,7 +126,6 @@ jobs:
           parameters:
             -p ZONE=${{ github.event.number }} -p NAME=${{ github.event.repository.name }}
             -p PROMOTE=${{ github.repository }}/frontend:${{ github.event.number }}
-            -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
             -p REACT_APP_SPAR_BUILD_VERSION=snapshot-${{ github.event.number }}
             -p REACT_APP_SERVER_URL=https://nr-spar-backend-test-backend.apps.silver.devops.gov.bc.ca
             -p REACT_APP_NRSPARWEBAPP_VERSION=dev
@@ -134,6 +133,7 @@ jobs:
             -p REACT_APP_KC_REALM=standard
             -p REACT_APP_KC_CLIENT_ID=seed-planning-test-4296
             -p REACT_APP_ENABLE_MOCK_SERVER=true
+            -p MIN_REPLICAS=1 -p MAX_REPLICAS=2
 
   e2e-smoke:
     name: E2E Smoke on Chrome
@@ -144,17 +144,12 @@ jobs:
       - deploys
     continue-on-error: true
     runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: frontend
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5.0.9
         with:
-          browser: chrome
+          working-directory: frontend
           config: baseUrl=https://${{ env.PREFIX }}-frontend.${{ env.DOMAIN }}
 
       - name: Upload screenshots on failure
