@@ -2,7 +2,7 @@ FROM node:16-bullseye
 
 # Copy and build
 WORKDIR /app
-ADD . .
+COPY . .
 RUN yarn global add serve@14.1.2 react-inject-env@2.1.0 && \
     yarn install --cwd frontend --frozen-lockfile --prefer-offline && \
     yarn --cwd frontend build:production
