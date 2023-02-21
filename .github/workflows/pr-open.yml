@@ -89,8 +89,8 @@ jobs:
           comment_includes: "# Current changelog"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  builds:
-    name: Builds
+  build:
+    name: Build
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     permissions:
@@ -107,8 +107,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           triggers: ('frontend/')
 
-  deploys:
-    name: Deploys
+  deploy:
+    name: Deploy
     needs:
       - builds
     runs-on: ubuntu-22.04
@@ -141,7 +141,7 @@ jobs:
       DOMAIN: apps.silver.devops.gov.bc.ca
       PREFIX: ${{ github.event.repository.name }}-${{ github.event.number }}
     needs:
-      - deploys
+      - deploy
     continue-on-error: true
     runs-on: ubuntu-22.04
     timeout-minutes: 10

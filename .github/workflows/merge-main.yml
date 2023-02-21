@@ -108,35 +108,32 @@ jobs:
       - release
     environment: test
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        name: [init, frontend]
-        include:
-          - name: init
-            file: common/openshift.init.yml
-            overwrite: false
-          - name: frontend
-            file: frontend/openshift.deploy.yml
-            overwrite: true
-            parameters: -p MIN_REPLICAS=1 -p MAX_REPLICAS=2 -p BUILD=test-${{ needs.release.outputs.version }}
+    timeout-minutes: 10
     steps:
-      - uses: bcgov-nr/action-deployer-openshift@v1.0.1
+      - uses: actions/checkout@v3
+      - uses: bcgov-nr/action-deployer-openshift@v1.0.2
         with:
-          file: ${{ matrix.file }}
+          file: frontend/openshift.deploy.yml
           oc_namespace: ${{ secrets.OC_NAMESPACE }}
           oc_server: ${{ secrets.OC_SERVER }}
           oc_token: ${{ secrets.OC_TOKEN }}
-          overwrite: ${{ matrix.overwrite }}
-          penetration_test: false
+          overwrite: true
+          penetration_test: true
           verification_path: "actuator/health"
           parameters: -p ZONE=test -p NAME=${{ github.event.repository.name }}
-            -p PROMOTE=${{ github.repository }}/${{ matrix.name }}:test
-            ${{ matrix.parameters }}
+            -p PROMOTE=${{ github.repository }}/frontend:test
+            -p REACT_APP_SPAR_BUILD_VERSION=snapshot-test
+            -p REACT_APP_SERVER_URL=https://nr-spar-backend-test-backend.apps.silver.devops.gov.bc.ca
+            -p REACT_APP_NRSPARWEBAPP_VERSION=dev
+            -p REACT_APP_KC_URL=https://test.loginproxy.gov.bc.ca/auth
+            -p REACT_APP_KC_REALM=standard
+            -p REACT_APP_KC_CLIENT_ID=seed-planning-test-4296
+            -p REACT_APP_ENABLE_MOCK_SERVER=true
 
   e2e-smoke:
     name: E2E Smoke on Chrome
     needs:
-      - zap-app
+      - deploy-test
     runs-on: ubuntu-20.04
     defaults:
       run:
