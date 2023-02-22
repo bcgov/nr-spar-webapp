@@ -3,7 +3,13 @@ enum ApiAddresses {
   FavouriteActiviteSave,
   FavouriteActiviteDelete,
 
-  RecentActivitiesRetrieveAll
+  RecentActivitiesRetrieveAll,
+
+  GeneticClassesRetrieveAll,
+
+  ApplicantInfoRetrieveAll,
+
+  AClassSeedlotPost
 }
 
 export default ApiAddresses;

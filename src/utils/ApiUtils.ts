@@ -18,6 +18,15 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
   // Recent activities
   let recentActivitiesRetrieveAll = '/api/recent-activities';
 
+  // Genetic classes
+  let geneticClassesRetrieveAll = '/api/genetic-classes';
+
+  // Applicant Info
+  let applicantInfoRetrieveAll = '/api/application-info';
+
+  // A Class Seedlot Register
+  let aClassSeedlotPostUrl = '/api/register-a-class';
+
   // Mocks
   if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
     // Favourite activities
@@ -27,6 +36,15 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
 
     // Recent activities
     recentActivitiesRetrieveAll = '/recent-activities';
+
+    // Genetic classes
+    geneticClassesRetrieveAll = '/genetic-classes';
+
+    // Applicant Info
+    applicantInfoRetrieveAll = '/application-info';
+
+    // A Class Seedlot Register
+    aClassSeedlotPostUrl = '/register-a-class';
   }
 
   let server = serverUrl();
@@ -43,6 +61,12 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
       return `${server}${favouriteActivitiesDeleteUrl}`;
     case ApiAddresses.RecentActivitiesRetrieveAll:
       return `${server}${recentActivitiesRetrieveAll}`;
+    case ApiAddresses.GeneticClassesRetrieveAll:
+      return `${server}${geneticClassesRetrieveAll}`;
+    case ApiAddresses.ApplicantInfoRetrieveAll:
+      return `${server}${applicantInfoRetrieveAll}`;
+    case ApiAddresses.AClassSeedlotPost:
+      return `${server}${aClassSeedlotPostUrl}`;
     default:
       return '';
   }
