@@ -96,12 +96,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    strategy:
-      matrix:
-        package: [ frontend ]
-        include:
-          - package: frontend
-            triggers: ('frontend/')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
