@@ -53,7 +53,6 @@ const PageTitle = ({ title, subtitle, favourite, activity }: PageTitleProps) => 
       // eslint-disable-next-line no-console
       console.log('Favourite Activities error:', e);
     }
-    return {};
   }
   
   getFavouriteActivities();
