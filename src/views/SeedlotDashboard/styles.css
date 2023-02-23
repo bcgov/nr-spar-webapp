@@ -1,7 +1,5 @@
 .seedlot-dashboard-content {
   padding-left: 2.5rem;
-  color: var(--bcgov-focus);
-
 }
 
 @media only screen and (max-width: 1584px) {

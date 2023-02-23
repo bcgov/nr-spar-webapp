@@ -51,9 +51,9 @@ const App: React.FC = () => {
           />
 
           <Route
-            path="/seedlot-feedback"
+            path="/seedlot/successfully-created"
             element={(
-              <ProtectedRoute signed={signed}>
+              <ProtectedRoute signed>
                 <SeedlotCreatedFeedback />
               </ProtectedRoute>
             )}

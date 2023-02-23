@@ -1,59 +1,64 @@
 @use '../../theme/variables.scss' as vars;
 @use '@carbon/type';
 
-.seedlot-created-feedback-page{
+.seedlot-created-feedback-page {
   display: flex;
   align-items: center;
   height: 100vh;
   margin-right: 8.06rem;
 }
 
-.scf-pic-container{
+.scf-pic-container {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-.scf-pictogram{
+.scf-pictogram {
   width: 23.125rem;
   height: 22.375rem;
-  color: var(--#{vars.$bcgov-prefix}-focus);
+  color: var(--#{vars.$bcgov-prefix}-button-primary);
 }
 
-.scf-info-container{
+.scf-info-container {
   display: flex;
   flex-direction: column;
   padding-left: 7.563rem;
 }
-.scf-info-container > h2{
+
+.scf-info-container > h2 {
   padding-top: 1.5rem;
   padding-bottom: 3rem;
 }
 
-.seedlot-created-feedback-page h1{
+.btn-scf {
+  width: 20.625rem;
+  margin-bottom: 1rem;
+}
+
+.seedlot-created-feedback-page h1 {
   @include type.type-style('fluid-heading-05', true);
   color: var(--#{vars.$bcgov-prefix}-text-primary)
 }
-.seedlot-created-feedback-page h2{
+.seedlot-created-feedback-page h2 {
   @include type.type-style('fluid-paragraph-01', true);
   color: var(--#{vars.$bcgov-prefix}-text-secondary)
 }
 
 @media only screen and (max-width: 1584px) {
-.scf-pic-container{
-  justify-content: center;
-}
+  .scf-pic-container {
+    justify-content: center;
+  }
 }
 
 @media only screen and (max-width: 672px) {
-.seedlot-created-feedback-page{
-  margin: 0px;
-  height: auto;
-}
+  .seedlot-created-feedback-page {
+    margin: 0px;
+    height: auto;
+  }
 
-.scf-info-container{
-  padding-left: 0px;
-  align-items: center;
-  padding: 3rem;
-}
+  .scf-info-container {
+    align-items: center;
+    padding: 3rem;
+  }
 }

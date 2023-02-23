@@ -24,7 +24,7 @@ const SeedlotCreatedFeedback = () => (
         <Button
           onClick={() => null}
           size="lg"
-          className="btn-landing"
+          className="btn-scf"
         >
           Go to seedlot’s detail screen
         </Button>
@@ -32,7 +32,7 @@ const SeedlotCreatedFeedback = () => (
           kind="tertiary"
           onClick={() => null}
           size="lg"
-          className="btn-landing"
+          className="btn-scf"
         >
           Create another A class seedlot
         </Button>
@@ -40,13 +40,12 @@ const SeedlotCreatedFeedback = () => (
           kind="tertiary"
           onClick={() => null}
           size="lg"
-          className="btn-landing"
+          className="btn-scf"
         >
           Go back to seedlot’s main screen
         </Button>
       </Column>
     </Row>
-
   </FlexGrid>
 );
 
