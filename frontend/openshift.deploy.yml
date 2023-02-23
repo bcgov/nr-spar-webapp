@@ -122,15 +122,9 @@ objects:
                 - name: REACT_APP_NRSPARWEBAPP_VERSION
                   value: ${REACT_APP_NRSPARWEBAPP_VERSION}
                 - name: REACT_APP_KC_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}
-                      key: keycloak_test_url
+                  value: ${REACT_APP_KC_URL}
                 - name: REACT_APP_KC_REALM
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}
-                      key: keycloak_realm_name
+                  value: ${REACT_APP_KC_REALM}
                 - name: REACT_APP_KC_CLIENT_ID
                   value: ${REACT_APP_KC_CLIENT_ID}
                 - name: REACT_APP_ENABLE_MOCK_SERVER
