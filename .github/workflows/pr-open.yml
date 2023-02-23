@@ -146,9 +146,20 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "yarn"
+          cache-dependency-path: frontend/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --prefer-offline --cwd frontend
+
       - name: Cypress run
         uses: cypress-io/github-action@v5.0.9
         with:
+          install: false
           working-directory: frontend
           config: baseUrl=https://${{ env.PREFIX }}-frontend.${{ env.DOMAIN }}
 
