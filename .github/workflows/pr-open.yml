@@ -110,7 +110,7 @@ jobs:
   deploy:
     name: Deploy
     needs:
-      - builds
+      - build
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
