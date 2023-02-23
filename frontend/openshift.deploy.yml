@@ -43,11 +43,28 @@ parameters:
     value: ghcr.io
   - name: PROMOTE
     description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-spar-webapp:prod-frontend
+    value: bcgov/nr-spar-webapp/frontend:test
   - name: REACT_APP_SPAR_BUILD_VERSION
     description: Current sample app release version
     required: true
-    value: nightly
+  - name: REACT_APP_SERVER_URL
+    description: REACT_APP_SERVER_URL
+    required: true
+  - name: REACT_APP_NRSPARWEBAPP_VERSION
+    description: REACT_APP_NRSPARWEBAPP_VERSION
+    required: true
+  - name: REACT_APP_KC_URL
+    description: REACT_APP_KC_URL
+    required: true
+  - name: REACT_APP_KC_REALM
+    description: REACT_APP_KC_REALM
+    required: true
+  - name: REACT_APP_KC_CLIENT_ID
+    description: REACT_APP_KC_CLIENT_ID
+    required: true
+  - name: REACT_APP_ENABLE_MOCK_SERVER
+    description: REACT_APP_ENABLE_MOCK_SERVER
+    required: true
 objects:
   - apiVersion: v1
     kind: ImageStream
@@ -101,10 +118,9 @@ objects:
                 - name: REACT_APP_SPAR_BUILD_VERSION
                   value: ${BUILD}
                 - name: REACT_APP_SERVER_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}
-                      key: backend_test_url
+                  value: ${REACT_APP_SERVER_URL}
+                - name: REACT_APP_NRSPARWEBAPP_VERSION
+                  value: ${REACT_APP_NRSPARWEBAPP_VERSION}
                 - name: REACT_APP_KC_URL
                   valueFrom:
                     secretKeyRef:
@@ -116,10 +132,9 @@ objects:
                       name: ${NAME}
                       key: keycloak_realm_name
                 - name: REACT_APP_KC_CLIENT_ID
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${NAME}
-                      key: keycloak_client_id
+                  value: ${REACT_APP_KC_CLIENT_ID}
+                - name: REACT_APP_ENABLE_MOCK_SERVER
+                  value: ${REACT_APP_ENABLE_MOCK_SERVER}
               ports:
                 - containerPort: 3000
                   protocol: TCP
@@ -199,3 +214,31 @@ objects:
             target:
               type: Utilization
               averageUtilization: 100
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-from-openshift-ingress
+      labels:
+        template: openshift-test
+    spec:
+      podSelector: {}
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchLabels:
+                  network.openshift.io/policy-group: ingress
+      policyTypes:
+        - Ingress
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: allow-same-namespace
+      labels:
+        template: nr-spar-frontend-network-security-policy
+    spec:
+      podSelector: {}
+      ingress:
+        - from:
+            - podSelector: {}
+      policyTypes:
+        - Ingress

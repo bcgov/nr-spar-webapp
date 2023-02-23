@@ -1,13 +1,26 @@
-FROM node:16-bullseye
-LABEL maintainer="Paulo Gomes da Cruz Junior <paulo.cruz@encora.com>"
+# Build
+FROM node:16.19.1-alpine3.17 AS build
 
-RUN yarn global add serve@14.1.2 react-inject-env@2.1.0
-
+# Copy and build
 WORKDIR /app
-COPY build/ .
+COPY . .
+RUN yarn install --cwd frontend --frozen-lockfile --prefer-offline && \
+    yarn --cwd frontend build:production && \
+    rm -rf node_modules
 
+
+# Deploy
+FROM node:16.19.1-alpine3.17
+
+# Copy and prep app
+WORKDIR /app
+COPY --from=build /app/build/ .
+RUN yarn global add serve@14.1.2 react-inject-env@2.1.0 && \
+    chmod -R g+w .
+
+# User and startup
 EXPOSE 3000
-
-RUN chmod -R g+w .
-
-CMD react-inject-env set -d . && serve -s .
+USER 1001
+HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost/:3000
+CMD react-inject-env set -d . && \
+    serve -s .
