@@ -144,7 +144,7 @@ const ApplicantInformation = () => {
   };
 
   const validateApplicantEmail = () => {
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!emailRegex.test(responseBody.applicant.email)) {
       setInvalidEmail(true);
     } else {
