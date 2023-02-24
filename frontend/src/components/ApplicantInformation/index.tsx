@@ -314,7 +314,7 @@ const ApplicantInformation = () => {
         <Row className="save-button">
           <Column lg={8}>
             <Button renderIcon={DocumentAdd} type="submit">
-              Save and new create seedlot
+              Save and create new seedlot
             </Button>
           </Column>
         </Row>

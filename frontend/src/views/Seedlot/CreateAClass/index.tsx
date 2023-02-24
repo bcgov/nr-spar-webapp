@@ -17,7 +17,7 @@ const CreateAClass = () => (
     <Stack gap={3}>
       <Row className="create-a-class-seedlot-breadcrumb">
         <Breadcrumb>
-          <BreadcrumbItem>Seedlots</BreadcrumbItem>
+          <BreadcrumbItem href="/seedlot">Seedlots</BreadcrumbItem>
         </Breadcrumb>
       </Row>
       <Row>
