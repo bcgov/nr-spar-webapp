@@ -5,9 +5,9 @@ import {
   Stack
 } from '@carbon/react';
 
-import PageTitle from '../../components/PageTitle';
-import SeedlotActivities from '../../components/SeedlotActivities';
-import ExistingSeedlot from '../../components/ExistingSeedlot';
+import PageTitle from '../../../components/PageTitle';
+import SeedlotActivities from '../../../components/SeedlotActivities';
+import ExistingSeedlot from '../../../components/ExistingSeedlot';
 
 import './styles.css';
 
@@ -19,6 +19,7 @@ const SeedlotDashboard = () => (
           title="Seedlots"
           subtitle="Register and manage your seedlots"
           favourite
+          activity="SEEDLING_REQUEST"
         />
       </Row>
       <SeedlotActivities />

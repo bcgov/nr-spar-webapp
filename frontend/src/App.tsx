@@ -13,8 +13,10 @@ import Logout from './components/Logout';
 import Layout from './layout/PrivateLayout';
 import Landing from './views/Landing';
 import Dashboard from './views/Dashboard/dashboard';
-import SeedlotDashboard from './views/SeedlotDashboard';
-import SeedlotDetails from './views/SeedlotDetails';
+import SeedlotDetails from './views/Seedlot/SeedlotDetails';
+import SeedlotDashboard from './views/Seedlot/SeedlotDashboard';
+import CreateAClass from './views/Seedlot/CreateAClass';
+import SeedlotCreatedFeedback from './views/Seedlot/SeedlotCreatedFeedback';
 
 /**
  * Create an app structure conaining all the routes.
@@ -51,10 +53,28 @@ const App: React.FC = () => {
           />
 
           <Route
+            path="/seedlot/register-a-class"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <CreateAClass />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
             path="/seedlot-details"
             element={(
               <ProtectedRoute signed={signed}>
                 <SeedlotDetails />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
+            path="/seedlot/successfully-created"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <SeedlotCreatedFeedback />
               </ProtectedRoute>
             )}
           />

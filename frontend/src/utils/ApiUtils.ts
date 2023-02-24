@@ -14,9 +14,19 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
   let favouriteActivitiesRetrieveUrl = '/api/favourite-activities';
   let favouriteActivitiesUpdateUrl = '/api/favourite-activities/:id';
   let favouriteActivitiesDeleteUrl = '/api/favourite-activities/:id';
+  let favouriteActivitiesCreateUrl = '/api/favourite-activities';
 
   // Recent activities
   let recentActivitiesRetrieveAll = '/api/recent-activities';
+
+  // Genetic classes
+  let geneticClassesRetrieveAll = '/api/genetic-classes';
+
+  // Applicant Info
+  let applicantInfoRetrieveAll = '/api/application-info';
+
+  // A Class Seedlot Register
+  let aClassSeedlotPostUrl = '/api/register-a-class';
 
   // Mocks
   if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
@@ -24,9 +34,19 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
     favouriteActivitiesRetrieveUrl = '/favourite-activities';
     favouriteActivitiesUpdateUrl = '/favourite-activities/del/:id';
     favouriteActivitiesDeleteUrl = '/favourite-activities/up/:id';
+    favouriteActivitiesCreateUrl = '/favourite-activities';
 
     // Recent activities
     recentActivitiesRetrieveAll = '/recent-activities';
+
+    // Genetic classes
+    geneticClassesRetrieveAll = '/genetic-classes';
+
+    // Applicant Info
+    applicantInfoRetrieveAll = '/application-info';
+
+    // A Class Seedlot Register
+    aClassSeedlotPostUrl = '/register-a-class';
   }
 
   let server = serverUrl();
@@ -41,8 +61,16 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
       return `${server}${favouriteActivitiesUpdateUrl}`;
     case ApiAddresses.FavouriteActiviteDelete:
       return `${server}${favouriteActivitiesDeleteUrl}`;
+    case ApiAddresses.FavouriteActiviteCreate:
+      return `${server}${favouriteActivitiesCreateUrl}`;
     case ApiAddresses.RecentActivitiesRetrieveAll:
       return `${server}${recentActivitiesRetrieveAll}`;
+    case ApiAddresses.GeneticClassesRetrieveAll:
+      return `${server}${geneticClassesRetrieveAll}`;
+    case ApiAddresses.ApplicantInfoRetrieveAll:
+      return `${server}${applicantInfoRetrieveAll}`;
+    case ApiAddresses.AClassSeedlotPost:
+      return `${server}${aClassSeedlotPostUrl}`;
     default:
       return '';
   }
