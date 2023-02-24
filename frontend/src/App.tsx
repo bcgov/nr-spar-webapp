@@ -15,7 +15,7 @@ import Landing from './views/Landing';
 import Dashboard from './views/Dashboard/dashboard';
 import SeedlotDashboard from './views/Seedlot/SeedlotDashboard';
 import CreateAClass from './views/Seedlot/CreateAClass';
-import SeedlotCreatedFeedback from './views/SeedlotCreatedFeedback';
+import SeedlotCreatedFeedback from './views/Seedlot/SeedlotCreatedFeedback';
 
 /**
  * Create an app structure conaining all the routes.
