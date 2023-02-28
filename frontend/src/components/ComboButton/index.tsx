@@ -21,14 +21,14 @@ interface ComboButtonProps {
 
 const ComboButton = ({ title, items }: ComboButtonProps) => (
   <div className="combo-button-wrapper">
-    <Button className="combo-button" size="sm">
+    <Button className="combo-button" size="md">
       {title}
-      <OverflowMenu className="combo-options" renderIcon={CaretDown} ariaLabel={`${title} button options`} flipped>
-        {items.map((item) => (
-          <OverflowMenuItem key={item.text} itemText={item.text} onClick={item.onClickFunction} />
-        ))}
-      </OverflowMenu>
     </Button>
+    <OverflowMenu className="combo-options" renderIcon={CaretDown} ariaLabel={`${title} button options`} flipped>
+      {items.map((item) => (
+        <OverflowMenuItem key={item.text} itemText={item.text} onClick={item.onClickFunction} />
+      ))}
+    </OverflowMenu>
   </div>
 );
 
