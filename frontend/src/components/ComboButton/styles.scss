@@ -1,0 +1,49 @@
+@use '../../theme/variables.scss' as vars;
+
+.combo-button {
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.combo-options {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background: var(--bcgov-background-brand);
+  border-left: solid white 1px;
+  margin-left: 1.875rem;
+}
+
+.combo-options svg,
+.combo-options.#{vars.$bcgov-prefix}--overflow-menu.#{vars.$bcgov-prefix}--overflow-menu--open svg {
+  fill: white;
+}
+
+.combo-options:hover {
+  background-color: var(--bcgov-button-primary-hover);
+}
+
+.combo-options.#{vars.$bcgov-prefix}--overflow-menu:focus {
+  outline-color: white;
+  outline-width: 1px;
+}
+
+.combo-button:hover .combo-options {
+  background-color: var(--bcgov-button-primary-hover);
+}
+
+button.combo-options + .#{vars.$bcgov-prefix}--popover {
+  display: none;
+}
+
+.combo-options.#{vars.$bcgov-prefix}--overflow-menu.#{vars.$bcgov-prefix}--overflow-menu--open {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: 0 2px 6px var(--bcgov-shadow, rgba(0, 0, 0, 0.3));
+  background-color: var(--bcgov-button-primary-active);
+  transition: none;
+}
+
+.#{vars.$bcgov-prefix}--overflow-menu-options[data-floating-menu-direction=bottom]:not(.#{vars.$bcgov-prefix}--breadcrumb-menu-options)::after {
+  top: 0;
+}
