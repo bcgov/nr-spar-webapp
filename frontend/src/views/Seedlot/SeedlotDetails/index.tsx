@@ -16,6 +16,9 @@ import {
 
 import PageTitle from '../../../components/PageTitle';
 import ComboButton from '../../../components/ComboButton';
+import ApplicantSeedlotInformation from '../../../components/ApplicantSeedlotInformation';
+import FormProgress from '../../../components/FormProgress';
+import FormReview from '../../../components/FormReview';
 
 import './styles.scss';
 
@@ -79,7 +82,11 @@ const SeedlotDetails = () => {
                   <Tab>Activity history</Tab>
                 </TabList>
                 <TabPanels>
-                  <TabPanel>Seedlot details' Tab Content Placeholder</TabPanel>
+                  <TabPanel>
+                    <ApplicantSeedlotInformation />
+                    <FormProgress />
+                    <FormReview />
+                  </TabPanel>
                   <TabPanel>Activity history's Tab Content Placebolder</TabPanel>
                 </TabPanels>
               </Tabs>
