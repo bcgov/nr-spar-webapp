@@ -32,3 +32,9 @@
 .seedlot-activity-history-box .#{vars.$bcgov-prefix}--progress-label {
   min-width: 25rem;
 }
+
+.seedlot-activity-history-box .#{vars.$bcgov-prefix}--progress-label:hover {
+  cursor: pointer;
+  color: var(--#{vars.$bcgov-prefix}-link-primary);
+  text-decoration-line: underline;
+}
