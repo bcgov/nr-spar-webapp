@@ -24,7 +24,7 @@ const ActivityHistoryMock = {
   steps: [
     {
       step: 12,
-      status: '',
+      status: 'current',
       description: 'Seedlot is now under review by the TSC',
       date: '2023-01-22'
     },

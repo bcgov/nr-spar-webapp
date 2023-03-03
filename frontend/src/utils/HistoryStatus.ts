@@ -14,7 +14,7 @@ const statusClass = (param: string) => {
       invalid = true;
       break;
     case 'disabled':
-      invalid = true;
+      disabled = true;
       break;
   }
   return {
