@@ -106,6 +106,7 @@ const SeedlotActivityHistory = () => (
       <Subtitle text="Get updates on seedlot related activities" />
     </div>
     <Dropdown
+      id="seedlot-activity-history-filter"
       className="seedlot-activity-history-dropdown"
       initialSelectedItem={dropdownOptions[0]}
       items={dropdownOptions}
