@@ -104,9 +104,10 @@ const RecentActivities = () => {
             </TabPanel>
             <TabPanel>
               <FilesDocsTable
-              elements={filesDocsItems}
-              headers={fileDocstableHeaders}
+                elements={filesDocsItems}
+                headers={fileDocstableHeaders}
               />
+              {(filesDocsItems.length === 0) && (
               <div className="empty-recent-activity-files-docs">
                 <EmptySection
                   icon="Application"
@@ -114,6 +115,7 @@ const RecentActivities = () => {
                   description="Your recent files & docs will appear here once you generate one"
                 />
               </div>
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>
