@@ -16,6 +16,7 @@ import Dashboard from './views/Dashboard/dashboard';
 import SeedlotDashboard from './views/Seedlot/SeedlotDashboard';
 import CreateAClass from './views/Seedlot/CreateAClass';
 import SeedlotCreatedFeedback from './views/Seedlot/SeedlotCreatedFeedback';
+import ExistingSeedlots from './views/Seedlot/ExistingSeedlots';
 
 /**
  * Create an app structure conaining all the routes.
@@ -65,6 +66,15 @@ const App: React.FC = () => {
             element={(
               <ProtectedRoute signed={signed}>
                 <SeedlotCreatedFeedback />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
+            path="/seedlot/existing-seedlots"
+            element={(
+              <ProtectedRoute signed>
+                <ExistingSeedlots />
               </ProtectedRoute>
             )}
           />
