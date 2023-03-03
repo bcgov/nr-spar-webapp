@@ -21,6 +21,8 @@ import ApplicantSeedlotInformation from '../../../components/ApplicantSeedlotInf
 import FormProgress from '../../../components/FormProgress';
 import FormReview from '../../../components/FormReview';
 
+import SeedlotActivityHistory from '../../../components/SeedlotActivityHistory';
+
 import './styles.scss';
 
 const manageOptions = [
@@ -82,7 +84,9 @@ const SeedlotDetails = () => {
                     <FormProgress />
                     <FormReview />
                   </TabPanel>
-                  <TabPanel>Activity history's Tab Content Placebolder</TabPanel>
+                  <TabPanel>
+                    <SeedlotActivityHistory />
+                  </TabPanel>
                 </TabPanels>
               </Tabs>
             </Column>
