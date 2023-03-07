@@ -10,7 +10,6 @@ import { Notification } from '@carbon/icons-react';
 
 const NotificationsCentral = () => (
   <div className="notifications-space">
-
     <Row>
       <Button className='btn-viewed' kind="ghost">Mark all as viewed</Button>
       <Button className='btn-all-notification' kind="ghost">See all notification</Button>  
