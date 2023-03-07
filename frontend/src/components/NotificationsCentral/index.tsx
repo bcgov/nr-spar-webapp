@@ -1,7 +1,6 @@
 import React from 'react';
 import EmptySection from '../EmptySection';
 import './style.scss';
-
 import {
   Button,
   Row,
