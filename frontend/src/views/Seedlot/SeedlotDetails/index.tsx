@@ -27,7 +27,7 @@ import './styles.scss';
 
 const manageOptions = [
   {
-    text: 'Share seedlot',
+    text: 'Edit seedlot applicant',
     onClickFunction: () => null
   },
   {
@@ -61,7 +61,7 @@ const SeedlotDetails = () => {
             subtitle="Check and manage this seedlot"
             favourite
           />
-          <ComboButton title="Manage Seedlot" items={manageOptions} />
+          <ComboButton title="Edit seedlot form" items={manageOptions} menuOptionsClass="edit-seedlot-form"/>
         </Row>
         <section title="Seedlot Summary">
           <Row className="seedlot-summary-content">
