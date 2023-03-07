@@ -6,12 +6,12 @@ import SeedlotTable from '../SeedlotTable';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
-import ExistingSeedlotItems from '../../mock-api/fixtures/ExistingSeedlotItems';
+import MySeedlotsItems from '../../mock-api/fixtures/MySeedlotsItems';
 
 import './styles.scss';
 
-const ExistingSeedlot = () => {
-  const listItems = ExistingSeedlotItems;
+const MySeedlots = () => {
+  const listItems = MySeedlotsItems;
 
   const tableHeaders: string[] = [
     'Seedlot number',
@@ -26,18 +26,18 @@ const ExistingSeedlot = () => {
   ];
 
   return (
-    <Row className="existing-seedlot">
-      <Column sm={4} className="existing-seedlot-title">
+    <Row className="my-seedlots">
+      <Column sm={4} className="my-seedlots-title">
         <h2>My seedlots</h2>
-        <Subtitle text="Check a summary of your recent seedlots" className="existing-seedlot-subtitle" />
+        <Subtitle text="Check a summary of your recent seedlots" className="my-seedlots-subtitle" />
       </Column>
-      <Column sm={4} className="existing-seedlot-table">
+      <Column sm={4} className="my-seedlots-table">
         <SeedlotTable
           elements={listItems}
           headers={tableHeaders}
         />
         {(listItems.length === 0) && (
-        <div className="empty-existing-seedlot">
+        <div className="empty-my-seedlots">
           <EmptySection
             icon="Application"
             title="There is no seedlot to show yet!"
@@ -50,4 +50,4 @@ const ExistingSeedlot = () => {
   );
 };
 
-export default ExistingSeedlot;
+export default MySeedlots;
