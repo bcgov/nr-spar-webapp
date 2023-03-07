@@ -11,7 +11,8 @@ import {
   RadioButtonGroup,
   RadioButton,
   Checkbox,
-  Button
+  Button,
+  ComboBox,
 } from '@carbon/react';
 import { DocumentAdd } from '@carbon/icons-react';
 
@@ -23,6 +24,7 @@ import GeneticClassesType from '../../types/GeneticClasses';
 import getUrl from '../../utils/ApiUtils';
 import ApiAddresses from '../../utils/ApiAddresses';
 import { useAuth } from '../../contexts/AuthContext';
+import {filterObj, filterInput} from '../../utils/filterUtils';
 
 import './styles.scss';
 
@@ -60,7 +62,6 @@ const ApplicantInformation = () => {
   const speciesInputRef = useRef<HTMLButtonElement>(null);
 
   const [responseBody, setResponseBody] = useState<SeedlotRegistration>(seedlotData);
-  const [invalidName, setInvalidName] = useState<boolean>(false);
   const [invalidNumber, setInvalidNumber] = useState<boolean>(false);
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [invalidSpecies, setInvalidSpecies] = useState<boolean>(false);
@@ -125,18 +126,9 @@ const ApplicantInformation = () => {
     });
   };
 
-  const validateApplicantName = () => {
-    const nameRegex = /^[a-z]+(?:['-.\s][a-z]+)*$/i;
-    if (!nameRegex.test(responseBody.applicant.name)) {
-      setInvalidName(true);
-    } else {
-      setInvalidName(false);
-    }
-  };
-
   const validateApplicantNumber = () => {
     const intNumber = +responseBody.applicant.number;
-    if (intNumber <= 0 || intNumber >= 99) {
+    if (intNumber < 0 || intNumber > 99) {
       setInvalidNumber(true);
     } else {
       setInvalidNumber(false);
@@ -155,9 +147,7 @@ const ApplicantInformation = () => {
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (invalidName) {
-      nameInputRef.current?.focus();
-    } else if (invalidNumber) {
+    if (invalidNumber) {
       numberInputRef.current?.focus();
     } else if (invalidEmail) {
       emailInputRef.current?.focus();
@@ -176,6 +166,12 @@ const ApplicantInformation = () => {
     }
   };
 
+  const mock_agency_options: Array<string> = [
+    "0032 - Strong Seeds Orchard - SSO",
+    "0035 - Weak Seeds Orchard - WSO",
+    "0038 - Okay Seeds Orchard - OSO"
+  ];
+
   return (
     <div className="applicant-information-form">
       <form onSubmit={validateAndSubmit}>
@@ -187,18 +183,16 @@ const ApplicantInformation = () => {
         </Row>
         <Row className="agency-information">
           <Column sm={4} md={2} lg={5}>
-            <TextInput
-              id="agency-name-input"
+            <ComboBox
+              id="agency-name-combobox"
               ref={nameInputRef}
-              name="name"
-              type="text"
-              labelText="Applicant agency name"
-              enableCounter
-              maxCount={8}
-              invalid={invalidName}
-              invalidText="Please enter a valid name"
+              items={mock_agency_options}
+              initialSelectedItem={mock_agency_options[0]}
+              shouldFilterItem={({item, inputValue}: filterObj) => filterInput({item, inputValue})}
+              placeholder="Select an angecy..."
+              titleText="Applicant agency name"
+              helperText="You can enter your agency number, name or acronym"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerApplicant(e)}
-              onBlur={() => validateApplicantName()}
             />
           </Column>
           <Column sm={4} md={2} lg={5}>
@@ -216,6 +210,8 @@ const ApplicantInformation = () => {
               invalidText="Please enter a valid value between 0 and 99"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerApplicant(e)}
               onBlur={() => validateApplicantNumber()}
+              helperText="2-digit code that identifies the address of operated office or division"
+              defaultValue={0}
             />
           </Column>
         </Row>
