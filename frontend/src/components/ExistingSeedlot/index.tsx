@@ -28,7 +28,7 @@ const ExistingSeedlot = () => {
   return (
     <Row className="existing-seedlot">
       <Column sm={4} className="existing-seedlot-title">
-        <h2>Existing seedlot</h2>
+        <h2>My seedlots</h2>
         <Subtitle text="Check a summary of your recent seedlots" className="existing-seedlot-subtitle" />
       </Column>
       <Column sm={4} className="existing-seedlot-table">

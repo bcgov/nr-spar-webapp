@@ -20,9 +20,9 @@ const SeedlotActivitiesCardItems = [
   {
     id: '3',
     image: 'Sprout',
-    header: 'Existing seedlot',
+    header: 'My seedlots',
     description:
-      'Check and manage existing seedlot registrations ',
+      'Consult and manage your own seedlots',
     link: '#',
     highlighted: false
   },
