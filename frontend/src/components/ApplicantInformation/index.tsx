@@ -24,7 +24,7 @@ import GeneticClassesType from '../../types/GeneticClasses';
 import getUrl from '../../utils/ApiUtils';
 import ApiAddresses from '../../utils/ApiAddresses';
 import { useAuth } from '../../contexts/AuthContext';
-import {filterObj, filterInput} from '../../utils/filterUtils';
+import {FilterObj, filterInput} from '../../utils/filterUtils';
 
 import './styles.scss';
 
@@ -207,7 +207,7 @@ const ApplicantInformation = () => {
               name="name"
               items={mock_agency_options}
               initialSelectedItem={mock_agency_options[0]}
-              shouldFilterItem={({item, inputValue}: filterObj) => filterInput({item, inputValue})}
+              shouldFilterItem={({item, inputValue}: FilterObj) => filterInput({item, inputValue})}
               placeholder="Select an angecy..."
               titleText="Applicant agency name"
               helperText="You can enter your agency number, name or acronym"

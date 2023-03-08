@@ -1,9 +1,9 @@
-export interface filterObj {
+export interface FilterObj {
     item: string,
     inputValue: string,
   }
 
-export const filterInput = ({item, inputValue}: filterObj) => {
+export const filterInput = ({item, inputValue}: FilterObj) => {
     if (inputValue === null) {
       return true;
     }
