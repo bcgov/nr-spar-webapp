@@ -28,6 +28,9 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
   // A Class Seedlot Register
   let aClassSeedlotPostUrl = '/api/register-a-class';
 
+  // Retrieve one seedlot
+  let seedlotRetrieveOneUrl = '/api/seedlot/:seedlotnumber';
+
   // Mocks
   if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
     // Favourite activities
@@ -47,6 +50,10 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
 
     // A Class Seedlot Register
     aClassSeedlotPostUrl = '/register-a-class';
+
+    // Retrieve one seedlot
+    seedlotRetrieveOneUrl = '/seedlot/:seedlotnumber';
+
   }
 
   let server = serverUrl();
@@ -71,6 +78,8 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
       return `${server}${applicantInfoRetrieveAll}`;
     case ApiAddresses.AClassSeedlotPost:
       return `${server}${aClassSeedlotPostUrl}`;
+    case ApiAddresses.SeedlotRetrieveOne:
+      return `${server}${seedlotRetrieveOneUrl}`;
     default:
       return '';
   }

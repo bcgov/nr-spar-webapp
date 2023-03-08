@@ -10,7 +10,8 @@ enum ApiAddresses {
 
   ApplicantInfoRetrieveAll,
 
-  AClassSeedlotPost
+  AClassSeedlotPost,
+  SeedlotRetrieveOne
 }
 
 export default ApiAddresses;
