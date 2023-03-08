@@ -23,12 +23,12 @@ const SeedlotRegistrationEndpoints = (server: Server) => {
 
     const userData = KeycloakService.getUser();
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
 
-    var stringDate = yyyy + '-' + mm + '-' + dd;
+    const stringDate = yyyy + '-' + mm + '-' + dd;
 
     seedlotData.insert({
       number: seedlotNumber,
