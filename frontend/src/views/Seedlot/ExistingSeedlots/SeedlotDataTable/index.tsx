@@ -10,10 +10,8 @@ import {
   TableHeader,
   TableBody,
   TableCell,
-  TableToolbar,
-  TableToolbarSearch,
-  TableToolbarContent,
-  Pagination
+  Pagination,
+  Search
 } from '@carbon/react';
 
 import './styles.css';
@@ -34,28 +32,25 @@ interface DataTableInterface {
   rows: any,
   getHeaderProps: any,
   getTableProps: any,
-  getRowProps: any
+}
+interface RowInterface {
+  cells: any,
 }
 
 const SeedlotDataTable = () => {
   const [firstRowIndex, setFirstRowIndex] = useState(0);
   const [currentPageSize, setCurrentPageSize] = useState(20);
 
-  const currentRows = rowData.slice(firstRowIndex, firstRowIndex + currentPageSize)
-
   return(
   <>
     <DataTable 
       rows={rowData.slice(firstRowIndex, firstRowIndex + currentPageSize)} 
       headers={headerData}
+      isSortable
     >
-      {({ rows, headers, onInputChange, getHeaderProps, getTableProps, getRowProps}:DataTableInterface) => (
+      {({ rows, headers, onInputChange, getHeaderProps, getTableProps}:DataTableInterface) => (
       <TableContainer>
-        <TableToolbar>
-          <TableToolbarContent>
-            <TableToolbarSearch onChange={onInputChange} />
-          </TableToolbarContent>  
-        </TableToolbar>
+        <Search onChange={onInputChange} placeholder="Search for seedlots" />
         <Table {...getTableProps()}>
           <TableHead>
             <TableRow>   
@@ -67,21 +62,21 @@ const SeedlotDataTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-          {currentRows.map((item) => (
-          <TableRow key={hashObject(item)} >
-            <TableCell>{item.number}</TableCell>
-            <TableCell>{`${item.class} class`}</TableCell>
-            <TableCell>{item.lot_species}</TableCell>
-            <TableCell>{item.form_step}</TableCell>
+          {rows.map((item:RowInterface) => (
+          <TableRow key={hashObject(item.cells)}>
+            <TableCell>{item.cells[0].value}</TableCell>
+            <TableCell>{`${item.cells[1].value} class`}</TableCell>
+            <TableCell>{item.cells[2].value}</TableCell>
+            <TableCell>{item.cells[3].value}</TableCell>
             <TableCell>
-              <StatusItem status={item.status} />
+              <StatusItem status={item.cells[4].value} />
             </TableCell>
             <TableCell>
-              <Participants elements={item.participants} number={item.number} />
+              <Participants elements={item.cells[5].value} number={item.cells[0].value} />
             </TableCell>
-            <TableCell>{formatDate(item.created_at)}</TableCell>
-            <TableCell>{formatDate(item.last_modified)}</TableCell>
-            <TableCell>{formatDate(item.approved_at)}</TableCell>
+            <TableCell>{formatDate(item.cells[6].value)}</TableCell>
+            <TableCell>{formatDate(item.cells[7].value)}</TableCell>
+            <TableCell>{formatDate(item.cells[8].value)}</TableCell>
           </TableRow>
         ))}
           </TableBody>

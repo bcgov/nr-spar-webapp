@@ -1,5 +1,6 @@
 export const rowData = [
   {
+    id: 4,
     number: 12456,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -11,17 +12,19 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 5,
     number: 12457,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
     form_step: 'Collection',
-    status: 4,
+    status: 1,
     participants: ['Participant 1', 'Participant 2', 'Participant 3'],
     created_at: '2021-10-10',
     last_modified: '2022-12-24',
     approved_at: ''
   },
   {
+    id: 6,
     number: 12458,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -33,6 +36,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 7,
     number: 12459,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -44,6 +48,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 8,
     number: 12460,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -55,6 +60,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 9,
     number: 12461,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -66,6 +72,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 10,
     number: 12498,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -77,6 +84,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 11,
     number: 12488,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -88,17 +96,19 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 12,
     number: 12489,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
     form_step: 'Collection',
-    status: 0,
+    status: 5,
     participants: ['Participant 1', 'Participant 2'],
     created_at: '2021-10-10',
     last_modified: '2022-12-24',
     approved_at: ''
   },
   {
+    id: 13,
     number: 12490,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -110,6 +120,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 14,
     number: 12491,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -121,6 +132,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 15,
     number: 12492,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -132,6 +144,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 16,
     number: 12493,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -143,6 +156,7 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 17,
     number: 12494,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
@@ -154,36 +168,27 @@ export const rowData = [
     approved_at: ''
   },
   {
+    id: 18,
     number: 12495,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
     form_step: 'Collection',
-    status: 0,
+    status: 2,
     participants: ['Participant 1', 'Participant 2'],
-    created_at: '2021-10-10',
+    created_at: '2021-10-09',
     last_modified: '2022-12-24',
     approved_at: ''
   },
   {
+    id: 19,
     number: 12496,
     class: 'A',
     lot_species: 'SX - Spruce hibrid',
     form_step: 'Collection',
-    status: 0,
+    status: 3,
     participants: ['Participant 1', 'Participant 2'],
     created_at: '2021-10-10',
-    last_modified: '2022-12-24',
-    approved_at: ''
-  },
-  {
-    number: 12497,
-    class: 'A',
-    lot_species: 'SX - Spruce hibrid',
-    form_step: 'Collection',
-    status: 0,
-    participants: ['Participant 1', 'Participant 2'],
-    created_at: '2021-10-10',
-    last_modified: '2022-12-24',
+    last_modified: '2022-12-23',
     approved_at: ''
   },
 ];
