@@ -47,6 +47,7 @@ const SeedlotDataTable = () => {
       rows={rowData.slice(firstRowIndex, firstRowIndex + currentPageSize)} 
       headers={headerData}
       isSortable
+      className="seedlot-data-table"
     >
       {({ rows, headers, onInputChange, getHeaderProps, getTableProps}:DataTableInterface) => (
       <TableContainer>

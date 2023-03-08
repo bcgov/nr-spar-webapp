@@ -1,10 +1,6 @@
-a {
-  color: inherit;
-  text-decoration: inherit
+.seedlot-data-table {
+  width: 3000px;
+  background-color: red;
 }
 
-@media only screen and (max-width: 672px) {
-  .seedlot-table {
-    width: 56.25rem;
-  }
-}
+
