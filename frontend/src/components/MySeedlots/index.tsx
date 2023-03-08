@@ -32,19 +32,21 @@ const MySeedlots = () => {
         <Subtitle text="Check a summary of your recent seedlots" className="my-seedlots-subtitle" />
       </Column>
       <Column sm={4} className="my-seedlots-table">
-        <SeedlotTable
-          elements={listItems}
-          headers={tableHeaders}
-        />
-        {(listItems.length === 0) && (
-        <div className="empty-my-seedlots">
-          <EmptySection
-            icon="Application"
-            title="There is no seedlot to show yet!"
-            description="Your recent seedlots will appear here once you generate one"
-          />
-        </div>
-        )}
+        {
+          listItems.length ?
+            <SeedlotTable
+              elements={listItems}
+              headers={tableHeaders}
+            />
+            :
+            <div className="empty-my-seedlots">
+              <EmptySection
+                pictogram="Magnify"
+                title="There is no seedlot to show yet!"
+                description="Your recent seedlots will appear here once you generate one"
+              />
+            </div>
+        }
       </Column>
     </Row>
   );
