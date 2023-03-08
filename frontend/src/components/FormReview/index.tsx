@@ -11,6 +11,9 @@ import EmptySection from '../EmptySection';
 
 import './styles.scss';
 
+// this is for testing only
+// TODO: remove this once the PR is approved
+// eslint-disable-next-line
 const empty_mock_form_data = [];
 
 const mock_form_data = [
@@ -56,7 +59,7 @@ const FormReview = () => (
     </div>
     <div>
       {
-        empty_mock_form_data.length ?
+        mock_form_data.length ?
           <Accordion className="steps-accordion" >
             {
               mock_form_data.map((data) => {

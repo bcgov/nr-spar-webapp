@@ -59,8 +59,9 @@ const SeedlotActivities = () => {
   ];
 
   // seedlots and activity history cards are empty
-  // TODO: detect empty seedlot or activity history using API calls
-  const empty_cards = [
+  // TODO: detect empty seedlot or activity history using API calls for PR REVIEW, REMOVE AFTERWARDS
+  // eslint-disable-next-line
+  const empty_cards = [ 
     {
       id: '1',
       image: 'Agriculture',

@@ -28,9 +28,21 @@ import {filterObj, filterInput} from '../../utils/filterUtils';
 
 import './styles.scss';
 
+interface ComboBoxEvent {
+  selectedItem: any
+}
+
 const ApplicantInformation = () => {
+
+  const mock_agency_options: Array<string> = [
+    "0032 - Strong Seeds Orchard - SSO",
+    "0035 - Weak Seeds Orchard - WSO",
+    "0038 - Okay Seeds Orchard - OSO"
+  ];
+
   const { token } = useAuth();
   const navigate = useNavigate();
+
   const getAxiosConfig = () => {
     const axiosConfig = {};
     if (token) {
@@ -45,9 +57,10 @@ const ApplicantInformation = () => {
   };
 
   const seedlotData: SeedlotRegistration = {
+    seedlotNumber: 0,
     applicant: {
-      name: '',
-      number: '',
+      name: mock_agency_options[0],
+      number: '0',
       email: ''
     },
     species: '',
@@ -87,13 +100,24 @@ const ApplicantInformation = () => {
 
   getGeneticClasses();
 
-  const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => { 
     const { name, value } = event.target;
     setResponseBody({
       ...responseBody,
       applicant: {
         ...responseBody.applicant,
         [name]: value
+      }
+    });
+  };
+
+  const comboBoxChangeHandlerApplicant = (event: ComboBoxEvent) => { 
+    const selectedItem = event.selectedItem;
+    setResponseBody({
+      ...responseBody,
+      applicant: {
+        ...responseBody.applicant,
+        name: selectedItem
       }
     });
   };
@@ -146,7 +170,7 @@ const ApplicantInformation = () => {
 
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+ 
     if (invalidNumber) {
       numberInputRef.current?.focus();
     } else if (invalidEmail) {
@@ -156,8 +180,8 @@ const ApplicantInformation = () => {
       speciesInputRef.current?.focus();
     } else {
       axios.post(getUrl(ApiAddresses.AClassSeedlotPost), responseBody, getAxiosConfig())
-        .then(() => {
-          navigate('/seedlot/successfully-created');
+        .then((response) => {
+          navigate('/seedlot/successfully-created/' + response.data.seedlotNumber);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -165,12 +189,6 @@ const ApplicantInformation = () => {
         });
     }
   };
-
-  const mock_agency_options: Array<string> = [
-    "0032 - Strong Seeds Orchard - SSO",
-    "0035 - Weak Seeds Orchard - WSO",
-    "0038 - Okay Seeds Orchard - OSO"
-  ];
 
   return (
     <div className="applicant-information-form">
@@ -186,13 +204,14 @@ const ApplicantInformation = () => {
             <ComboBox
               id="agency-name-combobox"
               ref={nameInputRef}
+              name="name"
               items={mock_agency_options}
               initialSelectedItem={mock_agency_options[0]}
               shouldFilterItem={({item, inputValue}: filterObj) => filterInput({item, inputValue})}
               placeholder="Select an angecy..."
               titleText="Applicant agency name"
               helperText="You can enter your agency number, name or acronym"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerApplicant(e)}
+              onChange={(e: ComboBoxEvent) => comboBoxChangeHandlerApplicant(e)}
             />
           </Column>
           <Column sm={4} md={2} lg={5}>
