@@ -14,12 +14,11 @@ import {
   Search
 } from '@carbon/react';
 
-import './styles.css';
 
-import { headerData, rowData } from './data';
+import { headerData } from './data';
 import StatusItem from '../../../../components/StatusItem';
 import Participants from '../../../../components/Participants';
-import formatDate from '../../../../utils/DateUtils';
+import Seedlot from '../../../../types/Seedlot';
 
 interface HeaderType {
   key: string,
@@ -37,21 +36,28 @@ interface RowInterface {
   cells: any,
 }
 
-const SeedlotDataTable = () => {
+interface SeedlotDataTableProps {
+  seedlots: Seedlot[]
+}
+
+const SeedlotDataTable = ({seedlots}:SeedlotDataTableProps) => {
   const [firstRowIndex, setFirstRowIndex] = useState(0);
   const [currentPageSize, setCurrentPageSize] = useState(20);
 
   return(
   <>
     <DataTable 
-      rows={rowData.slice(firstRowIndex, firstRowIndex + currentPageSize)} 
+      rows={seedlots.slice(firstRowIndex, firstRowIndex + currentPageSize)} 
       headers={headerData}
       isSortable
-      className="seedlot-data-table"
     >
       {({ rows, headers, onInputChange, getHeaderProps, getTableProps}:DataTableInterface) => (
       <TableContainer>
-        <Search onChange={onInputChange} placeholder="Search for seedlots" />
+        <Search 
+          onChange={onInputChange} 
+          placeholder="Search for seedlots" 
+          size="lg" 
+        />
         <Table {...getTableProps()}>
           <TableHead>
             <TableRow>   
@@ -75,9 +81,9 @@ const SeedlotDataTable = () => {
             <TableCell>
               <Participants elements={item.cells[5].value} number={item.cells[0].value} />
             </TableCell>
-            <TableCell>{formatDate(item.cells[6].value)}</TableCell>
-            <TableCell>{formatDate(item.cells[7].value)}</TableCell>
-            <TableCell>{formatDate(item.cells[8].value)}</TableCell>
+            <TableCell>{item.cells[6].value}</TableCell>
+            <TableCell>{item.cells[7].value}</TableCell>
+            <TableCell>{item.cells[8].value}</TableCell>
           </TableRow>
         ))}
           </TableBody>
@@ -93,7 +99,7 @@ const SeedlotDataTable = () => {
         pageNumberText="Page Number"
         pageSize={currentPageSize}
         pageSizes={[ 10, 20, 30, 40, 50]}
-        totalItems={rowData.length}
+        totalItems={seedlots.length}
         onChange={({ page, pageSize }:{page: number, pageSize: number}) => {
           if (pageSize !== currentPageSize) {
             setCurrentPageSize(pageSize);
