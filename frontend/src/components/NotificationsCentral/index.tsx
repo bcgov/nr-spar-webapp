@@ -11,7 +11,7 @@ const NotificationsCentral = () => (
   <div className="notifications-space">
     <Row>
       <Button className='btn-viewed' kind="ghost">Mark all as viewed</Button>
-      <Button className='btn-all-notifications' kind="ghost">See all notification</Button>  
+      <Button className='btn-all-notifications' kind="ghost">See all notifications</Button>  
     </Row>
     <hr></hr>
     <div className="container">
