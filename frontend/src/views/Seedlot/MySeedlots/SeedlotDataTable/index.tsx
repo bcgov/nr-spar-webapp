@@ -14,7 +14,6 @@ import {
   Search
 } from '@carbon/react';
 
-
 import { headerData } from './data';
 import StatusItem from '../../../../components/StatusItem';
 import Participants from '../../../../components/Participants';

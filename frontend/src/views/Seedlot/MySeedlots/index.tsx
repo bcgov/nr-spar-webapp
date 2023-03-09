@@ -20,13 +20,11 @@ import getUrl from '../../../utils/ApiUtils';
 import ApiAddresses from '../../../utils/ApiAddresses';
 import Seedlot from '../../../types/Seedlot';
 
-
 const MySeedlots = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
 
   const [seedlotsData, setSeedlotsData] = useState<Seedlot[]>();
-
 
   const getAxiosConfig = () => {
     const axiosConfig = {};
