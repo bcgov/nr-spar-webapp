@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Icons from '@carbon/icons-react';
-import * as Pictograms from '@carbon/pictograms-react'
+import * as Pictograms from '@carbon/pictograms-react';
 
 import Subtitle from '../Subtitle';
 
@@ -17,7 +17,6 @@ interface EmptySectionProps {
 const EmptySection = ({
   icon, title, description, pictogram
 }: EmptySectionProps) => {
-
   let Img;
 
   if (icon) {

@@ -33,19 +33,22 @@ const MySeedlots = () => {
       </Column>
       <Column sm={4} className="my-seedlots-table">
         {
-          listItems.length ?
-            <SeedlotTable
-              elements={listItems}
-              headers={tableHeaders}
-            />
-            :
-            <div className="empty-my-seedlots">
-              <EmptySection
-                pictogram="Magnify"
-                title="There is no seedlot to show yet!"
-                description="Your recent seedlots will appear here once you generate one"
+          listItems.length
+            ? (
+              <SeedlotTable
+                elements={listItems}
+                headers={tableHeaders}
               />
-            </div>
+            )
+            : (
+              <div className="empty-my-seedlots">
+                <EmptySection
+                  pictogram="Magnify"
+                  title="There is no seedlot to show yet!"
+                  description="Your recent seedlots will appear here once you generate one"
+                />
+              </div>
+            )
         }
       </Column>
     </Row>

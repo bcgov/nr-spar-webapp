@@ -40,25 +40,28 @@ const StandardCard = ({
           </div>
         </div>
         {
-          !isEmpty &&
+          !isEmpty
+          && (
           <IconButton className="std-card-button" kind="ghost" label="Go" align="bottom" onClick={() => { navigate(`${url}`); }}>
             <Icons.ArrowRight />
           </IconButton>
+          )
         }
       </div>
       {
-        isEmpty ?
-          <EmptySection pictogram={image} title={emptyTitle} description={emptyDescription}/>
-          :
-          <div>
-            {type !== '4' ? (
-              <Image className="std-card-pictogram" />
-            ) : (
-              <ActivityHistory
-                history={ActivityHistoryItems}
-              />
-            )}
-          </div>
+        isEmpty
+          ? <EmptySection pictogram={image} title={emptyTitle} description={emptyDescription} />
+          : (
+            <div>
+              {type !== '4' ? (
+                <Image className="std-card-pictogram" />
+              ) : (
+                <ActivityHistory
+                  history={ActivityHistoryItems}
+                />
+              )}
+            </div>
+          )
       }
 
     </Tile>

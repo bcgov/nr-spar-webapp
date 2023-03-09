@@ -18,7 +18,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: false,
       emptyTitle: '',
-      emptyDescription: '',
+      emptyDescription: ''
     },
     {
       id: '2',
@@ -30,7 +30,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: false,
       emptyTitle: '',
-      emptyDescription: '',
+      emptyDescription: ''
     },
     {
       id: '3',
@@ -42,7 +42,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: false,
       emptyTitle: '',
-      emptyDescription: '',
+      emptyDescription: ''
     },
     {
       id: '4',
@@ -54,7 +54,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: false,
       emptyTitle: '',
-      emptyDescription: '',
+      emptyDescription: ''
     }
   ];
 
@@ -72,7 +72,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: false,
       emptyTitle: '',
-      emptyDescription: '',
+      emptyDescription: ''
     },
     {
       id: '2',
@@ -84,7 +84,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: false,
       emptyTitle: '',
-      emptyDescription: '',
+      emptyDescription: ''
     },
     {
       id: '3',
@@ -96,7 +96,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: true,
       emptyTitle: 'There is no seedlot to show yet!',
-      emptyDescription: 'You will have access to your seedlots when generating or adding to one',
+      emptyDescription: 'You will have access to your seedlots when generating or adding to one'
     },
     {
       id: '4',
@@ -108,7 +108,7 @@ const SeedlotActivities = () => {
       highlighted: false,
       isEmpty: true,
       emptyTitle: "You don't have an activity to show yet!",
-      emptyDescription: "Your recent activities will appear here once you have one",
+      emptyDescription: 'Your recent activities will appear here once you have one'
     }
   ];
 

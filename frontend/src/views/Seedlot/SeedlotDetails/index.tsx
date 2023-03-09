@@ -49,7 +49,7 @@ const manageOptions = [
   {
     text: 'Delete seedlot',
     onClickFunction: () => null
-  },
+  }
 ];
 
 const SeedlotDetails = () => {
@@ -94,28 +94,30 @@ const SeedlotDetails = () => {
     <FlexGrid className="seedlot-details-page">
       <Row className="seedlot-details-breadcrumb">
         <Breadcrumb>
-          <BreadcrumbItem onClick={() => navigate('/seedlot')} >Seedlots</BreadcrumbItem>
+          <BreadcrumbItem onClick={() => navigate('/seedlot')}>Seedlots</BreadcrumbItem>
           <BreadcrumbItem>My seedlots</BreadcrumbItem>
         </Breadcrumb>
       </Row>
       <Stack gap={6}>
         <Row className="seedlot-summary-title">
           {
-            seedlotData &&
-            <PageTitle
-              title={`Seedlot ${seedlotData.number}`}
-              subtitle="Check and manage this seedlot"
-              favourite
-            />
+            seedlotData
+            && (
+              <PageTitle
+                title={`Seedlot ${seedlotData.number}`}
+                subtitle="Check and manage this seedlot"
+                favourite
+              />
+            )
           }
-          <ComboButton title="Edit seedlot form" items={manageOptions} menuOptionsClass="edit-seedlot-form"/>
+          <ComboButton title="Edit seedlot form" items={manageOptions} menuOptionsClass="edit-seedlot-form" />
         </Row>
         <section title="Seedlot Summary">
           <Row className="seedlot-summary-content">
             <Column sm={4}>
               {
-                seedlotData &&
-                <SeedlotSummary seedlotData={seedlotData} />
+                seedlotData
+                && <SeedlotSummary seedlotData={seedlotData} />
               }
             </Column>
           </Row>
@@ -131,8 +133,8 @@ const SeedlotDetails = () => {
                 <TabPanels>
                   <TabPanel>
                     {
-                      seedlotApplicantData &&
-                      <ApplicantSeedlotInformation seedlotApplicantData={seedlotApplicantData}/>
+                      seedlotApplicantData
+                      && <ApplicantSeedlotInformation seedlotApplicantData={seedlotApplicantData} />
                     }
                     <FormProgress />
                     <FormReview />

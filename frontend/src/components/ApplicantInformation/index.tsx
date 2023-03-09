@@ -12,7 +12,7 @@ import {
   RadioButton,
   Checkbox,
   Button,
-  ComboBox,
+  ComboBox
 } from '@carbon/react';
 import { DocumentAdd } from '@carbon/icons-react';
 
@@ -24,7 +24,7 @@ import GeneticClassesType from '../../types/GeneticClasses';
 import getUrl from '../../utils/ApiUtils';
 import ApiAddresses from '../../utils/ApiAddresses';
 import { useAuth } from '../../contexts/AuthContext';
-import {FilterObj, filterInput} from '../../utils/filterUtils';
+import { FilterObj, filterInput } from '../../utils/filterUtils';
 
 import './styles.scss';
 
@@ -33,11 +33,10 @@ interface ComboBoxEvent {
 }
 
 const ApplicantInformation = () => {
-
-  const mock_agency_options: Array<string> = [
-    "0032 - Strong Seeds Orchard - SSO",
-    "0035 - Weak Seeds Orchard - WSO",
-    "0038 - Okay Seeds Orchard - OSO"
+  const mockAgencyOptions: Array<string> = [
+    '0032 - Strong Seeds Orchard - SSO',
+    '0035 - Weak Seeds Orchard - WSO',
+    '0038 - Okay Seeds Orchard - OSO'
   ];
 
   const { token } = useAuth();
@@ -59,7 +58,7 @@ const ApplicantInformation = () => {
   const seedlotData: SeedlotRegistration = {
     seedlotNumber: 0,
     applicant: {
-      name: mock_agency_options[0],
+      name: mockAgencyOptions[0],
       number: '0',
       email: ''
     },
@@ -100,7 +99,7 @@ const ApplicantInformation = () => {
 
   getGeneticClasses();
 
-  const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => { 
+  const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setResponseBody({
       ...responseBody,
@@ -111,8 +110,8 @@ const ApplicantInformation = () => {
     });
   };
 
-  const comboBoxChangeHandlerApplicant = (event: ComboBoxEvent) => { 
-    const selectedItem = event.selectedItem;
+  const comboBoxChangeHandlerApplicant = (event: ComboBoxEvent) => {
+    const { selectedItem } = event;
     setResponseBody({
       ...responseBody,
       applicant: {
@@ -170,7 +169,7 @@ const ApplicantInformation = () => {
 
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
- 
+
     if (invalidNumber) {
       numberInputRef.current?.focus();
     } else if (invalidEmail) {
@@ -181,7 +180,7 @@ const ApplicantInformation = () => {
     } else {
       axios.post(getUrl(ApiAddresses.AClassSeedlotPost), responseBody, getAxiosConfig())
         .then((response) => {
-          navigate('/seedlot/successfully-created/' + response.data.seedlotNumber);
+          navigate(`/seedlot/successfully-created/${response.data.seedlotNumber}`);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -205,9 +204,11 @@ const ApplicantInformation = () => {
               id="agency-name-combobox"
               ref={nameInputRef}
               name="name"
-              items={mock_agency_options}
-              initialSelectedItem={mock_agency_options[0]}
-              shouldFilterItem={({item, inputValue}: FilterObj) => filterInput({item, inputValue})}
+              items={mockAgencyOptions}
+              initialSelectedItem={mockAgencyOptions[0]}
+              shouldFilterItem={
+                ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
+              }
               placeholder="Select an angecy..."
               titleText="Applicant agency name"
               helperText="You can enter your agency number, name or acronym"

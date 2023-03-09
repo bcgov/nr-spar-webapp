@@ -3,9 +3,9 @@ export interface FilterObj {
     inputValue: string,
   }
 
-export const filterInput = ({item, inputValue}: FilterObj) => {
-    if (inputValue === null) {
-      return true;
-    }
-    return item.toLowerCase().includes(inputValue.toLowerCase());
-}
+export const filterInput = ({ item, inputValue }: FilterObj) => {
+  if (inputValue === null) {
+    return true;
+  }
+  return item.toLowerCase().includes(inputValue.toLowerCase());
+};

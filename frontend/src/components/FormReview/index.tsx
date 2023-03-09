@@ -14,39 +14,39 @@ import './styles.scss';
 // this is for testing only
 // TODO: remove this once the PR is approved
 // eslint-disable-next-line
-const empty_mock_form_data = [];
+const emptyMockFormData = [];
 
-const mock_form_data = [
+const mockFormData = [
   {
     id: 0,
     title: 'Collection',
-    description: 'Review collection information',
+    description: 'Review collection information'
   },
   {
     id: 1,
     title: 'Ownership',
-    description: 'Review ownership information',
+    description: 'Review ownership information'
   },
   {
     id: 2,
     title: 'Interim storage',
-    description: 'Review interim storage information',
+    description: 'Review interim storage information'
   },
   {
     id: 3,
     title: 'Orchard',
-    description: 'Review orchard information',
+    description: 'Review orchard information'
   },
   {
     id: 4,
     title: 'Parent tree and SMP',
-    description: 'Review parent tree and SPM information',
+    description: 'Review parent tree and SPM information'
   },
   {
     id: 5,
     title: 'Extraction and storage',
-    description: 'Review extraction and storage information',
-  },
+    description: 'Review extraction and storage information'
+  }
 ];
 
 const FormReview = () => (
@@ -59,24 +59,29 @@ const FormReview = () => (
     </div>
     <div>
       {
-        mock_form_data.length ?
-          <Accordion className="steps-accordion" >
-            {
-              mock_form_data.map((data) => {
-                return <AccordionItem
+        mockFormData.length
+          ? (
+            <Accordion className="steps-accordion">
+              {
+              mockFormData.map((data) => (
+                <AccordionItem
                   key={data.id}
-                  title={
+                  title={(
                     <TitleAccordion
                       title={data.title}
-                      description={data.description} />
-                  } />
-              })
+                      description={data.description}
+                    />
+                  )}
+                />
+              ))
             }
-          </Accordion>
-          :
-          <div className="form-review-empty-section">
-            <EmptySection pictogram="Magnify" title="You haven't completed the form yet!" description="The form data will appear here once you complete one step"/>
-          </div>
+            </Accordion>
+          )
+          : (
+            <div className="form-review-empty-section">
+              <EmptySection pictogram="Magnify" title="You haven't completed the form yet!" description="The form data will appear here once you complete one step" />
+            </div>
+          )
       }
     </div>
   </div>
