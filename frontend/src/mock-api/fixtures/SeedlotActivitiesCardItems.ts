@@ -23,7 +23,7 @@ const SeedlotActivitiesCardItems = [
     header: 'Existing seedlot',
     description:
       'Check and manage existing seedlot registrations ',
-    link: '#',
+    link: '/seedlot/my-seedlots',
     highlighted: false
   },
   {
