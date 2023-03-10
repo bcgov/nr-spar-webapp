@@ -9,13 +9,13 @@ import EmptySection from '../EmptySection';
 
 const NotificationsCentral = () => (
   <div className="notifications-space">
-    <Row>
+    <Row className="notifications-button-row">
       <Button className="btn-viewed" kind="ghost">Mark all as viewed</Button>
       <Button className="btn-all-notifications" kind="ghost">See all notifications</Button>
     </Row>
     <hr />
-    <div className="container">
-      <div className="vertical-center">
+    <div className="notifications-central-container">
+      <div className="notifications-central-vertical-center">
         <EmptySection
           icon="Sun"
           title="There is no new notifications!"

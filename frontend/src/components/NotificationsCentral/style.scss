@@ -1,38 +1,40 @@
 @use '../../theme/variables.scss' as vars;
+@use '@carbon/type';
 
-.#{vars.$bcgov-prefix}--row{
+.notifications-button-row {
   margin: 0rem;
 }
 
 .btn-viewed {
   padding-right: 3.75rem;
+  border: 0;
 }
 
 .btn-all-notifications {
-  padding-right: 3.31rem;
+  padding-right: 3.13rem;
+  border: 0;
 }
 
-.empty-section-container {
+.notifications-central-vertical-center .empty-section-container {
   padding: 1.5rem 1rem;
 }
 
-p.subtitle-section {
-  font-size: 0.875rem;
-  font-weight: normal;
+.empty-section-container p.subtitle-section {
+  @include type.type-style('body-compact-01');
 }
 
 hr {
-  border-top: 1px solid #DFDFE1;
+  border-top: 1px solid var(--#{vars.$bcgov-prefix}-border-subtle-00);
   margin: 0;
 }
 
-.container {
+.notifications-central-container {
   height: 60rem;
   text-align: center;
   position: relative;
 }
 
-.vertical-center {
+.notifications-central-vertical-center {
   text-align: center;
   margin: 0;
   position: relative;
