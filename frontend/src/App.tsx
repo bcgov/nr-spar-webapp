@@ -83,7 +83,7 @@ const App: React.FC = () => {
           <Route
             path="/seedlot/my-seedlots"
             element={(
-              <ProtectedRoute signed>
+              <ProtectedRoute signed={signed}>
                 <MySeedlots />
               </ProtectedRoute>
             )}

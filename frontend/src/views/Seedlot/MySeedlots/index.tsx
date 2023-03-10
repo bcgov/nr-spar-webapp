@@ -11,11 +11,11 @@ import { Add } from '@carbon/icons-react';
 
 import './styles.scss';
 
+import axios from 'axios';
 import PageTitle from '../../../components/PageTitle';
 import SeedlotDataTable from './SeedlotDataTable';
 
 import { useAuth } from '../../../contexts/AuthContext';
-import axios from 'axios';
 import getUrl from '../../../utils/ApiUtils';
 import ApiAddresses from '../../../utils/ApiAddresses';
 import Seedlot from '../../../types/Seedlot';
@@ -53,32 +53,32 @@ const MySeedlots = () => {
   getSeedlotsData();
 
   return (
-  <FlexGrid>
-    <Row className="my-seedlot-breadcrumb">
-      <Breadcrumb>
-        <BreadcrumbItem onClick={() => navigate('/seedlot')} >Seedlots</BreadcrumbItem>
-      </Breadcrumb>
-    </Row>
-    <Row className="my-seedlot-title">
-      <PageTitle 
-        title='My Seedlots'
-        subtitle='Check and manage my seedlots'
-        favourite
-      />
+    <FlexGrid>
+      <Row className="my-seedlot-breadcrumb">
+        <Breadcrumb>
+          <BreadcrumbItem onClick={() => navigate('/seedlot')}>Seedlots</BreadcrumbItem>
+        </Breadcrumb>
+      </Row>
+      <Row className="my-seedlot-title">
+        <PageTitle
+          title="My Seedlots"
+          subtitle="Check and manage my seedlots"
+          favourite
+        />
         <Button
           kind="primary"
-          onClick={() => { navigate('/seedlot/register-a-class')}}
+          onClick={() => { navigate('/seedlot/register-a-class'); }}
           size="md"
           className="btn-my-seedlot"
           renderIcon={Add}
         >
           Register a new seedlot
         </Button>
-    </Row>
-    <Row className="my-seedlot-data-table-row">
-      {seedlotsData && <SeedlotDataTable seedlots={seedlotsData}/> }
-    </Row>
-  </FlexGrid>      
+      </Row>
+      <Row className="my-seedlot-data-table-row">
+        {seedlotsData && <SeedlotDataTable seedlots={seedlotsData} /> }
+      </Row>
+    </FlexGrid>
   );
 };
 

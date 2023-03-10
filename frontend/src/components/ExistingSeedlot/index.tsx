@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 
 import { Row, Column } from '@carbon/react';
 
+import axios from 'axios';
+
 import SeedlotTable from '../SeedlotTable';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
-import ExistingSeedlotItems from '../../mock-api/fixtures/ExistingSeedlotItems';
-
 import './styles.scss';
-import axios from 'axios';
 import ApiAddresses from '../../utils/ApiAddresses';
 import getUrl from '../../utils/ApiUtils';
 import { useAuth } from '../../contexts/AuthContext';
@@ -46,7 +45,6 @@ const ExistingSeedlot = () => {
 
   getSeedlotsData();
 
-
   const listItems = seedlotsData;
 
   const tableHeaders: string[] = [
@@ -68,12 +66,13 @@ const ExistingSeedlot = () => {
         <Subtitle text="Check a summary of your recent seedlots" className="existing-seedlot-subtitle" />
       </Column>
       <Column sm={4} className="existing-seedlot-table">
-        {listItems &&
+        {listItems
+        && (
         <SeedlotTable
           elements={listItems}
           headers={tableHeaders}
         />
-        }
+        )}
         {(listItems?.length === 0) && (
         <div className="empty-existing-seedlot">
           <EmptySection

@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { hashObject } from 'react-hash-string';
 
-import { 
+import {
   DataTable,
   TableContainer,
   Table,
@@ -14,7 +15,7 @@ import {
   Search
 } from '@carbon/react';
 
-import { headerData } from './data';
+import headerData from './data';
 import StatusItem from '../../../../components/StatusItem';
 import Participants from '../../../../components/Participants';
 import Seedlot from '../../../../types/Seedlot';
@@ -39,65 +40,67 @@ interface SeedlotDataTableProps {
   seedlots: Seedlot[]
 }
 
-const SeedlotDataTable = ({seedlots}:SeedlotDataTableProps) => {
+const SeedlotDataTable = ({ seedlots }:SeedlotDataTableProps) => {
   const [firstRowIndex, setFirstRowIndex] = useState(0);
   const [currentPageSize, setCurrentPageSize] = useState(20);
 
-  return(
-  <>
-    <DataTable 
-      rows={seedlots.slice(firstRowIndex, firstRowIndex + currentPageSize)} 
-      headers={headerData}
-      isSortable
-    >
-      {({ rows, headers, onInputChange, getHeaderProps, getTableProps}:DataTableInterface) => (
-      <TableContainer>
-        <Search 
-          onChange={onInputChange} 
-          placeholder="Search for seedlots" 
-          size="lg" 
-        />
-        <Table {...getTableProps()}>
-          <TableHead>
-            <TableRow>   
-              {headers.map((header:HeaderType) => (
-                <TableHeader {...getHeaderProps({ header })}>
-                  {header.header}
-                </TableHeader>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {rows.map((item:RowInterface) => (
-          <TableRow key={hashObject(item.cells)}>
-            <TableCell>{item.cells[0].value}</TableCell>
-            <TableCell>{`${item.cells[1].value} class`}</TableCell>
-            <TableCell>{item.cells[2].value}</TableCell>
-            <TableCell>{item.cells[3].value}</TableCell>
-            <TableCell>
-              <StatusItem status={item.cells[4].value} />
-            </TableCell>
-            <TableCell>
-              <Participants elements={item.cells[5].value} number={item.cells[0].value} />
-            </TableCell>
-            <TableCell>{item.cells[6].value}</TableCell>
-            <TableCell>{item.cells[7].value}</TableCell>
-            <TableCell>{item.cells[8].value}</TableCell>
-          </TableRow>
-        ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      )}
-    </DataTable>
-    <Pagination
+  return (
+    <>
+      <DataTable
+        rows={seedlots.slice(firstRowIndex, firstRowIndex + currentPageSize)}
+        headers={headerData}
+        isSortable
+      >
+        {({
+          rows, headers, onInputChange, getHeaderProps, getTableProps
+        }:DataTableInterface) => (
+          <TableContainer>
+            <Search
+              onChange={onInputChange}
+              placeholder="Search for seedlots"
+              size="lg"
+            />
+            <Table {...getTableProps()}>
+              <TableHead>
+                <TableRow>
+                  {headers.map((header:HeaderType) => (
+                    <TableHeader {...getHeaderProps({ header })}>
+                      {header.header}
+                    </TableHeader>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((item:RowInterface) => (
+                  <TableRow key={hashObject(item.cells)}>
+                    <TableCell>{item.cells[0].value}</TableCell>
+                    <TableCell>{`${item.cells[1].value} class`}</TableCell>
+                    <TableCell>{item.cells[2].value}</TableCell>
+                    <TableCell>{item.cells[3].value}</TableCell>
+                    <TableCell>
+                      <StatusItem status={item.cells[4].value} />
+                    </TableCell>
+                    <TableCell>
+                      <Participants elements={item.cells[5].value} number={item.cells[0].value} />
+                    </TableCell>
+                    <TableCell>{item.cells[6].value}</TableCell>
+                    <TableCell>{item.cells[7].value}</TableCell>
+                    <TableCell>{item.cells[8].value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </DataTable>
+      <Pagination
         backwardText="Previous page"
         forwardText="Next page"
         itemsPerPageText=""
         page={1}
         pageNumberText="Page Number"
         pageSize={currentPageSize}
-        pageSizes={[ 10, 20, 30, 40, 50]}
+        pageSizes={[10, 20, 30, 40, 50]}
         totalItems={seedlots.length}
         onChange={({ page, pageSize }:{page: number, pageSize: number}) => {
           if (pageSize !== currentPageSize) {
@@ -107,6 +110,7 @@ const SeedlotDataTable = ({seedlots}:SeedlotDataTableProps) => {
         }}
       />
     </>
-)};
+  );
+};
 
 export default SeedlotDataTable;

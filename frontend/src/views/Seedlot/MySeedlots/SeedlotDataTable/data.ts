@@ -1,38 +1,40 @@
-export const headerData = [
+const headerData = [
   {
     key: 'number',
-    header: 'Seedlot number',
+    header: 'Seedlot number'
   },
   {
     key: 'class',
-    header: 'Lot class',
+    header: 'Lot class'
   },
   {
     key: 'lot_species',
-    header: 'Lot species',
+    header: 'Lot species'
   },
   {
     key: 'form_step',
-    header: 'Form step',
+    header: 'Form step'
   },
   {
     key: 'status',
-    header: 'Status',
+    header: 'Status'
   },
   {
     key: 'participants',
-    header: 'Participants',
+    header: 'Participants'
   },
   {
     key: 'created_at',
-    header: 'Created at',
+    header: 'Created at'
   },
   {
     key: 'last_modified',
-    header: 'Last modified',
+    header: 'Last modified'
   },
   {
     key: 'approved_at',
-    header: 'Approved at',
-  },
+    header: 'Approved at'
+  }
 ];
+
+export default headerData;
