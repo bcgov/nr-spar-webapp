@@ -1,0 +1,38 @@
+@use '../../../theme/variables.scss' as vars;
+@use '@carbon/type';
+
+.ownership-step-title-box {
+  h3 {
+    color: var(--#{vars.$bcgov-prefix}-text-primary);
+    @include type.type-style('heading-03', true);
+  }
+
+  p {
+    color: var(--#{vars.$bcgov-prefix}-text-secondary);
+    @include type.type-style('body-01', true);
+  }
+}
+
+.ownership-form-container {
+  margin-top: 1.25rem;
+
+  .#{vars.$bcgov-prefix}--accordion {
+    background-color: var(--#{vars.$bcgov-prefix}-layer-01);
+  }
+
+  // Accordian item title styling
+  .item-section {
+    .item-title-section {
+      @include type.type-style('body-02', true);
+      color: var(--#{vars.$bcgov-prefix}-text-primary);
+    }
+
+    .description-section {
+      @include type.type-style('helper-text-02', true);
+      color: var(--#{vars.$bcgov-prefix}-text-secondary);
+    }
+  }
+
+
+
+}
