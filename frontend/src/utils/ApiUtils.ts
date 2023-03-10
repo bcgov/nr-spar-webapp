@@ -56,11 +56,10 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
 
     // Retrieve one seedlot
     seedlotRetrieveOneUrl = '/seedlot/:seedlotnumber';
-
-    // Retrieve all seedlot
-    seedlotRetrieveAllUrl = '/seedlot';
-
   }
+
+  // Retrieve all seedlot
+  seedlotRetrieveAllUrl = '/seedlot';
 
   let server = serverUrl();
   if (mockServer) {
