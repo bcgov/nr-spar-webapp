@@ -85,7 +85,7 @@ const App: React.FC = () => {
             path="/ownership"
             element={(
               <ProtectedRoute signed={signed}>
-                <OwnershipStep />
+                <OwnershipStep defaultAgency="0032 - Strong Seeds Orchard - SSO" defaultCode="16" />
               </ProtectedRoute>
             )}
           />

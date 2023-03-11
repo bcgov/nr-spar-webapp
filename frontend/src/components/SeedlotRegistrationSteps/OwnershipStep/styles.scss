@@ -1,7 +1,15 @@
 @use '../../../theme/variables.scss' as vars;
 @use '@carbon/type';
 
+.ownership-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .ownership-step-title-box {
+  display: flex;
+  flex-direction: column;
   h3 {
     color: var(--#{vars.$bcgov-prefix}-text-primary);
     @include type.type-style('heading-03', true);
