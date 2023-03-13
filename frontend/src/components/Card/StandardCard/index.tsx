@@ -63,7 +63,6 @@ const StandardCard = ({
             </div>
           )
       }
-
     </Tile>
   );
 };

@@ -22,7 +22,7 @@ const EmptySection = ({
   if (icon) {
     Img = Icons[icon];
   }
-  // if both icon and pictogram are passed in then pictogram will be used
+  // If both icon and pictogram are passed in then pictogram will be used
   if (pictogram) {
     Img = Pictograms[pictogram];
   }

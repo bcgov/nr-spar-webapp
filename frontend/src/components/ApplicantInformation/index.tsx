@@ -29,7 +29,7 @@ import { FilterObj, filterInput } from '../../utils/filterUtils';
 import './styles.scss';
 
 interface ComboBoxEvent {
-  selectedItem: any
+  selectedItem: string;
 }
 
 const ApplicantInformation = () => {

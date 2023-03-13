@@ -63,18 +63,18 @@ const FormReview = () => (
           ? (
             <Accordion className="steps-accordion">
               {
-              mockFormData.map((data) => (
-                <AccordionItem
-                  key={data.id}
-                  title={(
-                    <TitleAccordion
-                      title={data.title}
-                      description={data.description}
-                    />
-                  )}
-                />
-              ))
-            }
+                mockFormData.map((data) => (
+                  <AccordionItem
+                    key={data.id}
+                    title={(
+                      <TitleAccordion
+                        title={data.title}
+                        description={data.description}
+                      />
+                    )}
+                  />
+                ))
+              }
             </Accordion>
           )
           : (
