@@ -7,13 +7,16 @@ import {
 
 import { SingleOwnerForm } from '../utils';
 
+import './styles.scss';
+
 interface SingleOwnerInfoProps {
   ownerInfo: SingleOwnerForm,
   handleChange: Function,
+  agencyOptions: Array<string>
 }
 
-const SingleOwnerInfo = ({ ownerInfo, handleChange }: SingleOwnerInfoProps) => (
-  <div>
+const SingleOwnerInfo = ({ ownerInfo, handleChange, agencyOptions }: SingleOwnerInfoProps) => (
+  <div className="single-owner-info-container">
     <p>
       {
         ownerInfo.ownerAgency

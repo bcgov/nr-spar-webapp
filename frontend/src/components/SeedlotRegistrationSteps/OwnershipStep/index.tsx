@@ -18,12 +18,12 @@ import './styles.scss';
 interface OwnershipStepProps {
   defaultAgency: string,
   defaultCode: string,
+  agencyOptions: Array<string>
 }
 /*
   component
 */
-// TODO: pass in all agency options as props
-const OwnershipStep = ({ defaultAgency, defaultCode }: OwnershipStepProps) => {
+const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipStepProps) => {
   const [ownershipArray, setOwnershipArray] = useState(
     [
       {
@@ -39,14 +39,14 @@ const OwnershipStep = ({ defaultAgency, defaultCode }: OwnershipStepProps) => {
     ]
   );
 
-  const updateForm = (e: any, index: number) => {
+  const updateForm = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
-    const newArr = [...ownershipArray];
-    newArr[index] = {
-      ...newArr[index],
+    const updatedForm = [...ownershipArray];
+    updatedForm[index] = {
+      ...updatedForm[index],
       [name]: value
     };
-    setOwnershipArray(newArr);
+    setOwnershipArray(updatedForm);
   };
 
   const addAnOwner = () => {
@@ -101,6 +101,7 @@ const OwnershipStep = ({ defaultAgency, defaultCode }: OwnershipStepProps) => {
                   handleChange={
                     (e: React.ChangeEvent<HTMLInputElement>) => updateForm(e, singleOwnerInfo.id)
                   }
+                  agencyOptions={agencyOptions}
                 />
               </AccordionItem>
             ))

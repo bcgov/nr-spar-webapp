@@ -37,7 +37,7 @@ export const insertOwnerForm = (currentArray: Array<SingleOwnerForm>) => {
 };
 
 // Assume the fullString is in the form of '0032 - Strong Seeds Orchard - SSO'
-// returns the middle string, e.g. 'Strong Seeds Orchard'
+// Returns the middle string, e.g. 'Strong Seeds Orchard'
 export const getAgencyName = (fullString: string) => {
   // TODO: remove this if statement later before PR
   if (!fullString.includes('-')) {

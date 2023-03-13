@@ -85,7 +85,15 @@ const App: React.FC = () => {
             path="/ownership"
             element={(
               <ProtectedRoute signed={signed}>
-                <OwnershipStep defaultAgency="0032 - Strong Seeds Orchard - SSO" defaultCode="16" />
+                <OwnershipStep
+                  defaultAgency="0032 - Strong Seeds Orchard - SSO"
+                  defaultCode="16"
+                  agencyOptions={[
+                    '0032 - Strong Seeds Orchard - SSO',
+                    '0035 - Weak Seeds Orchard - WSO',
+                    '0038 - Okay Seeds Orchard - OSO'
+                  ]}
+                />
               </ProtectedRoute>
             )}
           />
