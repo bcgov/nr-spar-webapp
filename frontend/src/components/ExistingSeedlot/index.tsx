@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
-import { Row, Column } from '@carbon/react';
-
 import axios from 'axios';
+
+import { Row, Column } from '@carbon/react';
 
 import SeedlotTable from '../SeedlotTable';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
-import './styles.scss';
 import ApiAddresses from '../../utils/ApiAddresses';
 import getUrl from '../../utils/ApiUtils';
 import { useAuth } from '../../contexts/AuthContext';
 import Seedlot from '../../types/Seedlot';
+
+import './styles.scss';
 
 const ExistingSeedlot = () => {
   const { token } = useAuth();
@@ -67,21 +68,22 @@ const ExistingSeedlot = () => {
       </Column>
       <Column sm={4} className="existing-seedlot-table">
         {listItems
-        && (
-        <SeedlotTable
-          elements={listItems}
-          headers={tableHeaders}
-        />
-        )}
-        {(listItems?.length === 0) && (
-        <div className="empty-existing-seedlot">
-          <EmptySection
-            icon="Application"
-            title="There is no seedlot to show yet!"
-            description="Your recent seedlots will appear here once you generate one"
+          && (
+          <SeedlotTable
+            elements={listItems}
+            headers={tableHeaders}
           />
-        </div>
-        )}
+          )}
+        {(listItems?.length === 0)
+          && (
+          <div className="empty-existing-seedlot">
+            <EmptySection
+              icon="Application"
+              title="There is no seedlot to show yet!"
+              description="Your recent seedlots will appear here once you generate one"
+            />
+          </div>
+          )}
       </Column>
     </Row>
   );

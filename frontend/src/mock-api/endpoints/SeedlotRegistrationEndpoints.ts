@@ -60,7 +60,6 @@ const SeedlotRegistrationEndpoints = (server: Server) => {
   });
 
   server.get(getUrl(ApiAddresses.SeedlotRetrieveAll, true), (schema: AppSchema) => schema.all('seedlotData'));
-
 };
 
 export default SeedlotRegistrationEndpoints;

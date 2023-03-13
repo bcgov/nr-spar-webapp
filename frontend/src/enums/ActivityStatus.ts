@@ -4,7 +4,7 @@ const ACTIVITY_STATUS = {
   APPROVED: 'Approved',
   CANCELED: 'Canceled',
   INCOMPLETE: 'Incomplete',
-  EXPIRED: 'Expired',
+  EXPIRED: 'Expired'
 };
 
 export default ACTIVITY_STATUS;
