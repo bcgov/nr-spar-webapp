@@ -15,7 +15,7 @@ import {
   Search
 } from '@carbon/react';
 
-import headerData from './data';
+import headerData from './headerData';
 import StatusItem from '../../../../components/StatusItem';
 import Participants from '../../../../components/Participants';
 import Seedlot from '../../../../types/Seedlot';
@@ -32,6 +32,7 @@ interface DataTableInterface {
   getHeaderProps: any,
   getTableProps: any,
 }
+
 interface RowInterface {
   cells: any,
 }
@@ -43,6 +44,13 @@ interface SeedlotDataTableProps {
 const SeedlotDataTable = ({ seedlots }:SeedlotDataTableProps) => {
   const [firstRowIndex, setFirstRowIndex] = useState(0);
   const [currentPageSize, setCurrentPageSize] = useState(20);
+
+  const paginationOnChange = (pageSize:number, page:number) => {
+    if (pageSize !== currentPageSize) {
+      setCurrentPageSize(pageSize);
+    }
+    setFirstRowIndex(pageSize * (page - 1));
+  };
 
   return (
     <>
@@ -103,10 +111,7 @@ const SeedlotDataTable = ({ seedlots }:SeedlotDataTableProps) => {
         pageSizes={[10, 20, 30, 40, 50]}
         totalItems={seedlots.length}
         onChange={({ page, pageSize }:{page: number, pageSize: number}) => {
-          if (pageSize !== currentPageSize) {
-            setCurrentPageSize(pageSize);
-          }
-          setFirstRowIndex(pageSize * (page - 1));
+          paginationOnChange(pageSize, page);
         }}
       />
     </>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+
 import {
   Row,
   Breadcrumb,
@@ -9,9 +12,6 @@ import {
 } from '@carbon/react';
 import { Add } from '@carbon/icons-react';
 
-import './styles.scss';
-
-import axios from 'axios';
 import PageTitle from '../../../components/PageTitle';
 import SeedlotDataTable from './SeedlotDataTable';
 
@@ -19,6 +19,8 @@ import { useAuth } from '../../../contexts/AuthContext';
 import getUrl from '../../../utils/ApiUtils';
 import ApiAddresses from '../../../utils/ApiAddresses';
 import Seedlot from '../../../types/Seedlot';
+
+import './styles.scss';
 
 const MySeedlots = () => {
   const navigate = useNavigate();
