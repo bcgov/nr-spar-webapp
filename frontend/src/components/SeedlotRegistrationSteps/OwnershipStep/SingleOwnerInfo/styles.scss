@@ -1,3 +1,19 @@
-.single-owner-info-container{
+@use '../../../../theme/variables.scss' as vars;
+
+.single-owner-info-container {
   padding: 1rem;
+  width: 100%;
+
+  .#{vars.$bcgov-prefix}--css-grid-column {
+    margin: 0;
+  }
+
+  .single-owner-combobox {
+    ::placeholder {
+      color: var(--#{vars.$bcgov-prefix}-text-primary);
+    }
+
+    // Not having this will cause the bottom border lines not lining up for some reasons
+    margin-top: -0.125rem;
+  }
 }

@@ -9,6 +9,10 @@ export interface SingleOwnerForm {
   methodOfPayment: string
 }
 
+export interface ComboBoxEvent {
+  selectedItem: string;
+}
+
 const ownerTemplate = {
   id: -1,
   ownerAgency: '',
@@ -38,7 +42,10 @@ export const insertOwnerForm = (currentArray: Array<SingleOwnerForm>) => {
 
 // Assume the fullString is in the form of '0032 - Strong Seeds Orchard - SSO'
 // Returns the middle string, e.g. 'Strong Seeds Orchard'
-export const getAgencyName = (fullString: string) => {
+export const getAgencyName = (fullString: string | null) => {
+  if (fullString === null) {
+    return 'Owner agency name';
+  }
   // TODO: remove this if statement later before PR
   if (!fullString.includes('-')) {
     return fullString;

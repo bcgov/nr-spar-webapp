@@ -11,7 +11,7 @@ import { Add } from '@carbon/icons-react';
 import TitleAccordion from '../../TitleAccordion';
 import SingleOwnerInfo from './SingleOwnerInfo';
 
-import { insertOwnerForm, getAgencyName } from './utils';
+import { insertOwnerForm, getAgencyName, ComboBoxEvent } from './utils';
 
 import './styles.scss';
 
@@ -45,6 +45,16 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
     updatedForm[index] = {
       ...updatedForm[index],
       [name]: value
+    };
+    setOwnershipArray(updatedForm);
+  };
+
+  const handleAgencyChange = (event: ComboBoxEvent, index: number) => {
+    const { selectedItem } = event;
+    const updatedForm = [...ownershipArray];
+    updatedForm[index] = {
+      ...updatedForm[index],
+      ownerAgency: selectedItem
     };
     setOwnershipArray(updatedForm);
   };
@@ -100,6 +110,9 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
                   ownerInfo={singleOwnerInfo}
                   handleChange={
                     (e: React.ChangeEvent<HTMLInputElement>) => updateForm(e, singleOwnerInfo.id)
+                  }
+                  handleAgencyChange={
+                    (e: ComboBoxEvent) => handleAgencyChange(e, singleOwnerInfo.id)
                   }
                   agencyOptions={agencyOptions}
                 />

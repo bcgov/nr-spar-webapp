@@ -1,7 +1,7 @@
 @use '../../../theme/variables.scss' as vars;
 @use '@carbon/type';
 
-.ownership-header{
+.ownership-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -10,6 +10,7 @@
 .ownership-step-title-box {
   display: flex;
   flex-direction: column;
+
   h3 {
     color: var(--#{vars.$bcgov-prefix}-text-primary);
     @include type.type-style('heading-03', true);
@@ -38,6 +39,12 @@
     .description-section {
       @include type.type-style('helper-text-02', true);
       color: var(--#{vars.$bcgov-prefix}-text-secondary);
+    }
+  }
+
+  @media only screen and (min-width: 640px) {
+    .#{vars.$bcgov-prefix}--accordion__content {
+      padding-right: 1rem;
     }
   }
 }
