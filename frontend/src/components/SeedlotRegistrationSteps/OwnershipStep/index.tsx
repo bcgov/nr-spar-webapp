@@ -11,35 +11,69 @@ import { Add } from '@carbon/icons-react';
 import TitleAccordion from '../../TitleAccordion';
 import SingleOwnerInfo from './SingleOwnerInfo';
 
-import { insertOwnerForm, getAgencyName, ComboBoxEvent } from './utils';
+import {
+  insertOwnerForm,
+  deleteOwnerForm,
+  getAgencyName,
+  ComboBoxEvent,
+  formatPortionPerc
+} from './utils';
 
 import './styles.scss';
 
-interface OwnershipStepProps {
-  defaultAgency: string,
-  defaultCode: string,
-  agencyOptions: Array<string>
-}
+// Mock data
+const mockDefaultCode = '16';
+const mockAgencyOptions = [
+  '0032 - Strong Seeds Orchard - SSO',
+  '0035 - Weak Seeds Orchard - WSO',
+  '0038 - Okay Seeds Orchard - OSO'
+];
+const mockDefaultAgency = mockAgencyOptions[0];
+const mockFundingSources = [
+  'BCT - BC Timber Sales',
+  'FES - Forest Enhancement Society',
+  'FIP - Forest Investment Program',
+  'FRP - FRPA - Application For Relief - Ministry Administered',
+  'FTL - Forests for Tomorrow - Licensee Administered',
+  'FTM - Forests for Tomorrow - Ministry Administered',
+  'GA - Other Agencies or Voluntary Work',
+  'GFS - Forest Stand Management Fund',
+  'LFP - Licensee Funded Program',
+  'TSC - Tree Seed Centre'
+];
+const mockMethodsOfPayment = [
+  // Index 0 should be the default method of payment
+  'ITC - Invoice to client address',
+  'NC - Non-chargeable',
+  'JV - Journal voucher'
+];
 /*
   component
 */
-const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipStepProps) => {
+const OwnershipStep = () => {
   const [ownershipArray, setOwnershipArray] = useState(
     [
       {
         id: 0,
-        ownerAgency: defaultAgency,
-        ownerPortion: 100,
-        ownerCode: defaultCode,
-        reservedPerc: 100,
-        surplusPerc: 0,
+        ownerAgency: mockDefaultAgency,
+        ownerPortion: '100.00',
+        ownerCode: mockDefaultCode,
+        reservedPerc: '100.00',
+        surplusPerc: '0.00',
         fundingSource: '',
-        methodOfPayment: ''
+        methodOfPayment: '',
+        isAgencyInvalid: false,
+        isPortionInvalid: false,
+        isOwnerCodeInvalid: false,
+        isReservedInvalid: false,
+        isSurplusInvalid: false,
+        isSourceInvalid: false,
+        isPaymentInvalid: false
       }
     ]
   );
 
-  const updateForm = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { name, value } = e.target;
     const updatedForm = [...ownershipArray];
     updatedForm[index] = {
@@ -64,6 +98,11 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
     setOwnershipArray(added);
   };
 
+  const deleteAnOwner = (id: number) => {
+    const deleted = deleteOwnerForm(id, ownershipArray);
+    setOwnershipArray(deleted);
+  };
+
   const logForm = () => {
     // eslint-disable-next-line no-console
     console.log(ownershipArray);
@@ -81,16 +120,6 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
             owners are the ones who are charged for cone and seed processing fees
           </p>
         </div>
-
-        <Button
-          kind="tertiary"
-          size="md"
-          className="btn-add-owner"
-          renderIcon={Add}
-          onClick={addAnOwner}
-        >
-          Add owner
-        </Button>
       </div>
 
       <div className="ownership-form-container">
@@ -98,27 +127,35 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
           {
             ownershipArray.map((singleOwnerInfo) => (
               <AccordionItem
+                className="single-accordion-item"
                 key={`${singleOwnerInfo.id}`}
+                open
                 title={(
                   <TitleAccordion
                     title={singleOwnerInfo.ownerAgency === ''
                       ? 'Owner agency name'
                       : getAgencyName(singleOwnerInfo.ownerAgency)}
-                    description={`${singleOwnerInfo.ownerPortion}% owner portion`}
+                    description={`${formatPortionPerc(singleOwnerInfo.ownerPortion)}% owner portion`}
                   />
                 )}
               >
                 <SingleOwnerInfo
                   ownerInfo={singleOwnerInfo}
-                  handleChange={
-                    (e: React.ChangeEvent<HTMLInputElement>) => updateForm(e, singleOwnerInfo.id)
+                  agencyOptions={mockAgencyOptions}
+                  fundingSources={mockFundingSources}
+                  methodsOfPayment={mockMethodsOfPayment}
+                  handleInputChange={
+                    (e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, singleOwnerInfo.id);
+                    }
                   }
                   handleComboBoxChange={
                     (e: ComboBoxEvent, field: string) => {
                       handleComboBoxChange(e, singleOwnerInfo.id, field);
                     }
                   }
-                  agencyOptions={agencyOptions}
+                  addAnOwner={addAnOwner}
+                  deleteAnOwner={(id: number) => deleteAnOwner(id)}
                 />
               </AccordionItem>
             ))

@@ -8,16 +8,16 @@
     margin: 0;
     padding-bottom: 2rem;
     input{
-      background-color: white;
+      background-color: var(--#{vars.$bcgov-prefix}-field-02);
     }
     button{
       border: none;
     }
     button::before{
-      background-color: white;
+      background-color: var(--#{vars.$bcgov-prefix}-field-02);
     }
     button::after{
-      background-color: white;
+      background-color: var(--#{vars.$bcgov-prefix}-field-02);
     }
   }
 
@@ -39,5 +39,9 @@
 
   .reserved-surplus-input{
     width: 49.75%;
+  }
+
+  .owner-mod-btn{
+    margin-left: 1rem;
   }
 }
