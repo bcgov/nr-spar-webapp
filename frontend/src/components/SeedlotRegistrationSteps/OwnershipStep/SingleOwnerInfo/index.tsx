@@ -28,7 +28,7 @@ const SingleOwnerInfo = ({
   <div className="single-owner-info-container">
     <FlexGrid fullWidth>
       <Row>
-        <Column sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
           <ComboBox
             className="single-owner-combobox"
             id={`owner-agency-${ownerInfo.id}`}
@@ -44,17 +44,50 @@ const SingleOwnerInfo = ({
             onChange={(e: ComboBoxEvent) => handleComboBoxChange(e, 'ownerAgency')}
           />
         </Column>
-        <Column sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
           <NumberInput
             id={`single-owner-code-${ownerInfo.id}`}
             placeholder="Example: 00"
             name="ownerCode"
+            defaultValue={ownerInfo.ownerCode}
             label="Owner location code"
             helperText="2-digit code that identifies the address of operated office or division"
-            value="number"
             hideSteppers
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
           />
+        </Column>
+      </Row>
+      <Row>
+        <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <NumberInput
+            id={`single-owner-portion-${ownerInfo.id}`}
+            name="ownerPortion"
+            label="Owner portion (%)"
+            defaultValue={ownerInfo.ownerPortion}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          />
+        </Column>
+        <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <div className="reserved-perc-container">
+            <div className="reserved-surplus-input">
+              <NumberInput
+                id={`single-owner-reserved-${ownerInfo.id}`}
+                name="reservedPerc"
+                label="Reserved (%)"
+                defaultValue={ownerInfo.reservedPerc}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+              />
+            </div>
+            <div className="reserved-surplus-input">
+              <NumberInput
+                id={`single-owner-surplus-${ownerInfo.id}`}
+                name="surplusPerc"
+                label="Surplus (%)"
+                defaultValue={ownerInfo.surplusPerc}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+              />
+            </div>
+          </div>
         </Column>
       </Row>
     </FlexGrid>

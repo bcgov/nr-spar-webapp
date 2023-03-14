@@ -101,7 +101,9 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
                 key={`${singleOwnerInfo.id}`}
                 title={(
                   <TitleAccordion
-                    title={getAgencyName(singleOwnerInfo.ownerAgency)}
+                    title={singleOwnerInfo.ownerAgency === ''
+                      ? 'Owner agency name'
+                      : getAgencyName(singleOwnerInfo.ownerAgency)}
                     description={`${singleOwnerInfo.ownerPortion}% owner portion`}
                   />
                 )}

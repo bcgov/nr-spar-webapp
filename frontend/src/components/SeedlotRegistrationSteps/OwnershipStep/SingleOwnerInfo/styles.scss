@@ -4,8 +4,21 @@
   padding: 1rem;
   width: 100%;
 
-  .#{vars.$bcgov-prefix}--css-grid-column {
+  .single-owner-info-col {
     margin: 0;
+    padding-bottom: 2rem;
+    input{
+      background-color: white;
+    }
+    button{
+      border: none;
+    }
+    button::before{
+      background-color: white;
+    }
+    button::after{
+      background-color: white;
+    }
   }
 
   .single-owner-combobox {
@@ -15,5 +28,16 @@
 
     // Not having this will cause the bottom border lines not lining up for some reasons
     margin-top: -0.125rem;
+  }
+
+  .reserved-perc-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .reserved-surplus-input{
+    width: 49.75%;
   }
 }
