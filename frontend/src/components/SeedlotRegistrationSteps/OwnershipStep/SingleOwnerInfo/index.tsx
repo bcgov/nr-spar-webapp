@@ -18,12 +18,12 @@ import './styles.scss';
 interface SingleOwnerInfoProps {
   ownerInfo: SingleOwnerForm,
   handleChange: Function,
-  handleAgencyChange: Function,
+  handleComboBoxChange: Function,
   agencyOptions: Array<string>
 }
 
 const SingleOwnerInfo = ({
-  ownerInfo, agencyOptions, handleChange, handleAgencyChange
+  ownerInfo, agencyOptions, handleChange, handleComboBoxChange
 }: SingleOwnerInfoProps) => (
   <div className="single-owner-info-container">
     <FlexGrid fullWidth>
@@ -41,7 +41,7 @@ const SingleOwnerInfo = ({
             placeholder="Enter or choose your agency"
             titleText="Owner agency"
             helperText="You can enter the agency number, name or acronym"
-            onChange={(e: ComboBoxEvent) => handleAgencyChange(e)}
+            onChange={(e: ComboBoxEvent) => handleComboBoxChange(e, 'ownerAgency')}
           />
         </Column>
         <Column sm={16} md={16} lg={8}>

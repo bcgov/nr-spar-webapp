@@ -49,12 +49,12 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
     setOwnershipArray(updatedForm);
   };
 
-  const handleAgencyChange = (event: ComboBoxEvent, index: number) => {
+  const handleComboBoxChange = (event: ComboBoxEvent, index: number, field: string) => {
     const { selectedItem } = event;
     const updatedForm = [...ownershipArray];
     updatedForm[index] = {
       ...updatedForm[index],
-      ownerAgency: selectedItem
+      [field]: selectedItem
     };
     setOwnershipArray(updatedForm);
   };
@@ -111,8 +111,10 @@ const OwnershipStep = ({ defaultAgency, defaultCode, agencyOptions }: OwnershipS
                   handleChange={
                     (e: React.ChangeEvent<HTMLInputElement>) => updateForm(e, singleOwnerInfo.id)
                   }
-                  handleAgencyChange={
-                    (e: ComboBoxEvent) => handleAgencyChange(e, singleOwnerInfo.id)
+                  handleComboBoxChange={
+                    (e: ComboBoxEvent, field: string) => {
+                      handleComboBoxChange(e, singleOwnerInfo.id, field);
+                    }
                   }
                   agencyOptions={agencyOptions}
                 />
