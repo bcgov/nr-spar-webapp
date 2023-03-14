@@ -17,7 +17,7 @@ import SeedlotDetails from './views/Seedlot/SeedlotDetails';
 import SeedlotDashboard from './views/Seedlot/SeedlotDashboard';
 import CreateAClass from './views/Seedlot/CreateAClass';
 import SeedlotCreatedFeedback from './views/Seedlot/SeedlotCreatedFeedback';
-
+import MySeedlots from './views/Seedlot/MySeedlots';
 // Temporary import for developing
 import OwnershipStep from './components/SeedlotRegistrationSteps/OwnershipStep';
 
@@ -81,6 +81,16 @@ const App: React.FC = () => {
               </ProtectedRoute>
             )}
           />
+
+          <Route
+            path="/seedlot/my-seedlots"
+            element={(
+              <ProtectedRoute signed={signed}>
+                <MySeedlots />
+              </ProtectedRoute>
+            )}
+          />
+
           <Route
             path="/ownership"
             element={(
