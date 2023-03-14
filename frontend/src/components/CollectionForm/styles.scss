@@ -1,0 +1,19 @@
+@use '@carbon/type';
+
+.collection-form {
+  margin-top: 1rem;
+  padding-left: 2.5rem;
+}
+
+.collection-form h2 {
+  @include type.type-style('heading-03');
+  margin-bottom: 0.5rem;
+}
+
+.collector-agency-title {
+  margin-bottom: 2.5rem;
+}
+
+.collector-agency-information {
+  margin-bottom: 2rem;
+}
