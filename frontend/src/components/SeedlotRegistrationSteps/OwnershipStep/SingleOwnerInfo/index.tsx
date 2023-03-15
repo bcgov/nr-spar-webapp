@@ -16,7 +16,8 @@ import {
   SingleOwnerForm,
   ComboBoxEvent,
   CheckBoxValue,
-  NumStepperVal
+  NumStepperVal,
+  ValidationProp
 } from '../utils';
 import { FilterObj, filterInput } from '../../../../utils/filterUtils';
 
@@ -29,6 +30,7 @@ interface SingleOwnerInfoProps {
   addAnOwner: Function,
   deleteAnOwner: Function,
   setDefaultAgencyNCode: Function,
+  validationProp: ValidationProp,
   agencyOptions: Array<string>,
   fundingSources: Array<string>,
   methodsOfPayment: Array<string>
@@ -36,7 +38,7 @@ interface SingleOwnerInfoProps {
 
 const SingleOwnerInfo = ({
   ownerInfo, agencyOptions, fundingSources, methodsOfPayment, disableInputs,
-  handleInputChange, addAnOwner, deleteAnOwner, setDefaultAgencyNCode
+  validationProp, handleInputChange, addAnOwner, deleteAnOwner, setDefaultAgencyNCode
 }: SingleOwnerInfoProps) => {
   const reservedInputRef = useRef<HTMLInputElement>(null);
   const surplusInputRef = useRef<HTMLInputElement>(null);
@@ -78,7 +80,9 @@ const SingleOwnerInfo = ({
               titleText="Owner agency"
               helperText="You can enter the agency number, name or acronym"
               onChange={(e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)}
-              invalid={ownerInfo.isAgencyInvalid}
+              // We need to check if validationProp is here since deleting a Single Owner Form
+              //    might delete the valid prop first and throwing an error
+              invalid={validationProp ? validationProp.isAgencyInvalid : false}
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
@@ -94,7 +98,7 @@ const SingleOwnerInfo = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleInputChange(e.target.name, e.target.value);
               }}
-              invalid={ownerInfo.isOwnerCodeInvalid}
+              invalid={validationProp ? validationProp.isOwnerCodeInvalid : false}
             />
           </Column>
         </Row>
@@ -109,7 +113,7 @@ const SingleOwnerInfo = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleInputChange(e.target.name, e.target.value);
               }}
-              invalid={ownerInfo.isPortionInvalid}
+              invalid={validationProp ? validationProp.isPortionInvalid : false}
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
@@ -127,7 +131,7 @@ const SingleOwnerInfo = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(e.target.name, e.target.value);
                   }}
-                  invalid={ownerInfo.isReservedInvalid}
+                  invalid={validationProp ? validationProp.isReservedInvalid : false}
                   onClick={
                     (
                       _e: React.MouseEvent<HTMLButtonElement>,
@@ -155,7 +159,7 @@ const SingleOwnerInfo = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(e.target.name, e.target.value);
                   }}
-                  invalid={ownerInfo.isSurplusInvalid}
+                  invalid={validationProp ? validationProp.isSurplusInvalid : false}
                   onClick={
                     (
                       _e: React.MouseEvent<HTMLButtonElement>,
@@ -187,7 +191,7 @@ const SingleOwnerInfo = ({
               titleText="Funding source"
               direction="top"
               onChange={(e: ComboBoxEvent) => handleInputChange('fundingSource', e.selectedItem)}
-              invalid={ownerInfo.isSourceInvalid}
+              invalid={validationProp ? validationProp.isSourceInvalid : false}
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
@@ -204,7 +208,7 @@ const SingleOwnerInfo = ({
               titleText="Method of payment"
               direction="top"
               onChange={(e: ComboBoxEvent) => handleInputChange('methodOfPayment', e.selectedItem)}
-              invalid={ownerInfo.isPaymentInvalid}
+              invalid={validationProp ? validationProp.isPaymentInvalid : false}
             />
           </Column>
         </Row>
@@ -236,7 +240,6 @@ const SingleOwnerInfo = ({
           }
         </Row>
       </FlexGrid>
-
     </div>
   );
 };

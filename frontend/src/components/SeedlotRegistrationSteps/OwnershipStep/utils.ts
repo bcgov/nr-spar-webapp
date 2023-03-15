@@ -6,18 +6,27 @@ export interface SingleOwnerForm {
   reservedPerc: string,
   surplusPerc: string,
   fundingSource: string,
-  methodOfPayment: string,
+  methodOfPayment: string
+}
+
+export interface ValidationProp {
+  id: number,
   isAgencyInvalid: boolean,
   isPortionInvalid: boolean,
   isOwnerCodeInvalid: boolean,
   isReservedInvalid: boolean,
   isSurplusInvalid: boolean,
   isSourceInvalid: boolean,
-  isPaymentInvalid: boolean,
+  isPaymentInvalid: boolean
+}
+
+export interface StateReturnObj {
+  newOwnerArr: Array<SingleOwnerForm>,
+  newValidArr: Array<ValidationProp>
 }
 
 export interface ComboBoxEvent {
-  selectedItem: string;
+  selectedItem: string
 }
 
 export interface CheckBoxValue {
@@ -38,7 +47,11 @@ const ownerTemplate = {
   reservedPerc: '100.00',
   surplusPerc: '0.00',
   fundingSource: '',
-  methodOfPayment: '',
+  methodOfPayment: ''
+};
+
+const validTemplate = {
+  id: -1,
   isAgencyInvalid: false,
   isPortionInvalid: false,
   isOwnerCodeInvalid: false,
@@ -58,18 +71,38 @@ const getNextId = (currentArray: Array<SingleOwnerForm>) => {
   return max + 1;
 };
 
-export const insertOwnerForm = (currentArray: Array<SingleOwnerForm>) => {
-  const newForm = { ...ownerTemplate };
-  newForm.id = getNextId(currentArray);
-  return [...currentArray, newForm];
+export const insertOwnerForm = (
+  ownershiptArray: Array<SingleOwnerForm>,
+  validationArray: Array<ValidationProp>
+) => {
+  const newOwnerForm = { ...ownerTemplate };
+  const newValidForm = { ...validTemplate };
+  const newId = getNextId(ownershiptArray);
+  newOwnerForm.id = newId;
+  newValidForm.id = newId;
+  return {
+    newOwnerArr: [...ownershiptArray, newOwnerForm],
+    newValidArr: [...validationArray, newValidForm]
+  };
 };
 
-export const deleteOwnerForm = (id: number, currentArray: Array<SingleOwnerForm>) => {
+export const deleteOwnerForm = (
+  id: number,
+  ownershiptArray: Array<SingleOwnerForm>,
+  validationArray: Array<ValidationProp>
+) => {
   if (id === 0) {
-    return currentArray;
+    return {
+      newOwnerArr: ownershiptArray,
+      newValidArr: validationArray
+    };
   }
-  const newForm = currentArray.filter((obj) => obj.id !== id);
-  return newForm;
+  const newOwnerArray = ownershiptArray.filter((obj) => obj.id !== id);
+  const newValidArray = validationArray.filter((obj) => obj.id !== id);
+  return {
+    newOwnerArr: newOwnerArray,
+    newValidArr: newValidArray
+  };
 };
 
 // Assume the fullString is in the form of '0032 - Strong Seeds Orchard - SSO'

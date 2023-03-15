@@ -14,7 +14,7 @@ import {
   insertOwnerForm,
   deleteOwnerForm,
   getAgencyName,
-  ComboBoxEvent,
+  StateReturnObj,
   formatPortionPerc,
   calcResvOrSurp
 } from './utils';
@@ -64,7 +64,15 @@ const OwnershipStep = () => {
         reservedPerc: '100.00',
         surplusPerc: '0.00',
         fundingSource: '',
-        methodOfPayment: '',
+        methodOfPayment: ''
+      }
+    ]
+  );
+
+  const [validationArray, setValidationArray] = useState(
+    [
+      {
+        id: 0,
         isAgencyInvalid: false,
         isPortionInvalid: false,
         isOwnerCodeInvalid: false,
@@ -107,13 +115,25 @@ const OwnershipStep = () => {
   };
 
   const addAnOwner = () => {
-    const added = insertOwnerForm(ownershipArray);
-    setOwnershipArray(added);
+    // Maximum of 10 ownership can be set
+    if (ownershipArray.length > 10) {
+      return;
+    }
+    const {
+      newOwnerArr,
+      newValidArr
+    }: StateReturnObj = insertOwnerForm(ownershipArray, validationArray);
+    setOwnershipArray(newOwnerArr);
+    setValidationArray(newValidArr);
   };
 
   const deleteAnOwner = (id: number) => {
-    const deleted = deleteOwnerForm(id, ownershipArray);
-    setOwnershipArray(deleted);
+    const {
+      newOwnerArr,
+      newValidArr
+    }: StateReturnObj = deleteOwnerForm(id, ownershipArray, validationArray);
+    setOwnershipArray(newOwnerArr);
+    setValidationArray(newValidArr);
   };
 
   const setDefaultAgencyNCode = (checked: boolean) => {
@@ -128,7 +148,7 @@ const OwnershipStep = () => {
 
   const logForm = () => {
     // eslint-disable-next-line no-console
-    console.log(ownershipArray);
+    console.log(ownershipArray, validationArray);
   };
 
   return (
@@ -168,6 +188,7 @@ const OwnershipStep = () => {
                   fundingSources={mockFundingSources}
                   methodsOfPayment={mockMethodsOfPayment}
                   disableInputs={disableInputs}
+                  validationProp={validationArray[singleOwnerInfo.id]}
                   handleInputChange={
                     (name: string, value: string) => {
                       handleInputChange(singleOwnerInfo.id, name, value);
