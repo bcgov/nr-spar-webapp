@@ -20,6 +20,16 @@ export interface ComboBoxEvent {
   selectedItem: string;
 }
 
+export interface CheckBoxValue {
+  checked: boolean,
+  id: string
+}
+
+export interface NumStepperVal {
+  value: number,
+  direction: string
+}
+
 const ownerTemplate = {
   id: -1,
   ownerAgency: '',

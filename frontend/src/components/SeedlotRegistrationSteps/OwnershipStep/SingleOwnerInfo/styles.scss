@@ -7,30 +7,56 @@
   .single-owner-info-col {
     margin: 0;
     padding-bottom: 2rem;
-    input{
+
+    input {
       background-color: var(--#{vars.$bcgov-prefix}-field-02);
     }
-    button{
+
+    button {
       border: none;
     }
-    button::before{
+
+    button::before {
       background-color: var(--#{vars.$bcgov-prefix}-field-02);
     }
-    button::after{
+
+    button::after {
       background-color: var(--#{vars.$bcgov-prefix}-field-02);
     }
   }
 
-  .#{vars.$bcgov-prefix}--list-box__menu-item{
+  .#{vars.$bcgov-prefix}--list-box__menu-item {
     background-color: var(--#{vars.$bcgov-prefix}-layer-02);
   }
 
-  .#{vars.$bcgov-prefix}--list-box__menu-item--highlighted{
+  .#{vars.$bcgov-prefix}--list-box__menu-item--highlighted {
     background-color: var(--#{vars.$bcgov-prefix}-layer-hover-02);
   }
 
-  .#{vars.$bcgov-prefix}--list-box__menu-item--active{
+  .#{vars.$bcgov-prefix}--list-box__menu-item--active {
     background-color: var(--#{vars.$bcgov-prefix}-layer-hover-02);
+  }
+
+  .#{vars.$bcgov-prefix}--label--disabled {
+    color: var(--#{vars.$bcgov-prefix}-text-secondary);
+  }
+
+  .#{vars.$bcgov-prefix}--form__helper-text--disabled {
+    color: var(--#{vars.$bcgov-prefix}-text-secondary);
+  }
+
+  .#{vars.$bcgov-prefix}--list-box--disabled {
+    input {
+      background-color: var(--#{vars.$bcgov-prefix}-field-01);
+      color: var(--#{vars.$bcgov-prefix}-text-primary);
+    }
+  }
+
+  .#{vars.$bcgov-prefix}--text-input:disabled {
+    border-bottom: 1px solid var(--#{vars.$bcgov-prefix}-border-subtle-00);
+    -webkit-text-fill-color: var(--#{vars.$bcgov-prefix}-text-primary);
+    background-color: var(--#{vars.$bcgov-prefix}-field-01);
+    color: var(--#{vars.$bcgov-prefix}-text-primary);
   }
 
   .single-owner-combobox {
@@ -42,18 +68,18 @@
     margin-top: -0.125rem;
   }
 
-  .reserved-perc-container{
+  .reserved-perc-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
 
-  .reserved-surplus-input{
+  .reserved-surplus-input {
     width: 49.75%;
   }
 
-  .owner-mod-btn{
+  .owner-mod-btn {
     margin-left: 1rem;
   }
 }

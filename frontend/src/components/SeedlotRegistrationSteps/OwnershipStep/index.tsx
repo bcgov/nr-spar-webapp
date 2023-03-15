@@ -50,7 +50,6 @@ const mockMethodsOfPayment = [
 /*
   component
   TODO:
-    Default checkbox behavior
     Form validation
     Back & Next buttons
 */
@@ -77,25 +76,33 @@ const OwnershipStep = () => {
     ]
   );
 
-  const handleInputChange = (index: number, name: string, value: string) => {
+  const [disableInputs, setDisableInputs] = useState(true);
+
+  // Optional name and value can be passed in to set two values at once
+  const handleInputChange = (
+    index: number,
+    name: string,
+    value: string,
+    optionalName?: string,
+    optionalValue?: string
+  ) => {
     let updatedForm = [...ownershipArray];
-    updatedForm[index] = {
-      ...updatedForm[index],
-      [name]: value
-    };
+    if (optionalName) {
+      updatedForm[index] = {
+        ...updatedForm[index],
+        [name]: value,
+        [optionalName]: optionalValue
+      };
+    } else {
+      updatedForm[index] = {
+        ...updatedForm[index],
+        [name]: value
+      };
+    }
+    // Auto calc either reserved or surplus
     if (name === 'reservedPerc' || name === 'surplusPerc') {
       updatedForm = calcResvOrSurp(index, name, value, updatedForm);
     }
-    setOwnershipArray(updatedForm);
-  };
-
-  const handleComboBoxChange = (event: ComboBoxEvent, index: number, field: string) => {
-    const { selectedItem } = event;
-    const updatedForm = [...ownershipArray];
-    updatedForm[index] = {
-      ...updatedForm[index],
-      [field]: selectedItem
-    };
     setOwnershipArray(updatedForm);
   };
 
@@ -107,6 +114,16 @@ const OwnershipStep = () => {
   const deleteAnOwner = (id: number) => {
     const deleted = deleteOwnerForm(id, ownershipArray);
     setOwnershipArray(deleted);
+  };
+
+  const setDefaultAgencyNCode = (checked: boolean) => {
+    if (checked) {
+      handleInputChange(0, 'ownerCode', mockDefaultCode, 'ownerAgency', mockDefaultAgency);
+      setDisableInputs(true);
+    } else {
+      handleInputChange(0, 'ownerCode', '', 'ownerAgency', '');
+      setDisableInputs(false);
+    }
   };
 
   const logForm = () => {
@@ -150,15 +167,14 @@ const OwnershipStep = () => {
                   agencyOptions={mockAgencyOptions}
                   fundingSources={mockFundingSources}
                   methodsOfPayment={mockMethodsOfPayment}
+                  disableInputs={disableInputs}
                   handleInputChange={
                     (name: string, value: string) => {
                       handleInputChange(singleOwnerInfo.id, name, value);
                     }
                   }
-                  handleComboBoxChange={
-                    (e: ComboBoxEvent, field: string) => {
-                      handleComboBoxChange(e, singleOwnerInfo.id, field);
-                    }
+                  setDefaultAgencyNCode={
+                    (checked: boolean) => setDefaultAgencyNCode(checked)
                   }
                   addAnOwner={addAnOwner}
                   deleteAnOwner={(id: number) => deleteAnOwner(id)}

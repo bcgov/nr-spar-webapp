@@ -7,29 +7,36 @@ import {
   Column,
   ComboBox,
   Row,
-  Button
+  Button,
+  Checkbox
 } from '@carbon/react';
 import { Add, TrashCan } from '@carbon/icons-react';
 
-import { SingleOwnerForm, ComboBoxEvent } from '../utils';
+import {
+  SingleOwnerForm,
+  ComboBoxEvent,
+  CheckBoxValue,
+  NumStepperVal
+} from '../utils';
 import { FilterObj, filterInput } from '../../../../utils/filterUtils';
 
 import './styles.scss';
 
 interface SingleOwnerInfoProps {
   ownerInfo: SingleOwnerForm,
+  disableInputs: boolean,
   handleInputChange: Function,
-  handleComboBoxChange: Function,
   addAnOwner: Function,
   deleteAnOwner: Function,
+  setDefaultAgencyNCode: Function,
   agencyOptions: Array<string>,
   fundingSources: Array<string>,
   methodsOfPayment: Array<string>
 }
 
 const SingleOwnerInfo = ({
-  ownerInfo, agencyOptions, fundingSources, methodsOfPayment,
-  handleInputChange, handleComboBoxChange, addAnOwner, deleteAnOwner
+  ownerInfo, agencyOptions, fundingSources, methodsOfPayment, disableInputs,
+  handleInputChange, addAnOwner, deleteAnOwner, setDefaultAgencyNCode
 }: SingleOwnerInfoProps) => {
   const reservedInputRef = useRef<HTMLInputElement>(null);
   const surplusInputRef = useRef<HTMLInputElement>(null);
@@ -37,30 +44,50 @@ const SingleOwnerInfo = ({
   return (
     <div className="single-owner-info-container">
       <FlexGrid fullWidth>
+        {
+          ownerInfo.id === 0 && (
+            <Row>
+              <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={16}>
+                <Checkbox
+                  labelText="Use applicant agency as owner agency"
+                  id="default-agency-code-checkbox"
+                  defaultChecked
+                  onChange={
+                    (_event: React.ChangeEvent<HTMLInputElement>, { checked }: CheckBoxValue) => {
+                      setDefaultAgencyNCode(checked);
+                    }
+                  }
+                />
+              </Column>
+            </Row>
+          )
+        }
         <Row>
-          <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <ComboBox
               className="single-owner-combobox"
               id={`owner-agency-${ownerInfo.id}`}
+              disabled={ownerInfo.id === 0 ? disableInputs : false}
               name="ownerAgency"
               items={agencyOptions}
-              initialSelectedItem={ownerInfo.ownerAgency}
+              selectedItem={ownerInfo.ownerAgency}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
               placeholder="Enter or choose your agency"
               titleText="Owner agency"
               helperText="You can enter the agency number, name or acronym"
-              onChange={(e: ComboBoxEvent) => handleComboBoxChange(e, 'ownerAgency')}
+              onChange={(e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)}
               invalid={ownerInfo.isAgencyInvalid}
             />
           </Column>
-          <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <TextInput
+              name="ownerCode"
               id={`single-owner-code-${ownerInfo.id}`}
+              disabled={ownerInfo.id === 0 ? disableInputs : false}
               placeholder="Example: 00"
               maxCount={2}
-              name="ownerCode"
               value={ownerInfo.ownerCode}
               labelText="Owner location code"
               helperText="2-digit code that identifies the address of operated office or division"
@@ -72,7 +99,7 @@ const SingleOwnerInfo = ({
           </Column>
         </Row>
         <Row>
-          <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <NumberInput
               id={`single-owner-portion-${ownerInfo.id}`}
               name="ownerPortion"
@@ -85,7 +112,7 @@ const SingleOwnerInfo = ({
               invalid={ownerInfo.isPortionInvalid}
             />
           </Column>
-          <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <div className="reserved-perc-container">
               <div className="reserved-surplus-input">
                 <NumberInput
@@ -101,11 +128,18 @@ const SingleOwnerInfo = ({
                     handleInputChange(e.target.name, e.target.value);
                   }}
                   invalid={ownerInfo.isReservedInvalid}
-                  onClick={(_e: React.MouseEvent<HTMLButtonElement>, target: any) => {
-                    if (target && target.value) {
-                      handleInputChange('reservedPerc', String(target.value));
+                  onClick={
+                    (
+                      _e: React.MouseEvent<HTMLButtonElement>,
+                      target: NumStepperVal | undefined
+                    ) => {
+                      // A guard is needed here because any click on the input will emit a
+                      //   click event, not necessarily the + - buttons
+                      if (target && target.value) {
+                        handleInputChange('reservedPerc', String(target.value));
+                      }
                     }
-                  }}
+                  }
                 />
               </div>
               <div className="reserved-surplus-input">
@@ -122,18 +156,25 @@ const SingleOwnerInfo = ({
                     handleInputChange(e.target.name, e.target.value);
                   }}
                   invalid={ownerInfo.isSurplusInvalid}
-                  onClick={(_e: React.MouseEvent<HTMLButtonElement>, target: any) => {
-                    if (target && target.value) {
-                      handleInputChange('surplusPerc', String(target.value));
+                  onClick={
+                    (
+                      _e: React.MouseEvent<HTMLButtonElement>,
+                      target: NumStepperVal | undefined
+                    ) => {
+                      // A guard is needed here because any click on the input will emit a
+                      //   click event, not necessarily the + - buttons
+                      if (target && target.value) {
+                        handleInputChange('surplusPerc', String(target.value));
+                      }
                     }
-                  }}
+                  }
                 />
               </div>
             </div>
           </Column>
         </Row>
         <Row>
-          <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <ComboBox
               className="single-owner-combobox"
               id={`owner-funding-source-${ownerInfo.id}`}
@@ -145,11 +186,11 @@ const SingleOwnerInfo = ({
               placeholder="Choose a funding source option"
               titleText="Funding source"
               direction="top"
-              onChange={(e: ComboBoxEvent) => handleComboBoxChange(e, 'fundingSource')}
+              onChange={(e: ComboBoxEvent) => handleInputChange('fundingSource', e.selectedItem)}
               invalid={ownerInfo.isSourceInvalid}
             />
           </Column>
-          <Column className="single-owner-info-col" sm={16} md={16} lg={8}>
+          <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <ComboBox
               className="single-owner-combobox"
               id={`owner-method-of-payment-${ownerInfo.id}`}
@@ -162,7 +203,7 @@ const SingleOwnerInfo = ({
               placeholder="Choose a method of payment"
               titleText="Method of payment"
               direction="top"
-              onChange={(e: ComboBoxEvent) => handleComboBoxChange(e, 'methodOfPayment')}
+              onChange={(e: ComboBoxEvent) => handleInputChange('methodOfPayment', e.selectedItem)}
               invalid={ownerInfo.isPaymentInvalid}
             />
           </Column>
