@@ -6,7 +6,6 @@ import {
   AccordionItem,
   Button
 } from '@carbon/react';
-import { Add } from '@carbon/icons-react';
 
 import TitleAccordion from '../../TitleAccordion';
 import SingleOwnerInfo from './SingleOwnerInfo';
@@ -16,7 +15,8 @@ import {
   deleteOwnerForm,
   getAgencyName,
   ComboBoxEvent,
-  formatPortionPerc
+  formatPortionPerc,
+  calcResvOrSurp
 } from './utils';
 
 import './styles.scss';
@@ -49,6 +49,10 @@ const mockMethodsOfPayment = [
 ];
 /*
   component
+  TODO:
+    Default checkbox behavior
+    Form validation
+    Back & Next buttons
 */
 const OwnershipStep = () => {
   const [ownershipArray, setOwnershipArray] = useState(
@@ -73,13 +77,15 @@ const OwnershipStep = () => {
     ]
   );
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const { name, value } = e.target;
-    const updatedForm = [...ownershipArray];
+  const handleInputChange = (index: number, name: string, value: string) => {
+    let updatedForm = [...ownershipArray];
     updatedForm[index] = {
       ...updatedForm[index],
       [name]: value
     };
+    if (name === 'reservedPerc' || name === 'surplusPerc') {
+      updatedForm = calcResvOrSurp(index, name, value, updatedForm);
+    }
     setOwnershipArray(updatedForm);
   };
 
@@ -145,8 +151,8 @@ const OwnershipStep = () => {
                   fundingSources={mockFundingSources}
                   methodsOfPayment={mockMethodsOfPayment}
                   handleInputChange={
-                    (e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleInputChange(e, singleOwnerInfo.id);
+                    (name: string, value: string) => {
+                      handleInputChange(singleOwnerInfo.id, name, value);
                     }
                   }
                   handleComboBoxChange={

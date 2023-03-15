@@ -21,6 +21,18 @@
     }
   }
 
+  .#{vars.$bcgov-prefix}--list-box__menu-item{
+    background-color: var(--#{vars.$bcgov-prefix}-layer-02);
+  }
+
+  .#{vars.$bcgov-prefix}--list-box__menu-item--highlighted{
+    background-color: var(--#{vars.$bcgov-prefix}-layer-hover-02);
+  }
+
+  .#{vars.$bcgov-prefix}--list-box__menu-item--active{
+    background-color: var(--#{vars.$bcgov-prefix}-layer-hover-02);
+  }
+
   .single-owner-combobox {
     ::placeholder {
       color: var(--#{vars.$bcgov-prefix}-text-primary);

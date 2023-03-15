@@ -87,6 +87,27 @@ export const formatPortionPerc = (value: string) => {
   return value;
 };
 
+// The sum of reserved and surplus should be 100, if one is changed, auto calc the other one
+export const calcResvOrSurp = (
+  index: number,
+  field: string,
+  value: string,
+  currentArray: Array<SingleOwnerForm>
+) => {
+  const theOther = field === 'reservedPerc' ? 'surplusPerc' : 'reservedPerc';
+  let theOtherValue = String((100 - Number(value)).toFixed(2));
+  // If the other value is an int then show a whole number
+  if (Number(theOtherValue) % 1 === 0) {
+    theOtherValue = Number(theOtherValue).toFixed(0);
+  }
+  const newArr = [...currentArray];
+  newArr[index] = {
+    ...newArr[index],
+    [theOther]: theOtherValue
+  };
+  return newArr;
+};
+
 // export const validateInput = (inputName: string, inputValue: string) => {
 
 // };
