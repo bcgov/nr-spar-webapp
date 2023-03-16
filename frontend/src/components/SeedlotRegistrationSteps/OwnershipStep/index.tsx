@@ -86,6 +86,26 @@ const OwnershipStep = () => {
 
   const [disableInputs, setDisableInputs] = useState(true);
 
+  const setValidation = (index: number, name: string, isInvalid: boolean) => {
+    const updatedArray = [...validationArray];
+    updatedArray[index] = {
+      ...updatedArray[index],
+      [name]: isInvalid
+    };
+    setValidationArray(updatedArray);
+  };
+
+  const validateInput = (index: number, name: string, value: string) => {
+    if (name === 'ownerCode') {
+      const twoDigitRegex = /^[0-9]{2}$/;
+      if (!twoDigitRegex.test(value)) {
+        setValidation(index, 'isOwnerCodeInvalid', true);
+      } else {
+        setValidation(index, 'isOwnerCodeInvalid', false);
+      }
+    }
+  };
+
   // Optional name and value can be passed in to set two values at once
   const handleInputChange = (
     index: number,
@@ -94,24 +114,32 @@ const OwnershipStep = () => {
     optionalName?: string,
     optionalValue?: string
   ) => {
-    let updatedForm = [...ownershipArray];
+    let updatedArray = [...ownershipArray];
+
+    if (name === 'ownerCode' && value.length > 2) return;
+
     if (optionalName) {
-      updatedForm[index] = {
-        ...updatedForm[index],
+      updatedArray[index] = {
+        ...updatedArray[index],
         [name]: value,
         [optionalName]: optionalValue
       };
     } else {
-      updatedForm[index] = {
-        ...updatedForm[index],
+      updatedArray[index] = {
+        ...updatedArray[index],
         [name]: value
       };
     }
     // Auto calc either reserved or surplus
     if (name === 'reservedPerc' || name === 'surplusPerc') {
-      updatedForm = calcResvOrSurp(index, name, value, updatedForm);
+      updatedArray = calcResvOrSurp(index, name, value, updatedArray);
     }
-    setOwnershipArray(updatedForm);
+    setOwnershipArray(updatedArray);
+
+    // Validate inputs that need to be validated right away
+    if (name === 'ownerCode') {
+      validateInput(index, name, value);
+    }
   };
 
   const addAnOwner = () => {

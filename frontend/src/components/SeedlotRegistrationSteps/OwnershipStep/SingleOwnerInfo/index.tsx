@@ -91,6 +91,7 @@ const SingleOwnerInfo = ({
               id={`single-owner-code-${ownerInfo.id}`}
               disabled={ownerInfo.id === 0 ? disableInputs : false}
               placeholder="Example: 00"
+              type="number"
               maxCount={2}
               value={ownerInfo.ownerCode}
               labelText="Owner location code"
@@ -99,6 +100,7 @@ const SingleOwnerInfo = ({
                 handleInputChange(e.target.name, e.target.value);
               }}
               invalid={validationProp ? validationProp.isOwnerCodeInvalid : false}
+              invalidText="2-digit code that identifies the address of operated office or division"
             />
           </Column>
         </Row>
@@ -110,10 +112,13 @@ const SingleOwnerInfo = ({
               label="Owner portion (%)"
               defaultValue={ownerInfo.ownerPortion}
               step={10}
+              max={100}
+              min={0}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleInputChange(e.target.name, e.target.value);
               }}
               invalid={validationProp ? validationProp.isPortionInvalid : false}
+              invalidText="The sum of owner portions should add up to 100"
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
@@ -132,6 +137,9 @@ const SingleOwnerInfo = ({
                     handleInputChange(e.target.name, e.target.value);
                   }}
                   invalid={validationProp ? validationProp.isReservedInvalid : false}
+                  invalidText={
+                    Number(ownerInfo.reservedPerc) > 100 ? 'Value must be lower or equal to 100' : 'Value must be higher or equal to 0'
+                  }
                   onClick={
                     (
                       _e: React.MouseEvent<HTMLButtonElement>,
@@ -160,6 +168,9 @@ const SingleOwnerInfo = ({
                     handleInputChange(e.target.name, e.target.value);
                   }}
                   invalid={validationProp ? validationProp.isSurplusInvalid : false}
+                  invalidText={
+                    Number(ownerInfo.surplusPerc) > 100 ? 'Value must be lower or equal to 100' : 'Value must be higher or equal to 0'
+                  }
                   onClick={
                     (
                       _e: React.MouseEvent<HTMLButtonElement>,
