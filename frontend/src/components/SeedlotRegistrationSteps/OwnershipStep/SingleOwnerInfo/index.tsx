@@ -19,6 +19,7 @@ import {
   NumStepperVal,
   ValidationProp
 } from '../utils';
+import { inputText, DEFAULT_INDEX } from '../config';
 import { FilterObj, filterInput } from '../../../../utils/filterUtils';
 
 import './styles.scss';
@@ -47,11 +48,11 @@ const SingleOwnerInfo = ({
     <div className="single-owner-info-container">
       <FlexGrid fullWidth>
         {
-          ownerInfo.id === 0 && (
+          ownerInfo.id === DEFAULT_INDEX && (
             <Row>
               <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={16}>
                 <Checkbox
-                  labelText="Use applicant agency as owner agency"
+                  labelText={inputText.checkbox.labelText}
                   id="default-agency-code-checkbox"
                   defaultChecked
                   onChange={
@@ -69,38 +70,40 @@ const SingleOwnerInfo = ({
             <ComboBox
               className="single-owner-combobox"
               id={`owner-agency-${ownerInfo.id}`}
-              disabled={ownerInfo.id === 0 ? disableInputs : false}
+              disabled={ownerInfo.id === DEFAULT_INDEX ? disableInputs : false}
               name="ownerAgency"
               items={agencyOptions}
               selectedItem={ownerInfo.ownerAgency}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
-              placeholder="Enter or choose your agency"
-              titleText="Owner agency"
-              helperText="You can enter the agency number, name or acronym"
+              placeholder={inputText.owner.placeholder}
+              titleText={inputText.owner.titleText}
+              helperText={inputText.owner.helperText}
               onChange={(e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)}
               // We need to check if validationProp is here since deleting a Single Owner Form
               //    might delete the valid prop first and throwing an error
-              invalid={validationProp ? validationProp.isAgencyInvalid : false}
+              invalid={validationProp ? validationProp.owner.isInvalid : false}
+              invalidText={inputText.owner.invalidText}
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
             <TextInput
+              className="owner-code-text-input"
               name="ownerCode"
               id={`single-owner-code-${ownerInfo.id}`}
-              disabled={ownerInfo.id === 0 ? disableInputs : false}
-              placeholder="Example: 00"
+              disabled={ownerInfo.id === DEFAULT_INDEX ? disableInputs : false}
+              placeholder={inputText.code.placeholder}
               type="number"
               maxCount={2}
               value={ownerInfo.ownerCode}
-              labelText="Owner location code"
-              helperText="2-digit code that identifies the address of operated office or division"
+              labelText={inputText.code.labelText}
+              helperText={inputText.code.helperText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleInputChange(e.target.name, e.target.value);
               }}
-              invalid={validationProp ? validationProp.isOwnerCodeInvalid : false}
-              invalidText="2-digit code that identifies the address of operated office or division"
+              invalid={validationProp ? validationProp.code.isInvalid : false}
+              invalidText={validationProp ? validationProp.code.invalidText : ''}
             />
           </Column>
         </Row>
@@ -109,16 +112,32 @@ const SingleOwnerInfo = ({
             <NumberInput
               id={`single-owner-portion-${ownerInfo.id}`}
               name="ownerPortion"
-              label="Owner portion (%)"
-              defaultValue={ownerInfo.ownerPortion}
-              step={10}
+              label={inputText.portion.label}
+              value={ownerInfo.ownerPortion}
+              step={10.00}
               max={100}
               min={0}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleInputChange(e.target.name, e.target.value);
+                // The guard is needed here because onClick also trigger the onChange method
+                // but it does not pass in any value
+                if (e && e.target.name && e.target.value) {
+                  handleInputChange(e.target.name, e.target.value);
+                }
               }}
-              invalid={validationProp ? validationProp.isPortionInvalid : false}
-              invalidText="The sum of owner portions should add up to 100"
+              invalid={validationProp ? validationProp.portion.isInvalid : false}
+              invalidText={validationProp ? validationProp.portion.invalidText : ''}
+              onClick={
+                (
+                  _e: React.MouseEvent<HTMLButtonElement>,
+                  target: NumStepperVal | undefined
+                ) => {
+                  // A guard is needed here because any click on the input will emit a
+                  //   click event, not necessarily the + - buttons
+                  if (target && target.value) {
+                    handleInputChange('ownerPortion', String(target.value));
+                  }
+                }
+              }
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
@@ -128,25 +147,23 @@ const SingleOwnerInfo = ({
                   id={`single-owner-reserved-${ownerInfo.id}`}
                   ref={reservedInputRef}
                   name="reservedPerc"
-                  label="Reserved (%)"
+                  label={inputText.reserved.label}
                   value={ownerInfo.reservedPerc}
                   step={10}
                   max={100}
                   min={0}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    handleInputChange(e.target.name, e.target.value);
+                    if (e && e.target.name && e.target.value) {
+                      handleInputChange(e.target.name, e.target.value);
+                    }
                   }}
-                  invalid={validationProp ? validationProp.isReservedInvalid : false}
-                  invalidText={
-                    Number(ownerInfo.reservedPerc) > 100 ? 'Value must be lower or equal to 100' : 'Value must be higher or equal to 0'
-                  }
+                  invalid={validationProp ? validationProp.reserved.isInvalid : false}
+                  invalidText={validationProp ? validationProp.reserved.invalidText : ''}
                   onClick={
                     (
                       _e: React.MouseEvent<HTMLButtonElement>,
                       target: NumStepperVal | undefined
                     ) => {
-                      // A guard is needed here because any click on the input will emit a
-                      //   click event, not necessarily the + - buttons
                       if (target && target.value) {
                         handleInputChange('reservedPerc', String(target.value));
                       }
@@ -159,25 +176,23 @@ const SingleOwnerInfo = ({
                   id={`single-owner-surplus-${ownerInfo.id}`}
                   ref={surplusInputRef}
                   name="surplusPerc"
-                  label="Surplus (%)"
+                  label={inputText.surplus.label}
                   value={ownerInfo.surplusPerc}
                   step={10}
                   max={100}
                   min={0}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    handleInputChange(e.target.name, e.target.value);
+                    if (e && e.target.name && e.target.value) {
+                      handleInputChange(e.target.name, e.target.value);
+                    }
                   }}
-                  invalid={validationProp ? validationProp.isSurplusInvalid : false}
-                  invalidText={
-                    Number(ownerInfo.surplusPerc) > 100 ? 'Value must be lower or equal to 100' : 'Value must be higher or equal to 0'
-                  }
+                  invalid={validationProp ? validationProp.surplus.isInvalid : false}
+                  invalidText={validationProp ? validationProp.surplus.invalidText : ''}
                   onClick={
                     (
                       _e: React.MouseEvent<HTMLButtonElement>,
                       target: NumStepperVal | undefined
                     ) => {
-                      // A guard is needed here because any click on the input will emit a
-                      //   click event, not necessarily the + - buttons
                       if (target && target.value) {
                         handleInputChange('surplusPerc', String(target.value));
                       }
@@ -198,11 +213,12 @@ const SingleOwnerInfo = ({
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
-              placeholder="Choose a funding source option"
-              titleText="Funding source"
+              placeholder={inputText.funding.placeholder}
+              titleText={inputText.funding.titleText}
               direction="top"
               onChange={(e: ComboBoxEvent) => handleInputChange('fundingSource', e.selectedItem)}
-              invalid={validationProp ? validationProp.isSourceInvalid : false}
+              invalid={validationProp ? validationProp.funding.isInvalid : false}
+              invalidText={validationProp ? validationProp.funding.invalidText : ''}
             />
           </Column>
           <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
@@ -215,17 +231,18 @@ const SingleOwnerInfo = ({
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
-              placeholder="Choose a method of payment"
-              titleText="Method of payment"
+              placeholder={inputText.payment.placeholder}
+              titleText={inputText.payment.titleText}
               direction="top"
               onChange={(e: ComboBoxEvent) => handleInputChange('methodOfPayment', e.selectedItem)}
-              invalid={validationProp ? validationProp.isPaymentInvalid : false}
+              invalid={validationProp ? validationProp.payment.isInvalid : false}
+              invalidText={validationProp ? validationProp.payment.invalidText : ''}
             />
           </Column>
         </Row>
         <Row>
           {
-            ownerInfo.id === 0
+            ownerInfo.id === DEFAULT_INDEX
               ? (
                 <Button
                   kind="tertiary"

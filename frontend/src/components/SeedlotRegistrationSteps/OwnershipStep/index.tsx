@@ -16,8 +16,19 @@ import {
   getAgencyName,
   StateReturnObj,
   formatPortionPerc,
-  calcResvOrSurp
+  calcResvOrSurp,
+  skipForInvalidLength,
+  getValidKey,
+  isInputInvalid,
+  ValidationProp
 } from './utils';
+import {
+  DEFAULT_INDEX,
+  inputText,
+  MAX_OWNERS,
+  ownerTemplate,
+  validTemplate
+} from './config';
 
 import './styles.scss';
 
@@ -54,55 +65,68 @@ const mockMethodsOfPayment = [
     Back & Next buttons
 */
 const OwnershipStep = () => {
-  const [ownershipArray, setOwnershipArray] = useState(
-    [
-      {
-        id: 0,
-        ownerAgency: mockDefaultAgency,
-        ownerPortion: '100.00',
-        ownerCode: mockDefaultCode,
-        reservedPerc: '100.00',
-        surplusPerc: '0.00',
-        fundingSource: '',
-        methodOfPayment: ''
-      }
-    ]
-  );
-
-  const [validationArray, setValidationArray] = useState(
-    [
-      {
-        id: 0,
-        isAgencyInvalid: false,
-        isPortionInvalid: false,
-        isOwnerCodeInvalid: false,
-        isReservedInvalid: false,
-        isSurplusInvalid: false,
-        isSourceInvalid: false,
-        isPaymentInvalid: false
-      }
-    ]
-  );
+  // Set initial owner state
+  const initialOwnerState = { ...ownerTemplate };
+  initialOwnerState.id = DEFAULT_INDEX;
+  initialOwnerState.ownerAgency = mockDefaultAgency;
+  initialOwnerState.ownerCode = mockDefaultCode;
+  initialOwnerState.ownerPortion = '100';
+  const [ownershipArray, setOwnershipArray] = useState([initialOwnerState]);
+  // Set initial validation state
+  const initialValidState = { ...validTemplate };
+  initialValidState.id = DEFAULT_INDEX;
+  const [validationArray, setValidationArray] = useState([initialValidState]);
 
   const [disableInputs, setDisableInputs] = useState(true);
 
-  const setValidation = (index: number, name: string, isInvalid: boolean) => {
+  const setValidation = (
+    index: number,
+    name: string | keyof ValidationProp,
+    isInvalid: boolean,
+    invalidText: string,
+    optName?: string | keyof ValidationProp,
+    optIsInvalid?: boolean,
+    optInvalidText?: string
+  ) => {
     const updatedArray = [...validationArray];
-    updatedArray[index] = {
-      ...updatedArray[index],
-      [name]: isInvalid
-    };
+    if (optName) {
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [name]: {
+          isInvalid,
+          invalidText
+        },
+        [optName]: {
+          isInvalid: optIsInvalid,
+          invalidText: optInvalidText
+        }
+      };
+    } else {
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [name]: {
+          isInvalid,
+          invalidText
+        }
+      };
+    }
     setValidationArray(updatedArray);
   };
 
-  const validateInput = (index: number, name: string, value: string) => {
-    if (name === 'ownerCode') {
-      const twoDigitRegex = /^[0-9]{2}$/;
-      if (!twoDigitRegex.test(value)) {
-        setValidation(index, 'isOwnerCodeInvalid', true);
-      } else {
-        setValidation(index, 'isOwnerCodeInvalid', false);
-      }
+  const validateInput = (
+    index: number,
+    name: string,
+    value: string,
+    optName?: string,
+    optIsInvalid?: boolean,
+    optInvalidText?: string
+  ) => {
+    const { isInvalid, invalidText } = isInputInvalid(name, value);
+    const validKey = getValidKey(name);
+    if (optName) {
+      setValidation(index, validKey, isInvalid, invalidText, optName, optIsInvalid, optInvalidText);
+    } else {
+      setValidation(index, validKey, isInvalid, invalidText);
     }
   };
 
@@ -114,10 +138,17 @@ const OwnershipStep = () => {
     optionalName?: string,
     optionalValue?: string
   ) => {
-    let updatedArray = [...ownershipArray];
-
-    if (name === 'ownerCode' && value.length > 2) return;
-
+    const updatedArray = [...ownershipArray];
+    /*
+      If the input is invalid, don't update state values (no more typing)
+          e.g. if a user types 133 in owner code we should only display 13 instead
+               of showing the input is invalid
+       Currently this does not work for decimal enforcement, the state can be forced
+       to have 2 decimal places but the carbon input will still show user's input
+          e.g. input: 0.1222 state: 0.12, on_screen:  0.1222
+       Not sure why this is happening since the input value is linked to state
+     */
+    if (skipForInvalidLength(name, value)) return;
     if (optionalName) {
       updatedArray[index] = {
         ...updatedArray[index],
@@ -130,21 +161,31 @@ const OwnershipStep = () => {
         [name]: value
       };
     }
-    // Auto calc either reserved or surplus
+    // Auto calc either reserved or surplus and validate the other one
     if (name === 'reservedPerc' || name === 'surplusPerc') {
-      updatedArray = calcResvOrSurp(index, name, value, updatedArray);
-    }
-    setOwnershipArray(updatedArray);
-
-    // Validate inputs that need to be validated right away
-    if (name === 'ownerCode') {
+      const {
+        newArr,
+        isInvalid,
+        invalidText,
+        validKey
+      } = calcResvOrSurp(index, name, value, updatedArray);
+      setOwnershipArray(newArr);
+      validateInput(index, name, value, validKey, isInvalid, invalidText);
+    } else if (name === 'ownerCode' && optionalName === 'ownerAgency') {
+      setOwnershipArray(updatedArray);
+      const agencyKey = getValidKey(optionalName);
+      const isInvalid = optionalValue === '';
+      const { invalidText } = inputText.owner;
+      validateInput(index, name, value, agencyKey, isInvalid, invalidText);
+    } else {
+      setOwnershipArray(updatedArray);
       validateInput(index, name, value);
     }
   };
 
   const addAnOwner = () => {
-    // Maximum of 10 ownership can be set
-    if (ownershipArray.length > 10) {
+    // Maximum # of ownership can be set
+    if (ownershipArray.length >= MAX_OWNERS) {
       return;
     }
     const {
@@ -166,10 +207,10 @@ const OwnershipStep = () => {
 
   const setDefaultAgencyNCode = (checked: boolean) => {
     if (checked) {
-      handleInputChange(0, 'ownerCode', mockDefaultCode, 'ownerAgency', mockDefaultAgency);
+      handleInputChange(DEFAULT_INDEX, 'ownerCode', mockDefaultCode, 'ownerAgency', mockDefaultAgency);
       setDisableInputs(true);
     } else {
-      handleInputChange(0, 'ownerCode', '', 'ownerAgency', '');
+      handleInputChange(DEFAULT_INDEX, 'ownerCode', '', 'ownerAgency', '');
       setDisableInputs(false);
     }
   };

@@ -1,3 +1,5 @@
+import { inputText, ownerTemplate, validTemplate } from './config';
+
 export interface SingleOwnerForm {
   id: number,
   ownerAgency: string,
@@ -9,15 +11,20 @@ export interface SingleOwnerForm {
   methodOfPayment: string
 }
 
+interface SingleInvalidObj {
+  isInvalid: boolean,
+  invalidText: string
+}
+
 export interface ValidationProp {
   id: number,
-  isAgencyInvalid: boolean,
-  isPortionInvalid: boolean,
-  isOwnerCodeInvalid: boolean,
-  isReservedInvalid: boolean,
-  isSurplusInvalid: boolean,
-  isSourceInvalid: boolean,
-  isPaymentInvalid: boolean
+  owner: SingleInvalidObj,
+  code: SingleInvalidObj,
+  portion: SingleInvalidObj,
+  reserved: SingleInvalidObj,
+  surplus: SingleInvalidObj,
+  funding: SingleInvalidObj,
+  payment: SingleInvalidObj
 }
 
 export interface StateReturnObj {
@@ -39,27 +46,7 @@ export interface NumStepperVal {
   direction: string
 }
 
-const ownerTemplate = {
-  id: -1,
-  ownerAgency: '',
-  ownerPortion: '0.00',
-  ownerCode: '',
-  reservedPerc: '100.00',
-  surplusPerc: '0.00',
-  fundingSource: '',
-  methodOfPayment: ''
-};
-
-const validTemplate = {
-  id: -1,
-  isAgencyInvalid: false,
-  isPortionInvalid: false,
-  isOwnerCodeInvalid: false,
-  isReservedInvalid: false,
-  isSurplusInvalid: false,
-  isSourceInvalid: false,
-  isPaymentInvalid: false
-};
+const twoDigitRegex = /^[0-9]{2}$/;
 
 const getNextId = (currentArray: Array<SingleOwnerForm>) => {
   let max = -1;
@@ -111,7 +98,6 @@ export const getAgencyName = (fullString: string | null) => {
   if (fullString === null || !fullString.includes('-')) {
     return 'Owner agency name';
   }
-
   const splitArr = fullString.split(' - ');
   if (splitArr.length === 3) {
     return splitArr[1];
@@ -130,6 +116,41 @@ export const formatPortionPerc = (value: string) => {
   return value;
 };
 
+const isDecimalValid = (value: string) => {
+  if (value.includes('.')) {
+    if (value.split('.')[1].length > 2) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const validatePerc = (value: string): SingleInvalidObj => {
+  let invalidText = inputText.twoDecimal;
+  let isInvalid = !isDecimalValid(value);
+  if (!isInvalid) {
+    if (Number(value) > 100) {
+      isInvalid = true;
+      invalidText = inputText.greaterThan;
+    }
+    if (Number(value) < 0) {
+      isInvalid = true;
+      invalidText = inputText.lowerThan;
+    }
+  }
+  return { isInvalid, invalidText };
+};
+
+export const getValidKey = (name: string) => {
+  const inputKeys = Object.keys(ownerTemplate);
+  const validKeys = Object.keys(validTemplate);
+  const inputKeyIndex = inputKeys.indexOf(name);
+  if (inputKeyIndex === -1 || inputKeys.length !== validKeys.length) {
+    throw new Error('Failed to retrieve valid key');
+  }
+  return validKeys[inputKeyIndex];
+};
+
 // The sum of reserved and surplus should be 100, if one is changed, auto calc the other one
 export const calcResvOrSurp = (
   index: number,
@@ -137,7 +158,7 @@ export const calcResvOrSurp = (
   value: string,
   currentArray: Array<SingleOwnerForm>
 ) => {
-  const theOther = field === 'reservedPerc' ? 'surplusPerc' : 'reservedPerc';
+  const theOtherName = field === 'reservedPerc' ? 'surplusPerc' : 'reservedPerc';
   let theOtherValue = String((100 - Number(value)).toFixed(2));
   // If the other value is an int then show a whole number
   if (Number(theOtherValue) % 1 === 0) {
@@ -146,11 +167,75 @@ export const calcResvOrSurp = (
   const newArr = [...currentArray];
   newArr[index] = {
     ...newArr[index],
-    [theOther]: theOtherValue
+    [theOtherName]: theOtherValue
   };
-  return newArr;
+  const { isInvalid, invalidText } = validatePerc(theOtherValue);
+  const validKey = getValidKey(theOtherName);
+  return {
+    newArr,
+    isInvalid,
+    invalidText,
+    validKey
+  };
 };
 
-// export const validateInput = (inputName: string, inputValue: string) => {
+export const skipForInvalidLength = (name: string, value: string) => {
+  if (name === 'ownerCode' && value.length > 2) {
+    return true;
+  }
+  return false;
+};
 
-// };
+const isInputEmpty = (value: string) => {
+  // null can be the value even with the type check
+  if (value === '' || value === null) {
+    return true;
+  }
+  return false;
+};
+
+export const isInputInvalid = (name: string, value: string): SingleInvalidObj => {
+  let isInvalid = false;
+  let invalidText = '';
+  switch (name) {
+    case 'ownerAgency':
+      isInvalid = isInputEmpty(value);
+      invalidText = inputText.owner.invalidText;
+      return {
+        isInvalid,
+        invalidText
+      };
+    case 'ownerCode':
+      isInvalid = !twoDigitRegex.test(value);
+      invalidText = inputText.code.invalidText;
+      return {
+        isInvalid,
+        invalidText
+      };
+    case 'ownerPortion':
+      return validatePerc(value);
+    case 'reservedPerc':
+      return validatePerc(value);
+    case 'surplusPerc':
+      return validatePerc(value);
+    case 'fundingSource':
+      isInvalid = isInputEmpty(value);
+      invalidText = inputText.funding.invalidText;
+      return {
+        isInvalid,
+        invalidText
+      };
+    case 'methodOfPayment':
+      isInvalid = isInputEmpty(value);
+      invalidText = inputText.payment.invalidText;
+      return {
+        isInvalid,
+        invalidText
+      };
+    default:
+      return {
+        isInvalid: false,
+        invalidText: ''
+      };
+  }
+};
