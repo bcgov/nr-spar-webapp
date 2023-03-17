@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -20,12 +20,14 @@ import {
   skipForInvalidLength,
   getValidKey,
   isInputInvalid,
-  ValidationProp
+  ValidationProp,
+  arePortionsValid
 } from './utils';
 import {
   DEFAULT_INDEX,
-  inputText,
+  DEFAULT_PAYMENT_INDEX,
   MAX_OWNERS,
+  inputText,
   ownerTemplate,
   validTemplate
 } from './config';
@@ -52,12 +54,13 @@ const mockFundingSources = [
   'LFP - Licensee Funded Program',
   'TSC - Tree Seed Centre'
 ];
+// Index 0 should be the default method of payment
 const mockMethodsOfPayment = [
-  // Index 0 should be the default method of payment
   'ITC - Invoice to client address',
   'NC - Non-chargeable',
   'JV - Journal voucher'
 ];
+
 /*
   component
   TODO:
@@ -78,6 +81,8 @@ const OwnershipStep = () => {
   const [validationArray, setValidationArray] = useState([initialValidState]);
 
   const [disableInputs, setDisableInputs] = useState(true);
+
+  const refControl = useRef<any>({});
 
   const setValidation = (
     index: number,
@@ -188,10 +193,11 @@ const OwnershipStep = () => {
     if (ownershipArray.length >= MAX_OWNERS) {
       return;
     }
+    const defaultPayment = mockMethodsOfPayment[DEFAULT_PAYMENT_INDEX];
     const {
-      newOwnerArr,
-      newValidArr
-    }: StateReturnObj = insertOwnerForm(ownershipArray, validationArray);
+      newValidArr,
+      newOwnerArr
+    }: StateReturnObj = insertOwnerForm(ownershipArray, validationArray, defaultPayment);
     setOwnershipArray(newOwnerArr);
     setValidationArray(newValidArr);
   };
@@ -201,6 +207,7 @@ const OwnershipStep = () => {
       newOwnerArr,
       newValidArr
     }: StateReturnObj = deleteOwnerForm(id, ownershipArray, validationArray);
+    delete refControl.current[id];
     setOwnershipArray(newOwnerArr);
     setValidationArray(newValidArr);
   };
@@ -215,9 +222,32 @@ const OwnershipStep = () => {
     }
   };
 
+  const addRefs = (element: HTMLInputElement, id: number, name: string) => {
+    if (element !== null) {
+      refControl.current[id] = {
+        ...refControl.current[id],
+        [name]: element
+      };
+    }
+  };
+
+  const areAllInputsValid = (): boolean => {
+    // Check if all portions add up to 100
+    if (!arePortionsValid(ownershipArray)) {
+      const validKey = getValidKey('ownerPortion');
+      const { invalidText } = inputText.portion;
+      setValidation(DEFAULT_INDEX, validKey, true, invalidText);
+      refControl.current[DEFAULT_INDEX]?.ownerPortion.focus();
+      return false;
+    }
+
+    return true;
+  };
+
   const logForm = () => {
+    console.log(areAllInputsValid());
     // eslint-disable-next-line no-console
-    console.log(ownershipArray, validationArray);
+    console.log(ownershipArray, validationArray, refControl);
   };
 
   return (
@@ -257,6 +287,9 @@ const OwnershipStep = () => {
                   fundingSources={mockFundingSources}
                   methodsOfPayment={mockMethodsOfPayment}
                   disableInputs={disableInputs}
+                  addRefs={(element: HTMLInputElement, name: string) => {
+                    addRefs(element, singleOwnerInfo.id, name);
+                  }}
                   validationProp={validationArray[singleOwnerInfo.id]}
                   handleInputChange={
                     (name: string, value: string) => {

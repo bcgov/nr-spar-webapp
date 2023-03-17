@@ -1,6 +1,7 @@
+// import { RefObject } from 'react';
 import { inputText, ownerTemplate, validTemplate } from './config';
 
-export interface SingleOwnerForm {
+export type SingleOwnerForm = {
   id: number,
   ownerAgency: string,
   ownerCode: string,
@@ -11,12 +12,12 @@ export interface SingleOwnerForm {
   methodOfPayment: string
 }
 
-interface SingleInvalidObj {
+type SingleInvalidObj = {
   isInvalid: boolean,
-  invalidText: string
+  invalidText: string,
 }
 
-export interface ValidationProp {
+export type ValidationProp = {
   id: number,
   owner: SingleInvalidObj,
   code: SingleInvalidObj,
@@ -27,16 +28,17 @@ export interface ValidationProp {
   payment: SingleInvalidObj
 }
 
-export interface StateReturnObj {
+export type StateReturnObj = {
   newOwnerArr: Array<SingleOwnerForm>,
-  newValidArr: Array<ValidationProp>
+  newValidArr: Array<ValidationProp>,
+  newId?: number
 }
 
-export interface ComboBoxEvent {
+export type ComboBoxEvent = {
   selectedItem: string
 }
 
-export interface CheckBoxValue {
+export type CheckBoxValue = {
   checked: boolean,
   id: string
 }
@@ -48,7 +50,7 @@ export interface NumStepperVal {
 
 const twoDigitRegex = /^[0-9]{2}$/;
 
-const getNextId = (currentArray: Array<SingleOwnerForm>) => {
+const getNextId = (currentArray: Array<SingleOwnerForm>): number => {
   let max = -1;
   currentArray.forEach((obj) => {
     if (obj.id > max) {
@@ -60,16 +62,19 @@ const getNextId = (currentArray: Array<SingleOwnerForm>) => {
 
 export const insertOwnerForm = (
   ownershiptArray: Array<SingleOwnerForm>,
-  validationArray: Array<ValidationProp>
+  validationArray: Array<ValidationProp>,
+  defaultPayment: string
 ) => {
   const newOwnerForm = { ...ownerTemplate };
   const newValidForm = { ...validTemplate };
   const newId = getNextId(ownershiptArray);
   newOwnerForm.id = newId;
+  newOwnerForm.methodOfPayment = defaultPayment;
   newValidForm.id = newId;
   return {
     newOwnerArr: [...ownershiptArray, newOwnerForm],
-    newValidArr: [...validationArray, newValidForm]
+    newValidArr: [...validationArray, newValidForm],
+    newId
   };
 };
 
@@ -94,7 +99,7 @@ export const deleteOwnerForm = (
 
 // Assume the fullString is in the form of '0032 - Strong Seeds Orchard - SSO'
 // Returns the middle string, e.g. 'Strong Seeds Orchard'
-export const getAgencyName = (fullString: string | null) => {
+export const getAgencyName = (fullString: string | null): string => {
   if (fullString === null || !fullString.includes('-')) {
     return 'Owner agency name';
   }
@@ -105,7 +110,7 @@ export const getAgencyName = (fullString: string | null) => {
   return '';
 };
 
-export const formatPortionPerc = (value: string) => {
+export const formatPortionPerc = (value: string): string => {
   if (value === null || value === '' || Number(value) === 0) {
     return '--';
   }
@@ -116,7 +121,7 @@ export const formatPortionPerc = (value: string) => {
   return value;
 };
 
-const isDecimalValid = (value: string) => {
+const isDecimalValid = (value: string): boolean => {
   if (value.includes('.')) {
     if (value.split('.')[1].length > 2) {
       return false;
@@ -141,7 +146,7 @@ const validatePerc = (value: string): SingleInvalidObj => {
   return { isInvalid, invalidText };
 };
 
-export const getValidKey = (name: string) => {
+export const getValidKey = (name: string): string => {
   const inputKeys = Object.keys(ownerTemplate);
   const validKeys = Object.keys(validTemplate);
   const inputKeyIndex = inputKeys.indexOf(name);
@@ -169,6 +174,7 @@ export const calcResvOrSurp = (
     ...newArr[index],
     [theOtherName]: theOtherValue
   };
+  // Validate the other value after recalculation
   const { isInvalid, invalidText } = validatePerc(theOtherValue);
   const validKey = getValidKey(theOtherName);
   return {
@@ -179,7 +185,7 @@ export const calcResvOrSurp = (
   };
 };
 
-export const skipForInvalidLength = (name: string, value: string) => {
+export const skipForInvalidLength = (name: string, value: string): boolean => {
   if (name === 'ownerCode' && value.length > 2) {
     return true;
   }
@@ -238,4 +244,12 @@ export const isInputInvalid = (name: string, value: string): SingleInvalidObj =>
         invalidText: ''
       };
   }
+};
+
+export const arePortionsValid = (ownershiptArray: Array<SingleOwnerForm>): boolean => {
+  let sum = 0;
+  ownershiptArray.forEach((obj) => {
+    sum += Number(obj.ownerPortion);
+  });
+  return sum === 100;
 };

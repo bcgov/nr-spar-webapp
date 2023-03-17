@@ -2,6 +2,8 @@ import { SingleOwnerForm, ValidationProp } from './utils';
 
 export const DEFAULT_INDEX = 0;
 
+export const DEFAULT_PAYMENT_INDEX = 0;
+
 export const MAX_OWNERS = 60;
 
 export const inputText = {
@@ -22,7 +24,7 @@ export const inputText = {
   },
   portion: {
     label: 'Owner portion (%)',
-    invalidText: 'The sum of owner portions should add up to 100'
+    invalidText: 'The sum of all owner portions should add up to 100'
   },
   reserved: {
     label: 'Reserved (%)'
@@ -56,6 +58,7 @@ export const ownerTemplate: SingleOwnerForm = {
   methodOfPayment: ''
 };
 
+// It is important to have the key order matching the ownerTemplate
 export const validTemplate: ValidationProp = {
   id: -1,
   owner: {
