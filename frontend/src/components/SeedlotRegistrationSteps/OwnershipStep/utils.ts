@@ -192,7 +192,7 @@ export const skipForInvalidLength = (name: string, value: string): boolean => {
   return false;
 };
 
-const isInputEmpty = (value: string) => {
+const isInputEmpty = (value: string | number | null) => {
   // null can be the value even with the type check
   if (value === '' || value === null) {
     return true;
@@ -252,4 +252,65 @@ export const arePortionsValid = (ownershiptArray: Array<SingleOwnerForm>): boole
     sum += Number(obj.ownerPortion);
   });
   return sum === 100;
+};
+
+export type AllValidObj = {
+  allValid: boolean,
+  invalidId: number,
+  invalidField: string,
+  invalidValue: string
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isOwnerObjInvalid = (ownerObj: SingleOwnerForm) => {
+  const keys = Object.keys(ownerObj);
+  const len = keys.length;
+  for (let i = 1; i < len; i += 1) {
+    const key = keys[i];
+    const val = ownerObj[key as keyof SingleOwnerForm];
+    if (isInputEmpty(val)) {
+      return {
+        isInvalid: true,
+        validKey: key,
+        validValue: val
+      };
+    }
+  }
+  return {
+    isInvalid: false,
+    validKey: '',
+    validValue: ''
+  };
+};
+
+export const getInvalidIdAndKey = (
+  ownershiptArray: Array<SingleOwnerForm>,
+  validationArray: Array<ValidationProp>
+): AllValidObj => {
+  // let allValid = true;
+  const ownerLen = ownershiptArray.length;
+
+  for (let i = 0; i < ownerLen; i += 1) {
+    const ownerObj = ownershiptArray[i];
+    const validObj = validationArray[i];
+    if (ownerObj.id !== validObj.id) {
+      throw new Error('Validate all inputs error, id mismatch.');
+    }
+    const { isInvalid, validKey, validValue } = isOwnerObjInvalid(ownerObj);
+    if (isInvalid) {
+      return {
+        allValid: false,
+        invalidId: validObj.id,
+        invalidField: validKey,
+        invalidValue: String(validValue)
+      };
+    }
+  }
+
+  return {
+    allValid: true,
+    invalidId: -1,
+    invalidField: '',
+    invalidValue: ''
+  };
 };

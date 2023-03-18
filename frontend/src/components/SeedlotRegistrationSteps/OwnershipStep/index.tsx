@@ -21,7 +21,8 @@ import {
   getValidKey,
   isInputInvalid,
   ValidationProp,
-  arePortionsValid
+  arePortionsValid,
+  getInvalidIdAndKey
 } from './utils';
 import {
   DEFAULT_INDEX,
@@ -74,6 +75,7 @@ const OwnershipStep = () => {
   initialOwnerState.ownerAgency = mockDefaultAgency;
   initialOwnerState.ownerCode = mockDefaultCode;
   initialOwnerState.ownerPortion = '100';
+  initialOwnerState.methodOfPayment = mockMethodsOfPayment[DEFAULT_PAYMENT_INDEX];
   const [ownershipArray, setOwnershipArray] = useState([initialOwnerState]);
   // Set initial validation state
   const initialValidState = { ...validTemplate };
@@ -238,6 +240,19 @@ const OwnershipStep = () => {
       const { invalidText } = inputText.portion;
       setValidation(DEFAULT_INDEX, validKey, true, invalidText);
       refControl.current[DEFAULT_INDEX]?.ownerPortion.focus();
+      return false;
+    }
+
+    const {
+      allValid,
+      invalidId,
+      invalidField,
+      invalidValue
+    } = getInvalidIdAndKey(ownershipArray, validationArray);
+
+    if (!allValid) {
+      validateInput(invalidId, invalidField, invalidValue);
+      refControl.current[invalidId][invalidField].focus();
       return false;
     }
 
