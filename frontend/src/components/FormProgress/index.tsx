@@ -2,13 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Button,
-  ProgressIndicator,
-  ProgressStep
+  Button
 } from '@carbon/react';
 import { DocumentBlank } from '@carbon/icons-react';
 
 import Subtitle from '../Subtitle';
+import SeedlotRegistrationProgress from '../SeedlotRegistrationProgress';
 
 import './styles.scss';
 
@@ -27,35 +26,7 @@ const FormProgress = ({ seedlotNumber }: FormProgressProps) => {
         <Subtitle text="Where you are in the registration process" />
       </div>
       <div className="steps-box">
-        <ProgressIndicator
-          currentIndex={5}
-          spaceEquall
-        >
-          <ProgressStep
-            label="Collection"
-            secondaryLabel="Step 1"
-          />
-          <ProgressStep
-            label="Ownership"
-            secondaryLabel="Step 2"
-          />
-          <ProgressStep
-            label="Interim storage"
-            secondaryLabel="Step 3"
-          />
-          <ProgressStep
-            label="Orchard"
-            secondaryLabel="Step 4"
-          />
-          <ProgressStep
-            label="Parent tree and SMP"
-            secondaryLabel="Step 5"
-          />
-          <ProgressStep
-            label="Extraction and storage"
-            secondaryLabel="Step 6"
-          />
-        </ProgressIndicator>
+        <SeedlotRegistrationProgress currentIndex={5} />
       </div>
       <div>
         <Button

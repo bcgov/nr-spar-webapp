@@ -4,12 +4,11 @@ import {
   FlexGrid,
   Row,
   Breadcrumb,
-  BreadcrumbItem,
-  ProgressIndicator,
-  ProgressStep
+  BreadcrumbItem
 } from '@carbon/react';
 
 import PageTitle from '../../../components/PageTitle';
+import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 
 import './styles.scss';
 
@@ -36,39 +35,13 @@ const SeedlotRegistrationForm = () => {
           />
         </Row>
         <Row className="seedlot-registration-progress">
-          <ProgressIndicator
-            spaceEqually
-            className="seedlot-registration-steps"
+          <SeedlotRegistrationProgress
             currentIndex={formStep}
-            onChange={(e: number) => {
+            className="seedlot-registration-steps"
+            interactFunction={(e: number) => {
               setFormStep(e);
             }}
-          >
-            <ProgressStep
-              label="Collection"
-              secondaryLabel="Step 1"
-            />
-            <ProgressStep
-              label="Ownership"
-              secondaryLabel="Step 2"
-            />
-            <ProgressStep
-              label="Interim storage"
-              secondaryLabel="Step 3"
-            />
-            <ProgressStep
-              label="Orchard"
-              secondaryLabel="Step 4"
-            />
-            <ProgressStep
-              label="Parent tree and SMP"
-              secondaryLabel="Step 5"
-            />
-            <ProgressStep
-              label="Extraction and storage"
-              secondaryLabel="Step 6"
-            />
-          </ProgressIndicator>
+          />
         </Row>
         <Row className="seedlot-registration-forms">
           <div className={formStep === 0 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
