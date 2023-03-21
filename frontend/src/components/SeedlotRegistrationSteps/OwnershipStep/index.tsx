@@ -64,10 +64,14 @@ const mockMethodsOfPayment = [
   'JV - Journal voucher'
 ];
 
+interface OwnershipStepProps {
+  setStep: Function
+}
+
 /*
   Component
 */
-const OwnershipStep = () => {
+const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
   // Set initial owner state
   const initialOwnerState = { ...ownerTemplate };
   initialOwnerState.id = DEFAULT_INDEX;
@@ -279,7 +283,12 @@ const OwnershipStep = () => {
     if (areAllInputsValid()) {
       // eslint-disable-next-line no-console
       console.log(ownershipArray);
+      setStep(1);
     }
+  };
+
+  const goBack = () => {
+    setStep(-1);
   };
 
   return (
@@ -342,17 +351,17 @@ const OwnershipStep = () => {
       <div className="btns-container">
         <FlexGrid fullWidth>
           <Row>
-            <Column xs={16} sm={8} md={3} lg={3}>
+            <Column xs={16} sm={8} md={3} lg={2} xl={2}>
               <Button
                 kind="secondary"
                 size="lg"
                 className="back-next-btn"
-              // onClick={logForm}
+                onClick={goBack}
               >
                 Back
               </Button>
             </Column>
-            <Column xs={16} sm={8} md={3} lg={3}>
+            <Column xs={16} sm={8} md={3} lg={2} xl={2}>
               <Button
                 kind="primary"
                 size="lg"
