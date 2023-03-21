@@ -57,7 +57,7 @@ export interface NumStepperVal {
   direction: string
 }
 
-const twoDigitRegex = /^[0-9]{2}$/;
+const twoDigitRegex = /^\d{2}$/;
 
 const getNextId = (currentArray: Array<SingleOwnerForm>): number => {
   let max = -1;
@@ -326,7 +326,6 @@ export const getInvalidIdAndKey = (
   ownershiptArray: Array<SingleOwnerForm>,
   validationArray: Array<ValidationProp>
 ): AllValidObj => {
-  // let allValid = true;
   const ownerLen = ownershiptArray.length;
 
   for (let i = 0; i < ownerLen; i += 1) {
