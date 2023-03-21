@@ -2,10 +2,7 @@ import React, { useState, useRef } from 'react';
 import {
   Accordion,
   AccordionItem,
-  Button,
-  FlexGrid,
-  Column,
-  Row
+  Button
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/icons-react';
 
@@ -349,31 +346,23 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
         </Accordion>
       </div>
       <div className="btns-container">
-        <FlexGrid fullWidth>
-          <Row>
-            <Column xs={16} sm={8} md={3} lg={2} xl={2}>
-              <Button
-                kind="secondary"
-                size="lg"
-                className="back-next-btn"
-                onClick={goBack}
-              >
-                Back
-              </Button>
-            </Column>
-            <Column xs={16} sm={8} md={3} lg={2} xl={2}>
-              <Button
-                kind="primary"
-                size="lg"
-                className="back-next-btn"
-                onClick={logForm}
-                renderIcon={ArrowRight}
-              >
-                Next
-              </Button>
-            </Column>
-          </Row>
-        </FlexGrid>
+        <Button
+          kind="secondary"
+          size="lg"
+          className="back-next-btn"
+          onClick={goBack}
+        >
+          Back
+        </Button>
+        <Button
+          kind="primary"
+          size="lg"
+          className="back-next-btn"
+          onClick={logForm}
+          renderIcon={ArrowRight}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
