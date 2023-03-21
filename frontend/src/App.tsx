@@ -98,7 +98,6 @@ const App: React.FC = () => {
               </ProtectedRoute>
             )}
           />
-
         </Route>
       </Routes>
     </BrowserRouter>
