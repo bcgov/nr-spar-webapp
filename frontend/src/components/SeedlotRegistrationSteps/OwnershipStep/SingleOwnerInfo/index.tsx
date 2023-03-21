@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { MutableRefObject, useRef } from 'react';
+import React from 'react';
 import {
   TextInput,
   NumberInput,
@@ -67,8 +66,6 @@ const SingleOwnerInfo = ({
           <ComboBox
             className="single-owner-combobox"
             id={`owner-agency-${ownerInfo.id}`}
-            // We need to check if validationProp is here since deleting a Single Owner Form
-            //    might delete the valid prop first and throwing an error
             ref={(el: HTMLInputElement) => addRefs(el, 'ownerAgency')}
             disabled={ownerInfo.id === DEFAULT_INDEX ? disableInputs : false}
             name="ownerAgency"
@@ -81,6 +78,8 @@ const SingleOwnerInfo = ({
             titleText={inputText.owner.titleText}
             helperText={inputText.owner.helperText}
             onChange={(e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)}
+            // We need to check if validationProp is here since deleting a Single Owner Form
+            //    might delete the valid prop first and throwing an error
             invalid={validationProp ? validationProp.owner.isInvalid : false}
             invalidText={inputText.owner.invalidText}
           />

@@ -1,4 +1,3 @@
-// import { RefObject } from 'react';
 import { inputText, ownerTemplate, validTemplate } from './config';
 
 export type SingleOwnerForm = {
@@ -15,6 +14,16 @@ export type SingleOwnerForm = {
 type SingleInvalidObj = {
   isInvalid: boolean,
   invalidText: string,
+}
+
+type ValidationPropNoId = {
+  owner: SingleInvalidObj,
+  code: SingleInvalidObj,
+  portion: SingleInvalidObj,
+  reserved: SingleInvalidObj,
+  surplus: SingleInvalidObj,
+  funding: SingleInvalidObj,
+  payment: SingleInvalidObj
 }
 
 export type ValidationProp = {
@@ -147,13 +156,25 @@ const validatePerc = (value: string): SingleInvalidObj => {
 };
 
 export const getValidKey = (name: string): string => {
-  const inputKeys = Object.keys(ownerTemplate);
-  const validKeys = Object.keys(validTemplate);
-  const inputKeyIndex = inputKeys.indexOf(name);
-  if (inputKeyIndex === -1 || inputKeys.length !== validKeys.length) {
-    throw new Error('Failed to retrieve valid key');
-  }
-  return validKeys[inputKeyIndex];
+  if (name === 'ownerAgency') return 'owner';
+  if (name === 'ownerCode') return 'code';
+  if (name === 'ownerPortion') return 'portion';
+  if (name === 'reservedPerc') return 'reserved';
+  if (name === 'surplusPerc') return 'surplus';
+  if (name === 'fundingSource') return 'funding';
+  if (name === 'methodOfPayment') return 'payment';
+  throw new Error('Failed to get valid key');
+};
+
+const getOwnerKey = (name: string): string => {
+  if (name === 'owner') return 'ownerAgency';
+  if (name === 'code') return 'ownerCode';
+  if (name === 'portion') return 'ownerPortion';
+  if (name === 'reserved') return 'reservedPerc';
+  if (name === 'surplus') return 'surplusPerc';
+  if (name === 'funding') return 'fundingSource';
+  if (name === 'payment') return 'methodOfPayment';
+  throw new Error('Failed to get owner key');
 };
 
 // The sum of reserved and surplus should be 100, if one is changed, auto calc the other one
@@ -258,10 +279,10 @@ export type AllValidObj = {
   allValid: boolean,
   invalidId: number,
   invalidField: string,
-  invalidValue: string
+  invalidValue: string,
+  ownerOk: boolean
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isOwnerObjInvalid = (ownerObj: SingleOwnerForm) => {
   const keys = Object.keys(ownerObj);
   const len = keys.length;
@@ -271,15 +292,33 @@ const isOwnerObjInvalid = (ownerObj: SingleOwnerForm) => {
     if (isInputEmpty(val)) {
       return {
         isInvalid: true,
-        validKey: key,
-        validValue: val
+        invalidKey: key,
+        invalidValue: val
       };
     }
   }
   return {
     isInvalid: false,
-    validKey: '',
-    validValue: ''
+    invalidKey: '',
+    invalidValue: ''
+  };
+};
+
+const isValidObjInvalid = (invalidObj: ValidationProp) => {
+  const keys = Object.keys(invalidObj);
+  const len = keys.length;
+  for (let i = 1; i < len; i += 1) {
+    const key = keys[i];
+    if (invalidObj[key as keyof ValidationPropNoId].isInvalid) {
+      return {
+        isValidValInvalid: true,
+        invalidValidKey: key
+      };
+    }
+  }
+  return {
+    isValidValInvalid: false,
+    invalidValidKey: ''
   };
 };
 
@@ -296,13 +335,25 @@ export const getInvalidIdAndKey = (
     if (ownerObj.id !== validObj.id) {
       throw new Error('Validate all inputs error, id mismatch.');
     }
-    const { isInvalid, validKey, validValue } = isOwnerObjInvalid(ownerObj);
+    const { isInvalid, invalidKey, invalidValue } = isOwnerObjInvalid(ownerObj);
     if (isInvalid) {
       return {
         allValid: false,
         invalidId: validObj.id,
-        invalidField: validKey,
-        invalidValue: String(validValue)
+        invalidField: invalidKey,
+        invalidValue: String(invalidValue),
+        ownerOk: false
+      };
+    }
+
+    const { isValidValInvalid, invalidValidKey } = isValidObjInvalid(validObj);
+    if (isValidValInvalid) {
+      return {
+        allValid: false,
+        invalidId: validObj.id,
+        invalidField: getOwnerKey(invalidValidKey),
+        invalidValue: String(invalidValue),
+        ownerOk: true
       };
     }
   }
@@ -311,6 +362,7 @@ export const getInvalidIdAndKey = (
     allValid: true,
     invalidId: -1,
     invalidField: '',
-    invalidValue: ''
+    invalidValue: '',
+    ownerOk: true
   };
 };

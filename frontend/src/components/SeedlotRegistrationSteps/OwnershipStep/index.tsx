@@ -1,11 +1,13 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef } from 'react';
 import {
   Accordion,
   AccordionItem,
-  Button
+  Button,
+  FlexGrid,
+  Column,
+  Row
 } from '@carbon/react';
+import { ArrowRight } from '@carbon/icons-react';
 
 import TitleAccordion from '../../TitleAccordion';
 import SingleOwnerInfo from './SingleOwnerInfo';
@@ -63,10 +65,7 @@ const mockMethodsOfPayment = [
 ];
 
 /*
-  component
-  TODO:
-    Form validation
-    Back & Next buttons
+  Component
 */
 const OwnershipStep = () => {
   // Set initial owner state
@@ -85,6 +84,18 @@ const OwnershipStep = () => {
   const [disableInputs, setDisableInputs] = useState(true);
 
   const refControl = useRef<any>({});
+
+  const setPortionsValid = (isInvalid: boolean) => {
+    const updatedArray = [...validationArray];
+    const len = updatedArray.length;
+    for (let i = 0; i < len; i += 1) {
+      updatedArray[i].portion = {
+        isInvalid,
+        invalidText: inputText.portion.invalidText
+      };
+    }
+    setValidationArray(updatedArray);
+  };
 
   const setValidation = (
     index: number,
@@ -179,11 +190,24 @@ const OwnershipStep = () => {
       setOwnershipArray(newArr);
       validateInput(index, name, value, validKey, isInvalid, invalidText);
     } else if (name === 'ownerCode' && optionalName === 'ownerAgency') {
+      // This if block is needed due to the checkbox, if unchecked, set both input to invalid
       setOwnershipArray(updatedArray);
       const agencyKey = getValidKey(optionalName);
       const isInvalid = optionalValue === '';
       const { invalidText } = inputText.owner;
       validateInput(index, name, value, agencyKey, isInvalid, invalidText);
+    } else if (name === 'ownerPortion') {
+      setOwnershipArray(updatedArray);
+      // Prioritize single input validation
+      const { isInvalid, invalidText } = isInputInvalid(name, value);
+      if (isInvalid) {
+        const validKey = getValidKey(name);
+        setValidation(index, validKey, isInvalid, invalidText);
+      } else {
+        // If the single number is ok then we check the sum
+        const portionsInvalid = !arePortionsValid(updatedArray);
+        setPortionsValid(portionsInvalid);
+      }
     } else {
       setOwnershipArray(updatedArray);
       validateInput(index, name, value);
@@ -234,35 +258,28 @@ const OwnershipStep = () => {
   };
 
   const areAllInputsValid = (): boolean => {
-    // Check if all portions add up to 100
-    if (!arePortionsValid(ownershipArray)) {
-      const validKey = getValidKey('ownerPortion');
-      const { invalidText } = inputText.portion;
-      setValidation(DEFAULT_INDEX, validKey, true, invalidText);
-      refControl.current[DEFAULT_INDEX]?.ownerPortion.focus();
-      return false;
-    }
-
     const {
       allValid,
       invalidId,
       invalidField,
-      invalidValue
+      invalidValue,
+      ownerOk
     } = getInvalidIdAndKey(ownershipArray, validationArray);
-
     if (!allValid) {
-      validateInput(invalidId, invalidField, invalidValue);
+      if (!ownerOk) {
+        validateInput(invalidId, invalidField, invalidValue);
+      }
       refControl.current[invalidId][invalidField].focus();
       return false;
     }
-
     return true;
   };
 
   const logForm = () => {
-    console.log(areAllInputsValid());
-    // eslint-disable-next-line no-console
-    console.log(ownershipArray, validationArray, refControl);
+    if (areAllInputsValid()) {
+      // eslint-disable-next-line no-console
+      console.log(ownershipArray);
+    }
   };
 
   return (
@@ -322,15 +339,33 @@ const OwnershipStep = () => {
           }
         </Accordion>
       </div>
-
-      <Button
-        kind="primary"
-        size="md"
-        className="btn-test"
-        onClick={logForm}
-      >
-        Test
-      </Button>
+      <div className="btns-container">
+        <FlexGrid fullWidth>
+          <Row>
+            <Column xs={16} sm={8} md={3} lg={3}>
+              <Button
+                kind="secondary"
+                size="lg"
+                className="back-next-btn"
+              // onClick={logForm}
+              >
+                Back
+              </Button>
+            </Column>
+            <Column xs={16} sm={8} md={3} lg={3}>
+              <Button
+                kind="primary"
+                size="lg"
+                className="back-next-btn"
+                onClick={logForm}
+                renderIcon={ArrowRight}
+              >
+                Next
+              </Button>
+            </Column>
+          </Row>
+        </FlexGrid>
+      </div>
     </div>
   );
 };
