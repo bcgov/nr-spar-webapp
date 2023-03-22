@@ -60,6 +60,23 @@ const SeedlotRegistrationEndpoints = (server: Server) => {
   });
 
   server.get(getUrl(ApiAddresses.SeedlotRetrieveAll, true), (schema: AppSchema) => schema.all('seedlotData'));
+
+  server.post(getUrl(ApiAddresses.InterimStoragePost, true), (schema: AppSchema, request) => {
+    console.log('aqui');
+    const attrs = JSON.parse(request.requestBody);
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const { interimStorageRegistration } = schema.db;
+    const { interimAgencyInfo } = schema.db;
+    const { storageInfo } = schema.db;
+
+    interimStorageRegistration.insert(attrs);
+    interimAgencyInfo.insert(attrs.applicant);
+    storageInfo.insert(attrs.storageInformation);
+    return {
+      attrs
+    };
+  });
 };
 
 export default SeedlotRegistrationEndpoints;

@@ -34,6 +34,9 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
   // Retrieve all seedlots
   let seedlotRetrieveAllUrl = '/api/seedlot';
 
+  // Seedlot Registration - Interim Storage Step Register
+  let interimStoragePostUrl = '/api/seedlot/registration/:seedlotnumber';
+
   // Mocks
   if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
     // Favourite activities
@@ -51,11 +54,13 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
     // Applicant Info
     applicantInfoRetrieveAll = '/application-info';
 
-    // A Class Seedlot Register
+    // A Class Seedlot RegisinterimStoragePostter
     aClassSeedlotPostUrl = '/register-a-class';
 
     // Retrieve one seedlot
     seedlotRetrieveOneUrl = '/seedlot/:seedlotnumber';
+
+    interimStoragePostUrl = '/seedlot/registration/:seedlotnumber';
   }
 
   // Retrieve all seedlot
@@ -87,6 +92,8 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
       return `${server}${seedlotRetrieveOneUrl}`;
     case ApiAddresses.SeedlotRetrieveAll:
       return `${server}${seedlotRetrieveAllUrl}`;
+    case ApiAddresses.InterimStoragePost:
+      return `${server}${interimStoragePostUrl}`;
     default:
       return '';
   }

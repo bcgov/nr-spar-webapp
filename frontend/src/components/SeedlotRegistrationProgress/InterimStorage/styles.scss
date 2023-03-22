@@ -1,0 +1,54 @@
+@use '@carbon/type';
+
+.interim-agency-storage-form,
+.collection-form-buttons {
+  padding-left: 0;
+}
+
+.interim-agency-storage-form h2 {
+  @include type.type-style('heading-03');
+  margin-bottom: 0.25rem;
+}
+
+.interim-agency-title,
+.storage-information-title,
+.agency-information.bcgov--row {
+  margin-bottom: 2.5rem;
+}
+
+.collector-agency-checkbox-row {
+  margin-bottom: 1.5rem;
+}
+
+@media only screen and (max-width: 1584px) {
+  .interim-agency-form {
+      padding-left: 2rem;
+  }
+}
+
+.storage-date-row.bcgov--row {
+  margin-left: 0;
+}
+
+.storage-date-row.bcgov--row,
+.storage-location-row.bcgov--row {
+  margin-bottom: 2rem;
+}
+
+.class-source-radio.bcgov--row {
+  margin-bottom: 0;
+}
+
+.collection-form-buttons.bcgov--row {
+  margin: 2.5rem 0 0;
+  padding: 0;
+}
+
+.start-date-col,
+.end-date-col {
+  padding-left: 0;
+}
+
+.bcgov--date-picker.bcgov--date-picker--single {
+  width: 10rem;
+}
