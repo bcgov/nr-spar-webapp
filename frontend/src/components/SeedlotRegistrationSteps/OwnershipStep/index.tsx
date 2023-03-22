@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import {
   Accordion,
   AccordionItem,
@@ -8,6 +10,9 @@ import { ArrowRight } from '@carbon/icons-react';
 
 import TitleAccordion from '../../TitleAccordion';
 import SingleOwnerInfo from './SingleOwnerInfo';
+import getUrl from '../../../utils/ApiUtils';
+import ApiAddresses from '../../../utils/ApiAddresses';
+import { useAuth } from '../../../contexts/AuthContext';
 
 import {
   insertOwnerForm,
@@ -21,7 +26,8 @@ import {
   isInputInvalid,
   ValidationProp,
   arePortionsValid,
-  getInvalidIdAndKey
+  getInvalidIdAndKey,
+  SingleOwnerForm
 } from './utils';
 import {
   DEFAULT_INDEX,
@@ -69,6 +75,34 @@ interface OwnershipStepProps {
   Component
 */
 const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
+  const { token } = useAuth();
+  const { seedlot } = useParams();
+  const getAxiosConfig = () => {
+    const axiosConfig = {};
+    if (token) {
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      Object.assign(axiosConfig, headers);
+    }
+    return axiosConfig;
+  };
+
+  const postData = async (data: Array<SingleOwnerForm>, seedlotNumber: string) => {
+    await axios.post(getUrl(ApiAddresses.SeedlotOwnerRegister).replace(':seedlotnumber', seedlotNumber), data, getAxiosConfig())
+      .then((response) => {
+        // eslint-disable-next-line no-console
+        if (response.status === 201) {
+          setStep(1);
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+  };
   // Set initial owner state
   const initialOwnerState = { ...ownerTemplate };
   initialOwnerState.id = DEFAULT_INDEX;
@@ -276,11 +310,9 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
     return true;
   };
 
-  const logForm = () => {
-    if (areAllInputsValid()) {
-      // eslint-disable-next-line no-console
-      console.log(ownershipArray);
-      setStep(1);
+  const submitForm = async () => {
+    if (areAllInputsValid() && seedlot) {
+      await postData(ownershipArray, seedlot);
     }
   };
 
@@ -358,7 +390,7 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
           kind="primary"
           size="lg"
           className="back-next-btn"
-          onClick={logForm}
+          onClick={submitForm}
           renderIcon={ArrowRight}
         >
           Next
