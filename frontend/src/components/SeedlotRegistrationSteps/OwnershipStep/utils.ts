@@ -286,15 +286,17 @@ export type AllValidObj = {
 const isOwnerObjInvalid = (ownerObj: SingleOwnerForm) => {
   const keys = Object.keys(ownerObj);
   const len = keys.length;
-  for (let i = 1; i < len; i += 1) {
+  for (let i = 0; i < len; i += 1) {
     const key = keys[i];
-    const val = ownerObj[key as keyof SingleOwnerForm];
-    if (isInputEmpty(val)) {
-      return {
-        isInvalid: true,
-        invalidKey: key,
-        invalidValue: val
-      };
+    if (key !== 'id') {
+      const val = ownerObj[key as keyof SingleOwnerForm];
+      if (isInputEmpty(val)) {
+        return {
+          isInvalid: true,
+          invalidKey: key,
+          invalidValue: val
+        };
+      }
     }
   }
   return {
@@ -307,13 +309,15 @@ const isOwnerObjInvalid = (ownerObj: SingleOwnerForm) => {
 const isValidObjInvalid = (invalidObj: ValidationProp) => {
   const keys = Object.keys(invalidObj);
   const len = keys.length;
-  for (let i = 1; i < len; i += 1) {
+  for (let i = 0; i < len; i += 1) {
     const key = keys[i];
-    if (invalidObj[key as keyof ValidationPropNoId].isInvalid) {
-      return {
-        isValidValInvalid: true,
-        invalidValidKey: key
-      };
+    if (key !== 'id') {
+      if (invalidObj[key as keyof ValidationPropNoId].isInvalid) {
+        return {
+          isValidValInvalid: true,
+          invalidValidKey: key
+        };
+      }
     }
   }
   return {
