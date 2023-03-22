@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,6 +16,7 @@ import {
   TextInput
 } from '@carbon/react';
 
+import { useParams } from 'react-router-dom';
 import { ArrowRight } from '@carbon/icons-react';
 import { FilterObj, filterInput } from '../../../utils/filterUtils';
 import Subtitle from '../../Subtitle';
@@ -23,6 +24,7 @@ import InterimStorageRegistration from '../../../types/InterimStorageRegistratio
 import getUrl from '../../../utils/ApiUtils';
 import ApiAddresses from '../../../utils/ApiAddresses';
 import { useAuth } from '../../../contexts/AuthContext';
+import ApplicantInfo from '../../../types/ApplicantInfo';
 import './styles.scss';
 
 interface InterimStorageStepProps {
@@ -31,13 +33,18 @@ interface InterimStorageStepProps {
 
 const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const { token } = useAuth();
-  // const navigate = useNavigate();
+  const { seedlot } = useParams();
 
   const mockAgencyOptions: Array<string> = [
     '0032 - Strong Seeds Orchard - SSO',
     '0035 - Weak Seeds Orchard - WSO',
     '0038 - Okay Seeds Orchard - OSO'
   ];
+
+  const mockStartDataMin: string = '03/20/2023';
+  const mockStartDataMax: string = '03/23/2023';
+  const mockEndDataMin: string = '03/20/2023';
+  const mockEndDataMax: string = '03/23/2023';
 
   const getAxiosConfig = () => {
     const axiosConfig = {};
@@ -52,11 +59,36 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     return axiosConfig;
   };
 
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const numberInputRef = useRef<HTMLInputElement>(null);
+  const storageLocationInputRef = useRef<HTMLInputElement>(null);
+
+  const [invalidName] = useState<boolean>(false);
+  const [invalidNumber, setInvalidNumber] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(true);
+  const [agencyInfo, setAgencyInfo] = useState<ApplicantInfo>();
+  const [storageLocationEmpty, setStorageLocationEmpty] = useState<boolean>(false);
+
+  const getSeedlotData = () => {
+    if (seedlot) {
+      axios.get(getUrl(ApiAddresses.SeedlotRetrieveOne).replace(':seedlotnumber', seedlot), getAxiosConfig())
+        .then((response) => {
+          if (response.data.seedlotApplicantInfo.applicant) {
+            setAgencyInfo(response.data.seedlotApplicantInfo.applicant);
+          }
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(`Error: ${error}`);
+        });
+    }
+  };
+
   const interimStorageData: InterimStorageRegistration = {
-    seedlotNumber: 0,
+    seedlotNumber: (seedlot ? +seedlot : 0),
     applicant: {
-      name: mockAgencyOptions[0],
-      number: '0'
+      name: (agencyInfo ? agencyInfo.name : mockAgencyOptions[0]),
+      number: (agencyInfo ? agencyInfo.number : '0')
     },
     storageInformation: {
       startDate: '',
@@ -66,21 +98,11 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     facilityType: 'outside'
   };
 
-  const nameInputRef = useRef<HTMLInputElement>(null);
-  const numberInputRef = useRef<HTMLInputElement>(null);
-  const emailInputRef = useRef<HTMLInputElement>(null);
-
   const [responseBody, setResponseBody] = useState<InterimStorageRegistration>(interimStorageData);
-  const [invalidName] = useState<boolean>(false);
-  const [invalidNumber, setInvalidNumber] = useState<boolean>(false);
 
-  const inputChangeHandlerCheckboxes = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-    setResponseBody({
-      ...responseBody,
-      [name]: checked
-    });
-  };
+  useEffect(() => {
+    getSeedlotData();
+  });
 
   const inputChangeHandlerStorage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -94,14 +116,23 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   };
 
   const inputChangeHandlerLocation = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const { name, value } = event.target;
     setResponseBody({
       ...responseBody,
       storageInformation: {
         ...responseBody.storageInformation,
         [name]: value
+      }
+    });
+  };
+
+  const inputChangeHandlerDate = (event: string[], dateType: string) => {
+    const value = event[0];
+    setResponseBody({
+      ...responseBody,
+      storageInformation: {
+        ...responseBody.storageInformation,
+        [dateType]: value
       }
     });
   };
@@ -114,6 +145,15 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     });
   };
 
+  const validateStorageLocation = () => {
+    const storageLocationInfo = responseBody.storageInformation.location;
+    if (storageLocationInfo.trim().length === 0) {
+      setStorageLocationEmpty(true);
+    } else {
+      setStorageLocationEmpty(false);
+    }
+  };
+
   const validateInterimAgencyLocationNumber = () => {
     const intNumber = +responseBody.applicant.number;
     if (intNumber <= 0 || intNumber >= 99) {
@@ -123,6 +163,14 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     }
   };
 
+  const logForm = () => {
+    setStep(1);
+  };
+
+  const goBack = () => {
+    setStep(-1);
+  };
+
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -130,10 +178,12 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
       nameInputRef.current?.focus();
     } else if (invalidNumber) {
       numberInputRef.current?.focus();
+    } else if (storageLocationEmpty) {
+      storageLocationInputRef.current?.focus();
     } else {
       axios.post(getUrl(ApiAddresses.InterimStoragePost), responseBody, getAxiosConfig())
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          logForm();
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -142,12 +192,9 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     }
   };
 
-  const logForm = () => {
-    setStep(1);
-  };
-
-  const goBack = () => {
-    setStep(-1);
+  const useCollectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setIsChecked(checked);
   };
 
   return (
@@ -166,7 +213,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               name="collector-agency"
               labelText="Use applicant agency as collector agency"
               defaultChecked
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerCheckboxes(e)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => useCollectorAgencyisChecked(e)}
             />
           </Column>
         </Row>
@@ -176,15 +223,13 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               id="agency-name-combobox"
               ref={nameInputRef}
               name="name"
-              initialSelectedItem={mockAgencyOptions[0]}
+              selectedItem={mockAgencyOptions.find((x) => x === agencyInfo?.name)}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
               titleText="Interim agency name"
               placeholder="Select Interim agency name"
-              selectedId="1"
-              disabled={0}
-              // eslint-disable-next-line quotes
+              readOnly={isChecked}
               items={mockAgencyOptions}
             />
           </Column>
@@ -195,6 +240,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               ref={numberInputRef}
               min={0}
               max={99}
+              value={agencyInfo?.number}
               disableWheel
               hideSteppers
               type="text"
@@ -202,6 +248,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               helperText="2-digit code that identifies the address of operated office or division"
               invalid={invalidNumber}
               invalidText="Please enter a valid value"
+              readOnly={isChecked}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerStorage(e)}
               onBlur={() => validateInterimAgencyLocationNumber()}
             />
@@ -218,9 +265,12 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
             <DatePicker
               datePickerType="single"
               name="startDate"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerLocation(e)}
+              maxDate={mockStartDataMax}
+              minDate={mockStartDataMin}
+              onChange={(e: any) => inputChangeHandlerDate(e, 'startDate')}
             >
               <DatePickerInput
+                id="start-date-input"
                 labelText="Collection start date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
@@ -231,9 +281,12 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
             <DatePicker
               datePickerType="single"
               name="endDate"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerLocation(e)}
+              maxDate={mockEndDataMax}
+              minDate={mockEndDataMin}
+              onChange={(e: any) => inputChangeHandlerDate(e, 'endDate')}
             >
               <DatePickerInput
+                id="end-date-input"
                 labelText="Collection end date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
@@ -244,18 +297,21 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
         <Row className="storage-location-row">
           <Column sm={4} md={4} lg={8}>
             <TextInput
-              id="appliccant-email-input"
+              id="storage-location-input"
               name="location"
-              ref={emailInputRef}
+              ref={storageLocationInputRef}
               type="text"
               labelText="Storage location"
               placeholder="Enter the location were the cones were stored"
               helperText="Enter a short name or description of the location where the cones are being temporarily stored"
+              invalid={storageLocationEmpty}
+              invalidText="Please enter a valid value"
+              onBlur={() => validateStorageLocation()}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerLocation(e)}
             />
           </Column>
         </Row>
-        <Row className="class-source-radio">
+        <Row className="cl/ass-source-radio">
           <Column sm={4} md={8} lg={16}>
             <RadioButtonGroup
               legendText="Storage facility type"
@@ -299,9 +355,9 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
           <Button
             type="submit"
             kind="primary"
-            onClick={logForm}
             size="lg"
             className="btn-collection-form"
+            onClick={() => console.log(responseBody)}
             renderIcon={ArrowRight}
           >
             Next
