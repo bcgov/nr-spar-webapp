@@ -14,13 +14,13 @@ export const inputText = {
     placeholder: 'Enter or choose your agency',
     titleText: 'Owner agency',
     helperText: 'You can enter the agency number, name or acronym',
-    invalidText: 'You can enter the agency number, name or acronym'
+    invalidText: 'Please choose a valid owner agency, filter with agency number, name or acronym'
   },
   code: {
     placeholder: 'Example: 00',
     labelText: 'Owner location code',
     helperText: '2-digit code that identifies the address of operated office or division',
-    invalidText: '2-digit code that identifies the address of operated office or division'
+    invalidText: 'Please enter a valid 2-digit code that identifies the address of operated office or division'
   },
   portion: {
     label: 'Owner portion (%)',
@@ -35,12 +35,12 @@ export const inputText = {
   funding: {
     placeholder: 'Choose a funding source option',
     titleText: 'Funding source',
-    invalidText: 'Please choose a funding source option'
+    invalidText: 'Please choose a valid funding source option'
   },
   payment: {
     placeholder: 'Choose a method of payment',
     titleText: 'Method of payment',
-    invalidText: 'Please choose a method of payment'
+    invalidText: 'Please choose a valid method of payment'
   },
   greaterThan: 'Value must be lower or equal to 100',
   lowerThan: 'Value must be higher or equal to 0',
