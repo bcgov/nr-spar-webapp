@@ -46,7 +46,7 @@ const SingleOwnerInfo = ({
       {
         ownerInfo.id === DEFAULT_INDEX && (
           <Row>
-            <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={16}>
+            <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={16}>
               <Checkbox
                 labelText={inputText.checkbox.labelText}
                 id="default-agency-code-checkbox"
@@ -62,7 +62,7 @@ const SingleOwnerInfo = ({
         )
       }
       <Row>
-        <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={8}>
           <ComboBox
             className="single-owner-combobox"
             id={`owner-agency-${ownerInfo.id}`}
@@ -84,7 +84,7 @@ const SingleOwnerInfo = ({
             invalidText={inputText.owner.invalidText}
           />
         </Column>
-        <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={8}>
           <TextInput
             className="owner-code-text-input"
             name="ownerCode"
@@ -106,7 +106,7 @@ const SingleOwnerInfo = ({
         </Column>
       </Row>
       <Row>
-        <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={8}>
           <NumberInput
             id={`single-owner-portion-${ownerInfo.id}`}
             ref={(el: HTMLInputElement) => addRefs(el, 'ownerPortion')}
@@ -139,7 +139,7 @@ const SingleOwnerInfo = ({
             }
           />
         </Column>
-        <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={8}>
           <div className="reserved-perc-container">
             <div className="reserved-surplus-input">
               <NumberInput
@@ -203,7 +203,7 @@ const SingleOwnerInfo = ({
         </Column>
       </Row>
       <Row>
-        <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={8}>
           <ComboBox
             className="single-owner-combobox"
             id={`owner-funding-source-${ownerInfo.id}`}
@@ -222,7 +222,7 @@ const SingleOwnerInfo = ({
             invalidText={validationProp ? validationProp.funding.invalidText : ''}
           />
         </Column>
-        <Column className="single-owner-info-col" xs={16} sm={16} md={16} lg={8}>
+        <Column className="single-owner-info-col" xs={4} sm={4} md={8} lg={8}>
           <ComboBox
             className="single-owner-combobox"
             id={`owner-method-of-payment-${ownerInfo.id}`}
