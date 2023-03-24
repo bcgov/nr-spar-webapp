@@ -1,69 +1,76 @@
 @use '@carbon/type';
+@use '../../../theme/variables.scss' as vars;
 
-.interim-agency-storage-form,
-.collection-form-buttons {
-  padding-left: 0;
-}
-
-.interim-agency-storage-form h2 {
-  @include type.type-style('heading-03');
-  margin-bottom: 0.25rem;
-}
-
-.interim-agency-title,
-.storage-information-title,
-.agency-information.bcgov--row {
-  margin-bottom: 2.5rem;
-}
-
-.collector-agency-checkbox-row {
-  margin-bottom: 1.5rem;
-}
-
-@media only screen and (max-width: 1584px) {
-  .interim-agency-form {
-      padding-left: 2rem;
+.interim-agency-storage-form {
+  .collection-form-buttons {
+    padding-left: 0;
   }
-}
 
-.hidden { display: none;}
+  h2 {
+    @include type.type-style('heading-03');
+    margin-bottom: 0.25rem;
+  }
 
-.storage-facility-type {
-  margin-top: 0.5625rem;
-  padding-left: 1.75rem;
-}
+  .interim-agency-title,
+  .storage-information-title,
+  .agency-information.#{vars.$bcgov-prefix}--row {
+    margin-bottom: 2.5rem;
+  }
 
-.storage-date-row.bcgov--row {
-  margin-left: 0;
-}
+  .collector-agency-checkbox-row {
+    margin-bottom: 1.5rem;
+  }
 
-.storage-date-row.bcgov--row,
-.storage-location-row.bcgov--row {
-  margin-bottom: 2rem;
-}
+  @media only screen and (max-width: 1584px) {
+    .interim-agency-form {
+      padding-left: 2rem;
+    }
+  }
 
-.storage-type-radio.bcgov--row {
-  margin-bottom: 0;
-}
+  .storage-facility-type {
+    margin-top: 0.5625rem;
+    padding-left: 1.75rem;
+  }
 
-.collection-form-buttons.bcgov--row {
-  margin: 2.5rem 0 0;
-  padding: 0;
-}
+  .storage-date-row .#{vars.$bcgov-prefix}--row {
+    margin-left: 0;
+  }
 
-.start-date-col,
-.end-date-col {
-  padding-left: 0;
-}
+  .storage-date-row .#{vars.$bcgov-prefix}--row,
+  .storage-location-row .#{vars.$bcgov-prefix}--row {
+    margin-bottom: 2rem;
+  }
 
-.bcgov--date-picker.bcgov--date-picker--single {
-  width: 10rem;
-}
+  .storage-type-radio .#{vars.$bcgov-prefix}--row {
+    margin-bottom: 0;
+  }
 
-.btn-collection-form.bcgov--btn {
-  width: 15rem;
-}
+  .collection-form-buttons .#{vars.$bcgov-prefix}--row {
+    margin: 2.5rem 0 0;
+    padding: 0;
+  }
 
-.btn-collection-form.bcgov--btn.bcgov--btn--secondary {
-  margin-right: 1rem;
+  .#{vars.$bcgov-prefix}--date-picker .#{vars.$bcgov-prefix}--date-picker--single {
+    width: 10rem;
+  }
+
+  .#{vars.$bcgov-prefix}--date-picker-container {
+    width: 100%;
+  }
+
+  .#{vars.$bcgov-prefix}--date-picker .#{vars.$bcgov-prefix}--date-picker__input {
+    width: 100%;
+  }
+
+  .#{vars.$bcgov-prefix}--date-picker--single{
+    width: 100%;
+  }
+
+  .btn-collection-form .#{vars.$bcgov-prefix}--btn {
+    width: 15rem;
+  }
+
+  .btn-collection-form .#{vars.$bcgov-prefix}--btn .#{vars.$bcgov-prefix}--btn--secondary {
+    margin-right: 1rem;
+  }
 }
