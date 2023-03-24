@@ -6,6 +6,7 @@ type InterimStorageRegistration = {
   applicant: InterimAgencyInfo;
   storageInformation: StorageInfo;
   facilityType: string;
+  facilityTypeDescription: string;
 }
 
 export default InterimStorageRegistration;

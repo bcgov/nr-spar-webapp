@@ -56,9 +56,9 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const numberInputRef = useRef<HTMLInputElement>(null);
   const storageLocationInputRef = useRef<HTMLInputElement>(null);
-  const otherRadioRef = useRef<HTMLInputElement>(null);
 
-  const [invalidName, setInvalidName] = useState<boolean>(false);
+  const [facilityTypeValue, setFacilityTypeValue] = useState('');
+  const [otherRadioChecked, setOtherRadioChecked] = useState<boolean>(false);
   const [invalidNumber, setInvalidNumber] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(true);
   const [agencyInfo, setAgencyInfo] = useState<ApplicantInfo>();
@@ -90,7 +90,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
       endDate: '',
       location: ''
     },
-    facilityType: 'outside'
+    facilityType: 'outside',
+    facilityTypeDescription: ''
   };
 
   const [responseBody, setResponseBody] = useState<InterimStorageRegistration>(interimStorageData);
@@ -138,15 +139,24 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
       ...responseBody,
       facilityType: value
     });
+    if (value === 'other') {
+      setOtherRadioChecked(true);
+    } else {
+      setFacilityTypeValue('');
+      setResponseBody({
+        ...responseBody,
+        facilityTypeDescription: ''
+      });
+      setOtherRadioChecked(false);
+    }
   };
 
-  const validateApplicantName = () => {
-    // Refactor
-    if (responseBody.applicant.name.length === 0) {
-      setInvalidName(false);
-    } else {
-      setInvalidName(true);
-    }
+  const inputChangeHandlerFacilityType = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFacilityTypeValue(event.target.value);
+    setResponseBody({
+      ...responseBody,
+      facilityTypeDescription: event.target.value
+    });
   };
 
   const validateStorageLocation = () => {
@@ -187,9 +197,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (invalidName) {
-      nameInputRef.current?.focus();
-    } else if (invalidNumber) {
+    if (invalidNumber) {
       numberInputRef.current?.focus();
     } else if (storageLocationEmpty) {
       storageLocationInputRef.current?.focus();
@@ -245,7 +253,6 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               placeholder="Select Interim agency name"
               readOnly={isChecked}
               items={mockAgencyOptions}
-              onBlur={() => validateApplicantName()}
             />
           </Column>
           <Column sm={4} md={2} lg={4}>
@@ -289,6 +296,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                 labelText="Collection start date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
+                required
               />
             </DatePicker>
           </Column>
@@ -305,6 +313,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                 labelText="Collection end date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
+                required
               />
             </DatePicker>
           </Column>
@@ -321,6 +330,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               helperText="Enter a short name or description of the location where the cones are being temporarily stored"
               invalid={storageLocationEmpty}
               invalidText="Please enter a valid value"
+              required
               onBlur={() => validateStorageLocation()}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerLocation(e)}
             />
@@ -354,9 +364,25 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                 id="other-radio"
                 labelText="Other - OTH"
                 value="other"
-                ref={otherRadioRef}
               />
             </RadioButtonGroup>
+          </Column>
+        </Row>
+        <Row className={otherRadioChecked ? 'storage-facility-type' : 'hidden'}>
+          <Column sm={4} md={4} lg={8}>
+            <TextInput
+              id="storage-facility-type-input"
+              name="storage-facility"
+              type="text"
+              labelText="Storage facility type"
+              placeholder="Enter the storage facility type"
+              helperText="Describe the new storage facility used"
+              invalidText="Please enter a valid value"
+              required={otherRadioChecked}
+              value={facilityTypeValue}
+              // eslint-disable-next-line max-len
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandlerFacilityType(e)}
+            />
           </Column>
         </Row>
         <Row className="collection-form-buttons">
