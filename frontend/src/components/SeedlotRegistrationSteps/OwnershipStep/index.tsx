@@ -27,7 +27,9 @@ import {
   ValidationProp,
   arePortionsValid,
   getInvalidIdAndKey,
-  SingleOwnerForm
+  SingleOwnerForm,
+  AccordionCtrlObj,
+  AccordionItemHeadClick
 } from './utils';
 import {
   DEFAULT_INDEX,
@@ -90,10 +92,9 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
     return axiosConfig;
   };
 
-  const postData = async (data: Array<SingleOwnerForm>, seedlotNumber: string) => {
-    await axios.post(getUrl(ApiAddresses.SeedlotOwnerRegister).replace(':seedlotnumber', seedlotNumber), data, getAxiosConfig())
+  const postData = (data: Array<SingleOwnerForm>, seedlotNumber: string) => {
+    axios.post(getUrl(ApiAddresses.SeedlotOwnerRegister).replace(':seedlotnumber', seedlotNumber), data, getAxiosConfig())
       .then((response) => {
-        // eslint-disable-next-line no-console
         if (response.status === 201) {
           setStep(1);
         }
@@ -117,6 +118,8 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
   const [validationArray, setValidationArray] = useState([initialValidState]);
 
   const [disableInputs, setDisableInputs] = useState(true);
+
+  const [accordionControls, setAccordionControls] = useState<AccordionCtrlObj>({});
 
   const refControl = useRef<any>({});
 
@@ -292,6 +295,12 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
     }
   };
 
+  const toggleAccordion = (id: number, isOpen: boolean) => {
+    const newAccCtrls = { ...accordionControls };
+    newAccCtrls[id] = isOpen;
+    setAccordionControls(newAccCtrls);
+  };
+
   const areAllInputsValid = (): boolean => {
     const {
       allValid,
@@ -304,15 +313,16 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
       if (!ownerOk) {
         validateInput(invalidId, invalidField, invalidValue);
       }
+      toggleAccordion(invalidId, true);
       refControl.current[invalidId][invalidField].focus();
       return false;
     }
     return true;
   };
 
-  const submitForm = async () => {
+  const submitForm = () => {
     if (areAllInputsValid() && seedlot) {
-      await postData(ownershipArray, seedlot);
+      postData(ownershipArray, seedlot);
     }
   };
 
@@ -341,7 +351,16 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
               <AccordionItem
                 className="single-accordion-item"
                 key={`${singleOwnerInfo.id}`}
-                open
+                open={
+                  Object.prototype.hasOwnProperty.call(accordionControls, singleOwnerInfo.id)
+                    ? accordionControls[singleOwnerInfo.id]
+                    : true
+                }
+                onHeadingClick={
+                  (e: AccordionItemHeadClick) => {
+                    toggleAccordion(singleOwnerInfo.id, e.isOpen);
+                  }
+                }
                 title={(
                   <TitleAccordion
                     title={singleOwnerInfo.ownerAgency === ''

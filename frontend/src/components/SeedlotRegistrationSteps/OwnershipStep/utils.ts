@@ -1,4 +1,13 @@
+import React from 'react';
 import { inputText, ownerTemplate, validTemplate } from './config';
+
+export type AccordionItemHeadClick = {
+  isOpen: boolean,
+  event: React.PointerEvent
+}
+export interface AccordionCtrlObj {
+  [id: number]: boolean
+}
 
 export type SingleOwnerForm = {
   id: number,
