@@ -54,12 +54,13 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
     // Applicant Info
     applicantInfoRetrieveAll = '/application-info';
 
-    // A Class Seedlot RegisinterimStoragePostter
+    // A Class Seedlot Register
     aClassSeedlotPostUrl = '/register-a-class';
 
     // Retrieve one seedlot
     seedlotRetrieveOneUrl = '/seedlot/:seedlotnumber';
 
+    // Interim Storage Post
     interimStoragePostUrl = '/seedlot/registration/:seedlotnumber';
   }
 
