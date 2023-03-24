@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import {
@@ -16,15 +16,14 @@ import {
   TextInput
 } from '@carbon/react';
 
-import { useParams } from 'react-router-dom';
 import { ArrowRight } from '@carbon/icons-react';
-import { FilterObj, filterInput } from '../../../utils/filterUtils';
 import Subtitle from '../../Subtitle';
 import InterimStorageRegistration from '../../../types/InterimStorageRegistration';
-import getUrl from '../../../utils/ApiUtils';
-import ApiAddresses from '../../../utils/ApiAddresses';
-import { useAuth } from '../../../contexts/AuthContext';
 import ApplicantInfo from '../../../types/ApplicantInfo';
+import { FilterObj, filterInput } from '../../../utils/filterUtils';
+import ApiAddresses from '../../../utils/ApiAddresses';
+import getUrl from '../../../utils/ApiUtils';
+import { useAuth } from '../../../contexts/AuthContext';
 import './styles.scss';
 
 interface InterimStorageStepProps {
@@ -40,11 +39,6 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     '0035 - Weak Seeds Orchard - WSO',
     '0038 - Okay Seeds Orchard - OSO'
   ];
-
-  const mockStartDataMin: string = '03/20/2023';
-  const mockStartDataMax: string = '03/23/2023';
-  const mockEndDataMin: string = '03/20/2023';
-  const mockEndDataMax: string = '03/23/2023';
 
   const getAxiosConfig = () => {
     const axiosConfig = {};
@@ -62,8 +56,9 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const numberInputRef = useRef<HTMLInputElement>(null);
   const storageLocationInputRef = useRef<HTMLInputElement>(null);
+  const otherRadioRef = useRef<HTMLInputElement>(null);
 
-  const [invalidName] = useState<boolean>(false);
+  const [invalidName, setInvalidName] = useState<boolean>(false);
   const [invalidNumber, setInvalidNumber] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(true);
   const [agencyInfo, setAgencyInfo] = useState<ApplicantInfo>();
@@ -78,7 +73,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
           }
         })
         .catch((error) => {
-          // eslint-disable-next-line
+          // eslint-disable-next-line no-console
           console.error(`Error: ${error}`);
         });
     }
@@ -145,6 +140,15 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     });
   };
 
+  const validateApplicantName = () => {
+    // Refactor
+    if (responseBody.applicant.name.length === 0) {
+      setInvalidName(false);
+    } else {
+      setInvalidName(true);
+    }
+  };
+
   const validateStorageLocation = () => {
     const storageLocationInfo = responseBody.storageInformation.location;
     if (storageLocationInfo.trim().length === 0) {
@@ -169,6 +173,15 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
 
   const goBack = () => {
     setStep(-1);
+  };
+
+  const getData = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const stringDate = `${mm}/${dd}/${yyyy}`;
+    return stringDate;
   };
 
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -223,6 +236,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               id="agency-name-combobox"
               ref={nameInputRef}
               name="name"
+              onChange={() => {}}
               selectedItem={mockAgencyOptions.find((x) => x === agencyInfo?.name)}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
@@ -231,6 +245,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               placeholder="Select Interim agency name"
               readOnly={isChecked}
               items={mockAgencyOptions}
+              onBlur={() => validateApplicantName()}
             />
           </Column>
           <Column sm={4} md={2} lg={4}>
@@ -265,8 +280,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
             <DatePicker
               datePickerType="single"
               name="startDate"
-              maxDate={mockStartDataMax}
-              minDate={mockStartDataMin}
+              maxDate={getData()}
+              minDate=""
               onChange={(e: any) => inputChangeHandlerDate(e, 'startDate')}
             >
               <DatePickerInput
@@ -281,8 +296,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
             <DatePicker
               datePickerType="single"
               name="endDate"
-              maxDate={mockEndDataMax}
-              minDate={mockEndDataMin}
+              maxDate={getData()}
+              minDate=""
               onChange={(e: any) => inputChangeHandlerDate(e, 'endDate')}
             >
               <DatePickerInput
@@ -311,11 +326,11 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
             />
           </Column>
         </Row>
-        <Row className="cl/ass-source-radio">
+        <Row className="storage-type-radio">
           <Column sm={4} md={8} lg={16}>
             <RadioButtonGroup
               legendText="Storage facility type"
-              name="class-source-radiogroup"
+              name="storage-type-radiogroup"
               orientation="vertical"
               defaultSelected="outside"
               onChange={(e: string) => inputChangeHandlerRadio(e)}
@@ -339,6 +354,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                 id="other-radio"
                 labelText="Other - OTH"
                 value="other"
+                ref={otherRadioRef}
               />
             </RadioButtonGroup>
           </Column>
@@ -357,7 +373,6 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
             kind="primary"
             size="lg"
             className="btn-collection-form"
-            onClick={() => console.log(responseBody)}
             renderIcon={ArrowRight}
           >
             Next
