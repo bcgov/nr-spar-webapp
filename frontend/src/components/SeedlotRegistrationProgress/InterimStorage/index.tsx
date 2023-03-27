@@ -11,7 +11,6 @@ import {
   ComboBox,
   DatePicker,
   DatePickerInput,
-  NumberInput,
   RadioButton,
   RadioButtonGroup,
   Row,
@@ -22,7 +21,6 @@ import {
 import { ArrowRight } from '@carbon/icons-react';
 import Subtitle from '../../Subtitle';
 import InterimStorageRegistration from '../../../types/InterimStorageRegistration';
-import ApplicantInfo from '../../../types/ApplicantInfo';
 import { FilterObj, filterInput } from '../../../utils/filterUtils';
 import ApiAddresses from '../../../utils/ApiAddresses';
 import getUrl from '../../../utils/ApiUtils';
@@ -72,7 +70,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     startDate: '',
     endDate: '',
     storageLocation: '',
-    facilityType: 'outside'
+    facilityType: 'OCV'
   };
 
   const initialValidationObj: FormValidation = {
@@ -89,6 +87,20 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const [validationObj, setValidationObj] = useState<FormValidation>(initialValidationObj);
 
   const [otherRadioChecked, setOtherChecked] = useState(false);
+
+  const interimStorageData: InterimStorageRegistration = {
+    seedlotNumber: (seedlot ? +seedlot : 0),
+    applicant: {
+      name: interimForm.agencyName,
+      number: interimForm.locationCode
+    },
+    storageInformation: {
+      startDate: interimForm.startDate,
+      endDate: interimForm.endDate,
+      location: interimForm.storageLocation
+    },
+    facilityType: interimForm.facilityType
+  };
 
   const validateInput = (name: string, value: string) => {
     const newValidObj = { ...validationObj };
@@ -108,8 +120,53 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
       newValidObj.isStartDateInvalid = isInvalid;
       newValidObj.isEndDateInvalid = isInvalid;
     }
+    if (name === 'storageLocation') {
+      if (interimForm.storageLocation.length >= 55) {
+        isInvalid = true;
+      }
+      newValidObj.isStorageInvalid = isInvalid;
+    }
+    if (name === 'facilityType') {
+      if (interimForm.facilityType.length >= 50) {
+        isInvalid = true;
+      }
+      newValidObj.isFacilityInvalid = isInvalid;
+    }
 
     setValidationObj(newValidObj);
+  };
+
+  const getMinDate = () => {
+    let minDate = '';
+    if ((interimForm.startDate !== '' && interimForm.endDate === '')
+      || (interimForm.startDate !== '' && interimForm.endDate !== '')) {
+      minDate = interimForm.startDate;
+    } else if ((interimForm.startDate === '' && interimForm.endDate === '')
+      || (interimForm.startDate === '' && interimForm.endDate !== '')) {
+      return minDate;
+    }
+    return minDate;
+  };
+
+  const getTodayDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const stringDate = `${yyyy}/${mm}/${dd}`;
+    return stringDate;
+  };
+
+  const getMaxDate = () => {
+    let maxDate = '';
+    if ((interimForm.startDate === '' && interimForm.endDate === '')
+      || (interimForm.startDate !== '' && interimForm.endDate === '')) {
+      maxDate = getTodayDate();
+    } else if ((interimForm.startDate === '' && interimForm.endDate !== '')
+      || (interimForm.startDate !== '' && interimForm.endDate !== '')) {
+      maxDate = interimForm.endDate;
+    }
+    return maxDate;
   };
 
   const handleFormInput = (name: keyof InterimForm, value: string) => {
@@ -135,6 +192,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const numberInputRef = useRef<HTMLInputElement>(null);
   const storageLocationInputRef = useRef<HTMLInputElement>(null);
+  const storageFacilityTypeInputRef = useRef<HTMLInputElement>(null);
+
   const [isChecked, setIsChecked] = useState<boolean>(true);
 
   const logForm = () => {
@@ -145,41 +204,50 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     setStep(-1);
   };
 
-  const getTodayDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const yyyy = today.getFullYear();
-    const stringDate = `${mm}/${dd}/${yyyy}`;
-    return stringDate;
-  };
-
   const validateAndSubmit = () => {
-    console.log(interimForm, validationObj);
-    // if (invalidNumber) {
-    //   numberInputRef.current?.focus();
-    // } else if (storageLocationEmpty) {
-    //   storageLocationInputRef.current?.focus();
-    // } else {
-    //   axios.post(getUrl(ApiAddresses.InterimStoragePost), responseBody, getAxiosConfig())
-    //     .then(() => {
-    //       logForm();
-    //     })
-    //     .catch((error) => {
-    //       // eslint-disable-next-line
-    //       console.error(`Error: ${error}`);
-    //     });
-    // }
+    let sendForm = true;
+
+    if (interimForm.agencyName === null || validationObj.isNameInvalid) {
+      nameInputRef.current?.focus();
+      sendForm = false;
+    } else if (interimForm.locationCode === '' || validationObj.isCodeInvalid) {
+      numberInputRef.current?.focus();
+      sendForm = false;
+    } else if (validationObj.isStartDateInvalid) {
+      sendForm = false;
+    } else if (validationObj.isEndDateInvalid) {
+      sendForm = false;
+    } else if (interimForm.storageLocation === '' || validationObj.isStorageInvalid) {
+      storageLocationInputRef.current?.focus();
+      sendForm = false;
+    } else if (interimForm.facilityType === 'OTH' || validationObj.isFacilityInvalid) {
+      storageFacilityTypeInputRef.current?.focus();
+      sendForm = false;
+    }
+    if (sendForm) {
+      axios.post(getUrl(ApiAddresses.InterimStoragePost), interimStorageData, getAxiosConfig())
+        .then(() => {
+          logForm();
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(`Error: ${error}`);
+        });
+    }
   };
 
   const useCollectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setIsChecked(checked);
+    if (checked) {
+      handleFormInput('agencyName', mockAgencyOptions[0]);
+    }
   };
 
   const inputChangeHandlerRadio = (selected: string) => {
-    if (selected === 'other') {
+    if (selected === 'OTH') {
       setOtherChecked(true);
+      handleFormInput('facilityType', 'OTH');
     } else {
       setOtherChecked(false);
       handleFormInput('facilityType', selected);
@@ -255,8 +323,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               datePickerType="single"
               name="startDate"
               dateFormat={DATE_FORMAT}
-              // maxDate={getTodayDate()}
-              // minDate=""
+              maxDate={getMaxDate()}
+              minDate=""
               value={initialForm.startDate === '' ? '' : moment(initialForm.startDate)}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('startDate', selectedDate);
@@ -267,9 +335,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                 labelText="Collection start date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
-                required
                 invalid={validationObj.isStartDateInvalid}
-                invalidText="Wennio do something"
+                invalidText="Please, enter a valid date"
               />
             </DatePicker>
           </Column>
@@ -278,8 +345,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               datePickerType="single"
               name="endDate"
               dateFormat={DATE_FORMAT}
-              // maxDate={getTodayDate()}
-              // minDate=""
+              maxDate={getTodayDate()}
+              minDate={getMinDate()}
               value={initialForm.endDate === '' ? '' : moment(initialForm.endDate)}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('endDate', selectedDate);
@@ -290,9 +357,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                 labelText="Collection end date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
-                required
                 invalid={validationObj.isEndDateInvalid}
-                invalidText="Wennio do something"
+                invalidText="Please, enter a valid date"
               />
             </DatePicker>
           </Column>
@@ -304,15 +370,15 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               name="location"
               ref={storageLocationInputRef}
               type="text"
+              value={interimForm.storageLocation}
               labelText="Storage location"
               placeholder="Enter the location were the cones were stored"
               helperText="Enter a short name or description of the location where the cones are being temporarily stored"
-              // invalid={storageLocationEmpty}
-              invalidText="Please enter a valid value"
-              required
               invalid={validationObj.isStorageInvalid}
-            // onBlur={() => validateStorageLocation()}
-            // onChange={(e: React.ChangeEvent<HTMLInputElement>) => inputChangeHandler(e)}
+              invalidText="Storage location lenght should be <= 55"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                handleFormInput('storageLocation', e.target.value);
+              }}
             />
           </Column>
         </Row>
@@ -322,28 +388,28 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               legendText="Storage facility type"
               name="storage-type-radiogroup"
               orientation="vertical"
-              defaultSelected="outside"
+              defaultSelected="OCV"
               onChange={(e: string) => inputChangeHandlerRadio(e)}
             >
               <RadioButton
                 id="outside-radio"
                 labelText="Outside covered - OCV"
-                value="outside"
+                value="OCV"
               />
               <RadioButton
                 id="ventilated-radio"
                 labelText="Ventilated room - VRM"
-                value="ventilated"
+                value="VRM"
               />
               <RadioButton
                 id="reefer-radio"
                 labelText="Reefer - RFR"
-                value="reefer"
+                value="RFR"
               />
               <RadioButton
                 id="other-radio"
                 labelText="Other - OTH"
-                value="other"
+                value="OTH"
               />
             </RadioButtonGroup>
           </Column>
@@ -356,10 +422,12 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
                   id="storage-facility-type-input"
                   name="storage-facility"
                   type="text"
+                  ref={storageFacilityTypeInputRef}
                   labelText="Storage facility type"
                   placeholder="Enter the storage facility type"
                   helperText="Describe the new storage facility used"
-                  invalidText="Please enter a valid value"
+                  invalid={validationObj.isFacilityInvalid}
+                  invalidText="Storage facility type lenght should be <= 50"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFormInput('facilityType', e.target.value)}
                 />
               </Column>

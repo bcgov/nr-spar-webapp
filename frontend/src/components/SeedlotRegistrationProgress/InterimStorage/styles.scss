@@ -66,11 +66,19 @@
     width: 100%;
   }
 
-  .btn-collection-form .#{vars.$bcgov-prefix}--btn {
+  .storage-location-row {
+    margin: 2rem -1rem;
+  }
+
+  .collection-form-buttons {
+    margin-left: 0;
+  }
+
+  .btn-collection-form.#{vars.$bcgov-prefix}--btn {
     width: 15rem;
   }
 
-  .btn-collection-form .#{vars.$bcgov-prefix}--btn .#{vars.$bcgov-prefix}--btn--secondary {
-    margin-right: 1rem;
+  .btn-collection-form.#{vars.$bcgov-prefix}--btn.#{vars.$bcgov-prefix}--btn--secondary {
+    margin-right: 2rem;
   }
 }
