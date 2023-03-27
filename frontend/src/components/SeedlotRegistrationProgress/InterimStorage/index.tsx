@@ -236,7 +236,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     }
   };
 
-  const useCollectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const collectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setIsChecked(checked);
     if (checked) {
@@ -270,7 +270,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               name="collector-agency"
               labelText="Use applicant agency as collector agency"
               defaultChecked
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => useCollectorAgencyisChecked(e)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => collectorAgencyisChecked(e)}
             />
           </Column>
         </Row>
