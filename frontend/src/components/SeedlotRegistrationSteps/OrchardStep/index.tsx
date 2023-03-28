@@ -165,8 +165,8 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
           console.error(`Error: ${error}`);
         });
     } else if (name === 'orchardId') {
-      setInvalidAddOrchardId(true);
-      setInvalidAddOrchardMessage(invalidOrchardValue);
+      setInvalidOrchardId(true);
+      setInvalidOrchardMessage(invalidOrchardValue);
     } else {
       setInvalidAddOrchardId(true);
       setInvalidAddOrchardMessage(invalidOrchardValue);
@@ -539,7 +539,7 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
                 name="pollenMethodology"
                 labelText="Regional pollen monitoring"
                 defaultChecked
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
+                readOnly
               />
             </Column>
           </Row>

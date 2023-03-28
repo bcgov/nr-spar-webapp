@@ -28,6 +28,11 @@
   margin-bottom: 3rem;
 }
 
+#female-gametic-combobox::placeholder {
+  color: var(--bcgov-text-primary);
+  opacity: 1;
+}
+
 .male-gametic-invalid .#{vars.$bcgov-prefix}--radio-button + .#{vars.$bcgov-prefix}--radio-button__label .#{vars.$bcgov-prefix}--radio-button__appearance {
   outline: 2px solid var(--bcgov-support-error);
   outline-offset: 1.5px;
