@@ -60,6 +60,20 @@ const SeedlotRegistrationEndpoints = (server: Server) => {
   });
 
   server.get(getUrl(ApiAddresses.SeedlotRetrieveAll, true), (schema: AppSchema) => schema.all('seedlotData'));
+
+  server.post(getUrl(ApiAddresses.CollectionStepPost, true), (schema: AppSchema, request) => {
+    const attrs = JSON.parse(request.requestBody);
+
+    const { collectionInformation } = schema.db;
+    const { collectorAgency } = schema.db;
+
+    collectorAgency.insert(attrs.collectorAgency);
+    collectionInformation.insert(attrs);
+
+    return {
+      status: 'OK'
+    };
+  });
 };
 
 export default SeedlotRegistrationEndpoints;
