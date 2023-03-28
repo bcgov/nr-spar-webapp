@@ -11,12 +11,18 @@ import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 
 import './styles.scss';
+import CollectionForm from '../../../components/CollectionForm';
 
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
   const seedlotNumber = useParams().seedlot;
 
   const [formStep, setFormStep] = useState<number>(0);
+
+  const setStep = (delta: number) => {
+    const newStep = formStep + delta;
+    setFormStep(newStep);
+  };
 
   return (
     <FlexGrid className="seedlot-registration-page">
@@ -45,7 +51,7 @@ const SeedlotRegistrationForm = () => {
         </Row>
         <Row className="seedlot-registration-forms">
           <div className={formStep === 0 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Collection placeholder</p>
+            <CollectionForm  setStep={(delta: number) => setStep(delta)} />
           </div>
           <div className={formStep === 1 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
             <p>Ownership placeholder</p>
