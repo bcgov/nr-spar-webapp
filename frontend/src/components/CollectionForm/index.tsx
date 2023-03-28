@@ -27,7 +27,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import './styles.scss';
 import SeedlotCollector from '../../types/SeedlotCollector';
 
-const CollectionForm = () => {
+interface CollectionFormProps {
+  setStep: Function
+}
+
+const CollectionForm = ({ setStep }: CollectionFormProps) => {
   const { token } = useAuth();
   const navigate = useNavigate();
 

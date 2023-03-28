@@ -51,7 +51,7 @@ const SeedlotRegistrationForm = () => {
         </Row>
         <Row className="seedlot-registration-forms">
           <div className={formStep === 0 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <CollectionForm  setStep={(delta: number) => setStep(delta)} />
+            <CollectionForm setStep={(delta: number) => setStep(delta)} />
           </div>
           <div className={formStep === 1 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
             <p>Ownership placeholder</p>
