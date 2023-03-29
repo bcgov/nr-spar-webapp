@@ -184,7 +184,7 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
                 min={0}
                 max={99}
                 value={50}
-                label="Cone collector location code"
+                label="Volume of cones (HI)"
                 helperText='This value should be the "Volume per container" X "Number of containers".'
                 invalidText="Number is not valid"
                 hideSteppers
