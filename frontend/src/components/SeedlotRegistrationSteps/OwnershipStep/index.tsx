@@ -274,6 +274,8 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
       newValidArr
     }: StateReturnObj = deleteOwnerForm(id, ownershipArray, validationArray);
     delete refControl.current[id];
+    const portionsInvalid = !arePortionsValid(newOwnerArr);
+    setPortionsValid(portionsInvalid);
     setOwnershipArray(newOwnerArr);
     setValidationArray(newValidArr);
   };
