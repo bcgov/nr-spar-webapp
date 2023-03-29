@@ -26,7 +26,7 @@ import getUrl from '../../../utils/ApiUtils';
 import { useAuth } from '../../../contexts/AuthContext';
 import './styles.scss';
 
-const DATE_FORMAT = 'Y-m-d';
+const DATE_FORMAT = 'Y/m/d';
 interface InterimStorageStepProps {
   setStep: Function
 }
