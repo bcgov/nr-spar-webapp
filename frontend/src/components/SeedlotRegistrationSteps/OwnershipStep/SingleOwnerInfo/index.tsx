@@ -17,8 +17,8 @@ import {
   CheckBoxValue,
   NumStepperVal,
   ValidationProp
-} from '../utils';
-import { inputText, DEFAULT_INDEX, DEFAULT_PAYMENT_INDEX } from '../config';
+} from '../definitions';
+import { inputText, DEFAULT_INDEX, DEFAULT_PAYMENT_INDEX } from '../constants';
 import { FilterObj, filterInput } from '../../../../utils/filterUtils';
 
 import './styles.scss';

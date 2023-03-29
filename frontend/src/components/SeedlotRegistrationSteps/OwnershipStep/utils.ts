@@ -1,70 +1,11 @@
-import React from 'react';
-import { inputText, ownerTemplate, validTemplate } from './config';
+import { inputText, ownerTemplate, validTemplate } from './constants';
 
-export type AccordionItemHeadClick = {
-  isOpen: boolean,
-  event: React.PointerEvent
-}
-export interface AccordionCtrlObj {
-  [id: number]: boolean
-}
-
-export type SingleOwnerForm = {
-  id: number,
-  ownerAgency: string,
-  ownerCode: string,
-  ownerPortion: string,
-  reservedPerc: string,
-  surplusPerc: string,
-  fundingSource: string,
-  methodOfPayment: string
-}
-
-type SingleInvalidObj = {
-  isInvalid: boolean,
-  invalidText: string,
-}
-
-type ValidationPropNoId = {
-  owner: SingleInvalidObj,
-  code: SingleInvalidObj,
-  portion: SingleInvalidObj,
-  reserved: SingleInvalidObj,
-  surplus: SingleInvalidObj,
-  funding: SingleInvalidObj,
-  payment: SingleInvalidObj
-}
-
-export type ValidationProp = {
-  id: number,
-  owner: SingleInvalidObj,
-  code: SingleInvalidObj,
-  portion: SingleInvalidObj,
-  reserved: SingleInvalidObj,
-  surplus: SingleInvalidObj,
-  funding: SingleInvalidObj,
-  payment: SingleInvalidObj
-}
-
-export type StateReturnObj = {
-  newOwnerArr: Array<SingleOwnerForm>,
-  newValidArr: Array<ValidationProp>,
-  newId?: number
-}
-
-export type ComboBoxEvent = {
-  selectedItem: string
-}
-
-export type CheckBoxValue = {
-  checked: boolean,
-  id: string
-}
-
-export interface NumStepperVal {
-  value: number,
-  direction: string
-}
+import {
+  SingleOwnerForm,
+  ValidationProp,
+  SingleInvalidObj,
+  ValidationPropNoId
+} from './definitions';
 
 const twoDigitRegex = /^\d{2}$/;
 
