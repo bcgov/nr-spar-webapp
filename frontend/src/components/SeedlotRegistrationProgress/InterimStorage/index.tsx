@@ -206,20 +206,20 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const validateAndSubmit = () => {
     let sendForm = true;
 
-    if (interimForm.agencyName === null || validationObj.isNameInvalid) {
+    if (validationObj.isNameInvalid) {
       nameInputRef.current?.focus();
       sendForm = false;
-    } else if (interimForm.locationCode === '' || validationObj.isCodeInvalid) {
+    } else if (validationObj.isCodeInvalid) {
       numberInputRef.current?.focus();
       sendForm = false;
     } else if (validationObj.isStartDateInvalid) {
       sendForm = false;
     } else if (validationObj.isEndDateInvalid) {
       sendForm = false;
-    } else if (interimForm.storageLocation === '' || validationObj.isStorageInvalid) {
+    } else if (validationObj.isStorageInvalid) {
       storageLocationInputRef.current?.focus();
       sendForm = false;
-    } else if (interimForm.facilityType === 'OTH' || validationObj.isFacilityInvalid) {
+    } else if (validationObj.isFacilityInvalid) {
       storageFacilityTypeInputRef.current?.focus();
       sendForm = false;
     }
