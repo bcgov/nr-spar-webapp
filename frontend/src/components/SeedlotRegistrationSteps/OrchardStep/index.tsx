@@ -90,7 +90,7 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
 
   // Fixed messages
   const orchardIdNotFound = 'This id has no orchard assigned to it, please try a different one';
-  const invalidOrchardValue = 'Please insert a valid orchard id between 0 and 999';
+  const invalidOrchardValue = 'Please insert a valid orchard id between 100 and 999';
 
   const refControl = useRef<any>({});
 
@@ -99,9 +99,9 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
   const [responseBody, setResponseBody] = useState<SeedlotOrchard>(orchardData);
 
   const [invalidOrchardId, setInvalidOrchardId] = useState<boolean>(false);
-  const [invalidOrchardMessage, setInvalidOrchardMessage] = useState<string>('');
+  const [invalidOrchardText, setInvalidOrchardText] = useState<string>(invalidOrchardValue);
   const [invalidAddOrchardId, setInvalidAddOrchardId] = useState<boolean>(false);
-  const [invalidAddOrchardMessage, setInvalidAddOrchardMessage] = useState<string>('');
+  const [invalidAddOrchardText, setInvalidAddOrchardText] = useState<string>(invalidOrchardValue);
   const [invalidFemGametic, setInvalidFemGametic] = useState<boolean>(false);
   const [invalidMalGametic, setInvalidMalGametic] = useState<boolean>(false);
   const [invalidBreeding, setInvalidBreeding] = useState<boolean>(false);
@@ -143,20 +143,20 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
             // Clear any errors, if any
             if (name === 'orchardId' && invalidOrchardId) {
               setInvalidOrchardId(false);
-              setInvalidOrchardMessage(invalidOrchardValue);
+              setInvalidOrchardText(invalidOrchardValue);
             } else if (invalidAddOrchardId) {
               setInvalidAddOrchardId(false);
-              setInvalidAddOrchardMessage(invalidOrchardValue);
+              setInvalidAddOrchardText(invalidOrchardValue);
             }
 
             setResponse([name, nameField], [value, response.data.orchard.name]);
 
           // Set error messages for id not found
           } else if (name === 'orchardId') {
-            setInvalidOrchardMessage(orchardIdNotFound);
+            setInvalidOrchardText(orchardIdNotFound);
             setInvalidOrchardId(true);
           } else {
-            setInvalidAddOrchardMessage(orchardIdNotFound);
+            setInvalidAddOrchardText(orchardIdNotFound);
             setInvalidAddOrchardId(true);
           }
         })
@@ -166,10 +166,10 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
         });
     } else if (name === 'orchardId') {
       setInvalidOrchardId(true);
-      setInvalidOrchardMessage(invalidOrchardValue);
+      setInvalidOrchardText(invalidOrchardValue);
     } else {
       setInvalidAddOrchardId(true);
-      setInvalidAddOrchardMessage(invalidOrchardValue);
+      setInvalidAddOrchardText(invalidOrchardValue);
     }
   };
 
@@ -179,6 +179,8 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
 
   const deleteAdditionalOrchard = () => {
     setResponse(['additionalId', 'additionalName'], ['', '']);
+    setInvalidAddOrchardId(false);
+    setInvalidAddOrchardText(invalidOrchardValue);
     setAdditionalOrchard(false);
   };
 
@@ -230,7 +232,7 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
     // made to the field and the user tries to submit
     if (!responseBody.orchardId) {
       setInvalidOrchardId(true);
-      setInvalidOrchardMessage(invalidOrchardValue);
+      setInvalidOrchardText(invalidOrchardValue);
       refControl.current.orchardId.focus();
       return false;
     }
@@ -244,7 +246,7 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
     // made to the additional orchard field and the user tries to submit
     if (!responseBody.additionalId && additionalOrchard) {
       setInvalidAddOrchardId(true);
-      setInvalidAddOrchardMessage(invalidOrchardValue);
+      setInvalidAddOrchardText(invalidOrchardValue);
       refControl.current.additionalId.focus();
       return false;
     }
@@ -271,9 +273,6 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
 
   const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    // eslint-disable-next-line no-debugger
-    debugger;
 
     if (seedlot && validateBeforeSubmit()) {
       axios.post(getUrl(ApiAddresses.SeedlotOrchardPost).replace(':seedlotnumber', seedlot), responseBody, getAxiosConfig())
@@ -306,15 +305,15 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
               ref={(el: HTMLInputElement) => addRefs(el, 'orchardId')}
               value={responseBody.orchardId}
               allowEmpty
-              min={0}
+              min={100}
               max={999}
               disableWheel
               hideSteppers
               type="number"
               label="Orchard ID or number"
-              placeholder="Example: 00"
+              placeholder="Example: 123"
               invalid={invalidOrchardId}
-              invalidText={invalidOrchardMessage}
+              invalidText={invalidOrchardText}
               onBlur={(event: React.ChangeEvent<HTMLInputElement>) => validateOrchardId(event, 'orchardName')}
               onChange={() => responseBody.orchardName && clearOrchardName('orchardName')}
             />
@@ -338,16 +337,16 @@ const OrchardStep = ({ setStep }: OrchardStepProps) => {
               ref={(el: HTMLInputElement) => addRefs(el, 'additionalId')}
               value={responseBody.additionalId}
               allowEmpty
-              min={0}
+              min={100}
               max={999}
               disableWheel
               hideSteppers
               type="number"
               label="Additional orchard ID (optional)"
               helperText="Additional contributing orchard id"
-              placeholder="Example: 00"
+              placeholder="Example: 123"
               invalid={invalidAddOrchardId}
-              invalidText={invalidAddOrchardMessage}
+              invalidText={invalidAddOrchardText}
               onBlur={(event: React.ChangeEvent<HTMLInputElement>) => validateOrchardId(event, 'additionalName')}
               onChange={() => responseBody.additionalName && clearOrchardName('additionalName')}
             />
