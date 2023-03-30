@@ -26,7 +26,7 @@ import getUrl from '../../../utils/ApiUtils';
 import { useAuth } from '../../../contexts/AuthContext';
 import './styles.scss';
 
-const DATE_FORMAT = 'Y-m-d';
+const DATE_FORMAT = 'Y/m/d';
 interface InterimStorageStepProps {
   setStep: Function
 }
@@ -113,8 +113,8 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     if (name === 'startDate' || name === 'endDate') {
       // Have both start and end dates
       if (interimForm.startDate !== '' && interimForm.endDate !== '') {
-        isInvalid = moment(interimForm.endDate)
-          .isBefore(moment(interimForm.startDate));
+        isInvalid = moment(interimForm.endDate, 'YYYY/MM/DD')
+          .isBefore(moment(interimForm.startDate, 'YYYY/MM/DD'));
       }
       newValidObj.isStartDateInvalid = isInvalid;
       newValidObj.isEndDateInvalid = isInvalid;
@@ -324,7 +324,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               dateFormat={DATE_FORMAT}
               maxDate={getMaxDate()}
               minDate=""
-              value={initialForm.startDate === '' ? '' : moment(initialForm.startDate)}
+              value={initialForm.startDate === '' ? '' : moment(initialForm.startDate, 'YYYY/MM/DD')}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('startDate', selectedDate);
               }}
@@ -346,7 +346,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               dateFormat={DATE_FORMAT}
               maxDate={getTodayDate()}
               minDate={getMinDate()}
-              value={initialForm.endDate === '' ? '' : moment(initialForm.endDate)}
+              value={initialForm.endDate === '' ? '' : moment(initialForm.endDate, 'YYYY/MM/DD')}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('endDate', selectedDate);
               }}
