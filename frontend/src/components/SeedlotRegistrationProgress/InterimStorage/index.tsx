@@ -65,7 +65,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
 
   const initialForm: InterimForm = {
     agencyName: mockAgencyOptions[0],
-    locationCode: '',
+    locationCode: '32',
     startDate: '',
     endDate: '',
     storageLocation: '',
