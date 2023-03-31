@@ -9,6 +9,7 @@ import {
 
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
+import ExtractionAndStorage from '../../../components/SeedlotRegistrationProgress/ExtractionAndStorage';
 
 import './styles.scss';
 
@@ -17,6 +18,11 @@ const SeedlotRegistrationForm = () => {
   const seedlotNumber = useParams().seedlot;
 
   const [formStep, setFormStep] = useState<number>(0);
+
+  const setStep = (delta: number) => {
+    const newStep = formStep + delta;
+    setFormStep(newStep);
+  };
 
   return (
     <FlexGrid className="seedlot-registration-page">
@@ -60,7 +66,7 @@ const SeedlotRegistrationForm = () => {
             <p>Parent tree and SMP placeholder</p>
           </div>
           <div className={formStep === 5 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Extraction and storage placeholder</p>
+            <ExtractionAndStorage setStep={(delta: number) => setStep(delta)} />
           </div>
         </Row>
       </div>
