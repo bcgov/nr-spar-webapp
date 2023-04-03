@@ -16,7 +16,11 @@ enum ApiAddresses {
 
   SeedlotOrchardPost,
 
-  OrchardRetriveOne
+  OrchardRetriveOne,
+  
+  InterimStoragePost,
+  SeedlotOwnerRegister
+
 }
 
 export default ApiAddresses;

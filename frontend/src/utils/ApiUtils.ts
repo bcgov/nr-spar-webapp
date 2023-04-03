@@ -40,6 +40,12 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
   // Retrieve one orchard
   let orchardRetrieveOneUrl = '/api/orchard/:orchardnumber';
 
+  // Seedlot Registration - Interim Storage Step Register
+  let interimStoragePostUrl = '/api/seedlot/registration/:seedlotnumber';
+  
+  // Seedlot Registration - Ownership Step Register
+  let seedlotOwnerRegister = '/api/seedlot/register-ownership/:seedlotnumber';
+
   // Mocks
   if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
     // Favourite activities
@@ -62,6 +68,12 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
 
     // Retrieve one seedlot
     seedlotRetrieveOneUrl = '/seedlot/:seedlotnumber';
+
+    // Interim Storage Post
+    interimStoragePostUrl = '/seedlot/registration/:seedlotnumber';
+
+    // Seedlot Registration Ownership endpoint
+    seedlotOwnerRegister = '/seedlot/register-ownership/:seedlotnumber';
 
     // Seedlot orchard step register
     seedlotOrchardPostUrl = '/seedlot/orchard/:seedlotnumber';
@@ -103,6 +115,10 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
       return `${server}${seedlotOrchardPostUrl}`;
     case ApiAddresses.OrchardRetriveOne:
       return `${server}${orchardRetrieveOneUrl}`;
+    case ApiAddresses.InterimStoragePost:
+      return `${server}${interimStoragePostUrl}`;
+    case ApiAddresses.SeedlotOwnerRegister:
+      return `${server}${seedlotOwnerRegister}`;
     default:
       return '';
   }
