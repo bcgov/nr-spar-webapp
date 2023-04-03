@@ -168,11 +168,22 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     return maxDate;
   };
 
-  const handleFormInput = (name: keyof InterimForm, value: string) => {
+  const handleFormInput = (
+    name: keyof InterimForm,
+    value: string,
+    optName?: keyof InterimForm,
+    optValue?: string
+  ) => {
     const newForm = { ...interimForm };
     newForm[name] = value;
+    if (optName && optValue && optName !== name) {
+      newForm[optName] = optValue;
+    }
     setInterimForm(newForm);
     validateInput(name, value);
+    if (optName && optValue) {
+      validateInput(optName, optValue);
+    }
   };
 
   const getAxiosConfig = () => {
@@ -239,7 +250,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     const { checked } = event.target;
     setIsChecked(checked);
     if (checked) {
-      handleFormInput('agencyName', mockAgencyOptions[0]);
+      handleFormInput('agencyName', initialForm.agencyName, 'locationCode', initialForm.locationCode);
     }
   };
 
