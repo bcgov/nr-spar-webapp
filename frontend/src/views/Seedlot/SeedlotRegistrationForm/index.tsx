@@ -4,7 +4,8 @@ import {
   FlexGrid,
   Row,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
+  Button
 } from '@carbon/react';
 
 import PageTitle from '../../../components/PageTitle';
@@ -15,14 +16,24 @@ import OwnershipStep from '../../../components/SeedlotRegistrationSteps/Ownershi
 import { AllStepData } from './definitions';
 import {
   initInterimState,
+  initOrchardState,
   initOwnershipState
 } from './utils';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import './styles.scss';
+import InterimForm from '../../../components/SeedlotRegistrationProgress/InterimStorage/definitions';
+import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 
 const defaultCode = '16';
 const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
 const defaultPayment = 'ITC - Invoice to client address';
+const agencyOptions = [
+  '0032 - Strong Seeds Orchard - SSO',
+  '0035 - Weak Seeds Orchard - WSO',
+  '0038 - Okay Seeds Orchard - OSO',
+  '0041 - Great Seeds Orchard - GSO',
+  '0043 - Bad Seeds Orchard - BSO'
+];
 
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
@@ -37,7 +48,8 @@ const SeedlotRegistrationForm = () => {
 
   const [allStepData, setAllStepData] = useState<AllStepData>({
     interimStep: initInterimState(defaultAgency, defaultCode),
-    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)]
+    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
+    orchardStep: initOrchardState()
   });
 
   // Can't find a good way to specify the type of stepData
@@ -45,6 +57,11 @@ const SeedlotRegistrationForm = () => {
     const newData = { ...allStepData };
     newData[stepName] = stepData;
     setAllStepData(newData);
+  };
+
+  const logState = () => {
+    // eslint-disable-next-line no-console
+    console.log(allStepData);
   };
 
   const renderStep = () => {
@@ -55,17 +72,31 @@ const SeedlotRegistrationForm = () => {
         return (
           <OwnershipStep
             state={allStepData.ownershipStep}
+            defaultAgency={defaultAgency}
+            defaultCode={defaultCode}
+            agencyOptions={agencyOptions}
             setStep={(delta: number) => setStep(delta)}
             setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
           />
         );
       case 2:
         return (
-          <InterimStorage setStep={(delta: number) => setStep(delta)} />
+          <InterimStorage
+            state={allStepData.interimStep}
+            defaultAgency={defaultAgency}
+            defaultCode={defaultCode}
+            agencyOptions={agencyOptions}
+            setStep={(delta: number) => setStep(delta)}
+            setStepData={(data: InterimForm) => setStepData('interimStep', data)}
+          />
         );
       case 3:
         return (
-          <OrchardStep setStep={(delta: number) => setStep(delta)} />
+          <OrchardStep
+            state={allStepData.orchardStep}
+            setStep={(delta: number) => setStep(delta)}
+            setStepData={(data: SeedlotOrchard) => setStepData('orchardStep', data)}
+          />
         );
       case 4:
         return null;
@@ -106,6 +137,11 @@ const SeedlotRegistrationForm = () => {
             {renderStep()}
           </div>
         </Row>
+        <div>
+          <Button onClick={() => logState()}>
+            Log
+          </Button>
+        </div>
       </div>
     </FlexGrid>
   );

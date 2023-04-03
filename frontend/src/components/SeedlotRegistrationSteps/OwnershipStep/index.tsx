@@ -44,13 +44,6 @@ import {
 import './styles.scss';
 
 // Mock data
-const mockDefaultCode = '16';
-const mockAgencyOptions = [
-  '0032 - Strong Seeds Orchard - SSO',
-  '0035 - Weak Seeds Orchard - WSO',
-  '0038 - Okay Seeds Orchard - OSO'
-];
-const mockDefaultAgency = mockAgencyOptions[0];
 const mockFundingSources = [
   'BCT - BC Timber Sales',
   'FES - Forest Enhancement Society',
@@ -71,6 +64,9 @@ const mockMethodsOfPayment = [
 ];
 
 interface OwnershipStepProps {
+  defaultAgency: string
+  defaultCode: string,
+  agencyOptions: Array<string>,
   state: Array<SingleOwnerForm>,
   setStepData: Function,
   setStep: Function,
@@ -79,7 +75,16 @@ interface OwnershipStepProps {
 /*
   Component
 */
-const OwnershipStep = ({ state, setStepData, setStep }: OwnershipStepProps) => {
+const OwnershipStep = (
+  {
+    state,
+    setStepData,
+    setStep,
+    defaultCode,
+    defaultAgency,
+    agencyOptions
+  }: OwnershipStepProps
+) => {
   const { token } = useAuth();
   const { seedlot } = useParams();
   const getAxiosConfig = () => {
@@ -274,7 +279,7 @@ const OwnershipStep = ({ state, setStepData, setStep }: OwnershipStepProps) => {
 
   const setDefaultAgencyNCode = (checked: boolean) => {
     if (checked) {
-      handleInputChange(DEFAULT_INDEX, 'ownerCode', mockDefaultCode, 'ownerAgency', mockDefaultAgency);
+      handleInputChange(DEFAULT_INDEX, 'ownerCode', defaultCode, 'ownerAgency', defaultAgency);
       setDisableInputs(true);
     } else {
       handleInputChange(DEFAULT_INDEX, 'ownerCode', '', 'ownerAgency', '');
@@ -368,7 +373,7 @@ const OwnershipStep = ({ state, setStepData, setStep }: OwnershipStepProps) => {
               >
                 <SingleOwnerInfo
                   ownerInfo={singleOwnerInfo}
-                  agencyOptions={mockAgencyOptions}
+                  agencyOptions={agencyOptions}
                   fundingSources={mockFundingSources}
                   methodsOfPayment={mockMethodsOfPayment}
                   disableInputs={disableInputs}

@@ -29,22 +29,30 @@ import './styles.scss';
 
 const DATE_FORMAT = 'Y/m/d';
 interface InterimStorageStepProps {
-  setStep: Function
+  state: InterimForm,
+  setStep: Function,
+  setStepData: Function,
+  defaultAgency: string,
+  defaultCode: string,
+  agencyOptions: Array<string>
 }
 
 interface ComboBoxEvent {
   selectedItem: string;
 }
 
-const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
+const InterimStorage = (
+  {
+    state,
+    setStep,
+    setStepData,
+    defaultAgency,
+    defaultCode,
+    agencyOptions
+  }: InterimStorageStepProps
+) => {
   const { token } = useAuth();
   const { seedlot } = useParams();
-
-  const mockAgencyOptions: Array<string> = [
-    '0032 - Strong Seeds Orchard - SSO',
-    '0035 - Weak Seeds Orchard - WSO',
-    '0038 - Okay Seeds Orchard - OSO'
-  ];
 
   type FormValidation = {
     isNameInvalid: boolean,
@@ -55,15 +63,6 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     isFacilityInvalid: boolean,
   }
 
-  const initialForm: InterimForm = {
-    agencyName: mockAgencyOptions[0],
-    locationCode: '32',
-    startDate: '',
-    endDate: '',
-    storageLocation: '',
-    facilityType: 'OCV'
-  };
-
   const initialValidationObj: FormValidation = {
     isNameInvalid: false,
     isCodeInvalid: false,
@@ -73,8 +72,6 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     isFacilityInvalid: false
   };
 
-  const [interimForm, setInterimForm] = useState<InterimForm>(initialForm);
-
   const [validationObj, setValidationObj] = useState<FormValidation>(initialValidationObj);
 
   const [otherRadioChecked, setOtherChecked] = useState(false);
@@ -82,15 +79,15 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
   const interimStorageData: InterimStorageRegistration = {
     seedlotNumber: (seedlot ? +seedlot : 0),
     applicant: {
-      name: interimForm.agencyName,
-      number: interimForm.locationCode
+      name: state.agencyName,
+      number: state.locationCode
     },
     storageInformation: {
-      startDate: interimForm.startDate,
-      endDate: interimForm.endDate,
-      location: interimForm.storageLocation
+      startDate: state.startDate,
+      endDate: state.endDate,
+      location: state.storageLocation
     },
-    facilityType: interimForm.facilityType
+    facilityType: state.facilityType
   };
 
   const validateInput = (name: string, value: string) => {
@@ -104,21 +101,21 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     }
     if (name === 'startDate' || name === 'endDate') {
       // Have both start and end dates
-      if (interimForm.startDate !== '' && interimForm.endDate !== '') {
-        isInvalid = moment(interimForm.endDate, 'YYYY/MM/DD')
-          .isBefore(moment(interimForm.startDate, 'YYYY/MM/DD'));
+      if (state.startDate !== '' && state.endDate !== '') {
+        isInvalid = moment(state.endDate, 'YYYY/MM/DD')
+          .isBefore(moment(state.startDate, 'YYYY/MM/DD'));
       }
       newValidObj.isStartDateInvalid = isInvalid;
       newValidObj.isEndDateInvalid = isInvalid;
     }
     if (name === 'storageLocation') {
-      if (interimForm.storageLocation.length >= 55) {
+      if (state.storageLocation.length >= 55) {
         isInvalid = true;
       }
       newValidObj.isStorageInvalid = isInvalid;
     }
     if (name === 'facilityType') {
-      if (interimForm.facilityType.length >= 50) {
+      if (state.facilityType.length >= 50) {
         isInvalid = true;
       }
       newValidObj.isFacilityInvalid = isInvalid;
@@ -129,33 +126,26 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
 
   const getMinDate = () => {
     let minDate = '';
-    if ((interimForm.startDate !== '' && interimForm.endDate === '')
-      || (interimForm.startDate !== '' && interimForm.endDate !== '')) {
-      minDate = interimForm.startDate;
-    } else if ((interimForm.startDate === '' && interimForm.endDate === '')
-      || (interimForm.startDate === '' && interimForm.endDate !== '')) {
+    if ((state.startDate !== '' && state.endDate === '')
+      || (state.startDate !== '' && state.endDate !== '')) {
+      minDate = state.startDate;
+    } else if ((state.startDate === '' && state.endDate === '')
+      || (state.startDate === '' && state.endDate !== '')) {
       return minDate;
     }
     return minDate;
   };
 
-  const getTodayDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const yyyy = today.getFullYear();
-    const stringDate = `${yyyy}/${mm}/${dd}`;
-    return stringDate;
-  };
+  const getTodayDate = () => moment().format('Y/M/D');
 
   const getMaxDate = () => {
     let maxDate = '';
-    if ((interimForm.startDate === '' && interimForm.endDate === '')
-      || (interimForm.startDate !== '' && interimForm.endDate === '')) {
+    if ((state.startDate === '' && state.endDate === '')
+      || (state.startDate !== '' && state.endDate === '')) {
       maxDate = getTodayDate();
-    } else if ((interimForm.startDate === '' && interimForm.endDate !== '')
-      || (interimForm.startDate !== '' && interimForm.endDate !== '')) {
-      maxDate = interimForm.endDate;
+    } else if ((state.startDate === '' && state.endDate !== '')
+      || (state.startDate !== '' && state.endDate !== '')) {
+      maxDate = state.endDate;
     }
     return maxDate;
   };
@@ -166,12 +156,12 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     optName?: keyof InterimForm,
     optValue?: string
   ) => {
-    const newForm = { ...interimForm };
+    const newForm = { ...state };
     newForm[name] = value;
     if (optName && optValue && optName !== name) {
       newForm[optName] = optValue;
     }
-    setInterimForm(newForm);
+    setStepData(newForm);
     validateInput(name, value);
     if (optName && optValue) {
       validateInput(optName, optValue);
@@ -242,7 +232,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     const { checked } = event.target;
     setIsChecked(checked);
     if (checked) {
-      handleFormInput('agencyName', initialForm.agencyName, 'locationCode', initialForm.locationCode);
+      handleFormInput('agencyName', defaultAgency, 'locationCode', defaultCode);
     }
   };
 
@@ -284,14 +274,14 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               name="name"
               helperText="You can enter your agency number, name or acronym"
               onChange={(e: ComboBoxEvent) => { handleFormInput('agencyName', e.selectedItem); }}
-              selectedItem={interimForm.agencyName}
+              selectedItem={state.agencyName}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
               titleText="Interim agency name"
               placeholder="Select Interim agency name"
               readOnly={isChecked}
-              items={mockAgencyOptions}
+              items={agencyOptions}
               invalid={validationObj.isNameInvalid}
             />
           </Column>
@@ -300,7 +290,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               id="agency-number-input"
               name="locationCode"
               ref={numberInputRef}
-              value={interimForm.locationCode}
+              value={state.locationCode}
               type="number"
               labelText="Interim agency location code"
               helperText="2-digit code that identifies the address of operated office or division"
@@ -327,7 +317,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               dateFormat={DATE_FORMAT}
               maxDate={getMaxDate()}
               minDate=""
-              value={initialForm.startDate === '' ? '' : moment(initialForm.startDate, 'YYYY/MM/DD')}
+              value={state.startDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('startDate', selectedDate);
               }}
@@ -349,7 +339,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               dateFormat={DATE_FORMAT}
               maxDate={getTodayDate()}
               minDate={getMinDate()}
-              value={initialForm.endDate === '' ? '' : moment(initialForm.endDate, 'YYYY/MM/DD')}
+              value={state.endDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('endDate', selectedDate);
               }}
@@ -372,7 +362,7 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
               name="location"
               ref={storageLocationInputRef}
               type="text"
-              value={interimForm.storageLocation}
+              value={state.storageLocation}
               labelText="Storage location"
               placeholder="Enter the location were the cones were stored"
               helperText="Enter a short name or description of the location where the cones are being temporarily stored"

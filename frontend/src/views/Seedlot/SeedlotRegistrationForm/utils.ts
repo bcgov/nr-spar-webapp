@@ -25,3 +25,19 @@ export const initInterimState = (
   storageLocation: '',
   facilityType: 'OCV'
 });
+
+export const initOrchardState = () => (
+  {
+    orchardId: '',
+    orchardName: '',
+    additionalId: '',
+    additionalName: '',
+    femaleGametic: '',
+    maleGametic: '',
+    controlledCross: true,
+    biotechProcess: true,
+    noPollenContamination: true,
+    breedingPercentage: '0',
+    pollenMethodology: true
+  }
+);
