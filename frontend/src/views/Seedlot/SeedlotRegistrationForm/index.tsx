@@ -47,32 +47,34 @@ const SeedlotRegistrationForm = () => {
     setAllStepData(newData);
   };
 
-  // const renderStep = () => {
-  //   switch (formStep) {
-  //     case 0:
-  //       return null;
-  //     case 1:
-  //       return (
-  //         <OwnershipStep
-  //           state={allStepData.ownershipStep}
-  //           setStep={(delta: number) => setStep(delta)}
-  //           setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
-  //         />
-  //       );
-  //     case 2:
-  //       return (
-  //         <InterimStorage setStep={(delta: number) => setStep(delta)} />
-  //       );
-  //     case 3:
-  //       return null;
-  //     case 4:
-  //       return null;
-  //     case 5:
-  //       return null;
-  //     default:
-  //       return null;
-  //   }
-  // };
+  const renderStep = () => {
+    switch (formStep) {
+      case 0:
+        return null;
+      case 1:
+        return (
+          <OwnershipStep
+            state={allStepData.ownershipStep}
+            setStep={(delta: number) => setStep(delta)}
+            setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
+          />
+        );
+      case 2:
+        return (
+          <InterimStorage setStep={(delta: number) => setStep(delta)} />
+        );
+      case 3:
+        return (
+          <OrchardStep setStep={(delta: number) => setStep(delta)} />
+        );
+      case 4:
+        return null;
+      case 5:
+        return null;
+      default:
+        return null;
+    }
+  };
 
   return (
     <FlexGrid className="seedlot-registration-page">
@@ -100,27 +102,8 @@ const SeedlotRegistrationForm = () => {
           />
         </Row>
         <Row className="seedlot-registration-forms">
-          <div className={formStep === 0 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Collection placeholder</p>
-          </div>
-          <div className={formStep === 1 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <OwnershipStep
-              state={allStepData.ownershipStep}
-              setStep={(delta: number) => setStep(delta)}
-              setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
-            />
-          </div>
-          <div className={formStep === 2 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <InterimStorage setStep={(delta: number) => setStep(delta)} />
-          </div>
-          <div className={formStep === 3 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <OrchardStep setStep={(delta: number) => setStep(delta)} />
-          </div>
-          <div className={formStep === 4 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Parent tree and SMP placeholder</p>
-          </div>
-          <div className={formStep === 5 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Extraction and storage placeholder</p>
+          <div className="seedlot-current-form">
+            {renderStep()}
           </div>
         </Row>
       </div>
