@@ -15,21 +15,23 @@ import ApiAddresses from '../../../utils/ApiAddresses';
 import { useAuth } from '../../../contexts/AuthContext';
 
 import {
+  StateReturnObj,
+  ValidationProp,
+  SingleOwnerForm,
+  AccordionCtrlObj,
+  AccordionItemHeadClick
+} from './definitions';
+import {
   insertOwnerForm,
   deleteOwnerForm,
   getAgencyName,
-  StateReturnObj,
   formatPortionPerc,
   calcResvOrSurp,
   skipForInvalidLength,
   getValidKey,
   isInputInvalid,
-  ValidationProp,
   arePortionsValid,
-  getInvalidIdAndKey,
-  SingleOwnerForm,
-  AccordionCtrlObj,
-  AccordionItemHeadClick
+  getInvalidIdAndKey
 } from './utils';
 import {
   DEFAULT_INDEX,
@@ -38,7 +40,7 @@ import {
   inputText,
   ownerTemplate,
   validTemplate
-} from './config';
+} from './constants';
 
 import './styles.scss';
 
@@ -272,6 +274,8 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
       newValidArr
     }: StateReturnObj = deleteOwnerForm(id, ownershipArray, validationArray);
     delete refControl.current[id];
+    const portionsInvalid = !arePortionsValid(newOwnerArr);
+    setPortionsValid(portionsInvalid);
     setOwnershipArray(newOwnerArr);
     setValidationArray(newValidArr);
   };
