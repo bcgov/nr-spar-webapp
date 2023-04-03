@@ -13,7 +13,6 @@ import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardSte
 import InterimStorage from '../../../components/SeedlotRegistrationProgress/InterimStorage';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
 
-
 import './styles.scss';
 
 const SeedlotRegistrationForm = () => {

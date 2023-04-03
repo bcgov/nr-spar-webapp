@@ -17,7 +17,7 @@ enum ApiAddresses {
   SeedlotOrchardPost,
 
   OrchardRetriveOne,
-  
+
   InterimStoragePost,
   SeedlotOwnerRegister
 

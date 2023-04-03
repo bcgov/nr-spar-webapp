@@ -42,7 +42,7 @@ const getUrl = (apiAddress: ApiAddresses, mockServer: boolean = false): string =
 
   // Seedlot Registration - Interim Storage Step Register
   let interimStoragePostUrl = '/api/seedlot/registration/:seedlotnumber';
-  
+
   // Seedlot Registration - Ownership Step Register
   let seedlotOwnerRegister = '/api/seedlot/register-ownership/:seedlotnumber';
 
