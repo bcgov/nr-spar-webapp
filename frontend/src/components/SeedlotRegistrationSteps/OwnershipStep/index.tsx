@@ -38,7 +38,6 @@ import {
   DEFAULT_PAYMENT_INDEX,
   MAX_OWNERS,
   inputText,
-  ownerTemplate,
   validTemplate
 } from './constants';
 
@@ -72,13 +71,15 @@ const mockMethodsOfPayment = [
 ];
 
 interface OwnershipStepProps {
-  setStep: Function
+  state: Array<SingleOwnerForm>,
+  setStepData: Function,
+  setStep: Function,
 }
 
 /*
   Component
 */
-const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
+const OwnershipStep = ({ state, setStepData, setStep }: OwnershipStepProps) => {
   const { token } = useAuth();
   const { seedlot } = useParams();
   const getAxiosConfig = () => {
@@ -106,15 +107,6 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
         console.error(err);
       });
   };
-  // Set initial owner state
-  const initialOwnerState = { ...ownerTemplate };
-  initialOwnerState.id = DEFAULT_INDEX;
-  initialOwnerState.ownerAgency = mockDefaultAgency;
-  initialOwnerState.ownerCode = mockDefaultCode;
-  initialOwnerState.ownerPortion = '100';
-  initialOwnerState.methodOfPayment = mockMethodsOfPayment[DEFAULT_PAYMENT_INDEX];
-  const [ownershipArray, setOwnershipArray] = useState([initialOwnerState]);
-  // Set initial validation state
   const initialValidState = { ...validTemplate };
   initialValidState.id = DEFAULT_INDEX;
   const [validationArray, setValidationArray] = useState([initialValidState]);
@@ -196,7 +188,7 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
     optionalName?: string,
     optionalValue?: string
   ) => {
-    const updatedArray = [...ownershipArray];
+    const updatedArray = [...state];
     /*
       If the input is invalid, don't update state values (no more typing)
           e.g. if a user types 133 in owner code we should only display 13 instead
@@ -227,17 +219,17 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
         invalidText,
         validKey
       } = calcResvOrSurp(index, name, value, updatedArray);
-      setOwnershipArray(newArr);
+      setStepData(newArr);
       validateInput(index, name, value, validKey, isInvalid, invalidText);
     } else if (name === 'ownerCode' && optionalName === 'ownerAgency') {
       // This if block is needed due to the checkbox, if unchecked, set both input to invalid
-      setOwnershipArray(updatedArray);
+      setStepData(updatedArray);
       const agencyKey = getValidKey(optionalName);
       const isInvalid = optionalValue === '';
       const { invalidText } = inputText.owner;
       validateInput(index, name, value, agencyKey, isInvalid, invalidText);
     } else if (name === 'ownerPortion') {
-      setOwnershipArray(updatedArray);
+      setStepData(updatedArray);
       // Prioritize single input validation
       const { isInvalid, invalidText } = isInputInvalid(name, value);
       if (isInvalid) {
@@ -249,22 +241,22 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
         setPortionsValid(portionsInvalid);
       }
     } else {
-      setOwnershipArray(updatedArray);
+      setStepData(updatedArray);
       validateInput(index, name, value);
     }
   };
 
   const addAnOwner = () => {
     // Maximum # of ownership can be set
-    if (ownershipArray.length >= MAX_OWNERS) {
+    if (state.length >= MAX_OWNERS) {
       return;
     }
     const defaultPayment = mockMethodsOfPayment[DEFAULT_PAYMENT_INDEX];
     const {
       newValidArr,
       newOwnerArr
-    }: StateReturnObj = insertOwnerForm(ownershipArray, validationArray, defaultPayment);
-    setOwnershipArray(newOwnerArr);
+    }: StateReturnObj = insertOwnerForm(state, validationArray, defaultPayment);
+    setStepData(newOwnerArr);
     setValidationArray(newValidArr);
   };
 
@@ -272,11 +264,11 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
     const {
       newOwnerArr,
       newValidArr
-    }: StateReturnObj = deleteOwnerForm(id, ownershipArray, validationArray);
+    }: StateReturnObj = deleteOwnerForm(id, state, validationArray);
     delete refControl.current[id];
     const portionsInvalid = !arePortionsValid(newOwnerArr);
     setPortionsValid(portionsInvalid);
-    setOwnershipArray(newOwnerArr);
+    setStepData(newOwnerArr);
     setValidationArray(newValidArr);
   };
 
@@ -312,7 +304,7 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
       invalidField,
       invalidValue,
       ownerOk
-    } = getInvalidIdAndKey(ownershipArray, validationArray);
+    } = getInvalidIdAndKey(state, validationArray);
     if (!allValid) {
       if (!ownerOk) {
         validateInput(invalidId, invalidField, invalidValue);
@@ -326,7 +318,7 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
 
   const submitForm = () => {
     if (areAllInputsValid() && seedlot) {
-      postData(ownershipArray, seedlot);
+      postData(state, seedlot);
     }
   };
 
@@ -351,7 +343,7 @@ const OwnershipStep = ({ setStep }: OwnershipStepProps) => {
       <div className="ownership-form-container">
         <Accordion className="steps-accordion">
           {
-            ownershipArray.map((singleOwnerInfo) => (
+            state.map((singleOwnerInfo) => (
               <AccordionItem
                 className="single-accordion-item"
                 key={`${singleOwnerInfo.id}`}

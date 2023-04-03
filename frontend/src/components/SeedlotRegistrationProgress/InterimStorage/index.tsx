@@ -21,6 +21,7 @@ import { ArrowRight } from '@carbon/icons-react';
 import Subtitle from '../../Subtitle';
 import InterimStorageRegistration from '../../../types/InterimStorageRegistration';
 import { FilterObj, filterInput } from '../../../utils/filterUtils';
+import InterimForm from './definitions';
 import ApiAddresses from '../../../utils/ApiAddresses';
 import getUrl from '../../../utils/ApiUtils';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -44,15 +45,6 @@ const InterimStorage = ({ setStep }: InterimStorageStepProps) => {
     '0035 - Weak Seeds Orchard - WSO',
     '0038 - Okay Seeds Orchard - OSO'
   ];
-
-  type InterimForm = {
-    agencyName: string,
-    locationCode: string,
-    startDate: string,
-    endDate: string,
-    storageLocation: string,
-    facilityType: string
-  }
 
   type FormValidation = {
     isNameInvalid: boolean,

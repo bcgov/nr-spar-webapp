@@ -11,8 +11,17 @@ import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import InterimStorage from '../../../components/SeedlotRegistrationProgress/InterimStorage';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
-
+import { AllStepData } from './definitions';
+import {
+  initInterimState,
+  initOwnershipState
+} from './utils';
+import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import './styles.scss';
+
+const defaultCode = '16';
+const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
+const defaultPayment = 'ITC - Invoice to client address';
 
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
@@ -24,6 +33,45 @@ const SeedlotRegistrationForm = () => {
     const newStep = formStep + delta;
     setFormStep(newStep);
   };
+
+  const [allStepData, setAllStepData] = useState<AllStepData>({
+    interimStep: initInterimState(defaultAgency, defaultCode),
+    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)]
+  });
+
+  // Can't find a good way to specify the type of stepData
+  const setStepData = (stepName: keyof AllStepData, stepData: any) => {
+    const newData = { ...allStepData };
+    newData[stepName] = stepData;
+    setAllStepData(newData);
+  };
+
+  // const renderStep = () => {
+  //   switch (formStep) {
+  //     case 0:
+  //       return null;
+  //     case 1:
+  //       return (
+  //         <OwnershipStep
+  //           state={allStepData.ownershipStep}
+  //           setStep={(delta: number) => setStep(delta)}
+  //           setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
+  //         />
+  //       );
+  //     case 2:
+  //       return (
+  //         <InterimStorage setStep={(delta: number) => setStep(delta)} />
+  //       );
+  //     case 3:
+  //       return null;
+  //     case 4:
+  //       return null;
+  //     case 5:
+  //       return null;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
     <FlexGrid className="seedlot-registration-page">
@@ -55,7 +103,11 @@ const SeedlotRegistrationForm = () => {
             <p>Collection placeholder</p>
           </div>
           <div className={formStep === 1 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <OwnershipStep setStep={(delta: number) => setStep(delta)} />
+            <OwnershipStep
+              state={allStepData.ownershipStep}
+              setStep={(delta: number) => setStep(delta)}
+              setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
+            />
           </div>
           <div className={formStep === 2 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
             <InterimStorage setStep={(delta: number) => setStep(delta)} />

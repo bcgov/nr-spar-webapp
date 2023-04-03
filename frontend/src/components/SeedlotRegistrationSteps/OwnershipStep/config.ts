@@ -1,4 +1,4 @@
-import { SingleOwnerForm, ValidationProp } from './utils';
+import { SingleOwnerForm, ValidationProp } from './definitions';
 
 export const DEFAULT_INDEX = 0;
 
