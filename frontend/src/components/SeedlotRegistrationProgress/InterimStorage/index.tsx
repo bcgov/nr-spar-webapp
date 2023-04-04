@@ -324,7 +324,7 @@ const InterimStorage = (
             >
               <DatePickerInput
                 id="start-date-input"
-                labelText="Collection start date"
+                labelText="Storage start date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
                 invalid={validationObj.isStartDateInvalid}
@@ -346,7 +346,7 @@ const InterimStorage = (
             >
               <DatePickerInput
                 id="end-date-input"
-                labelText="Collection end date"
+                labelText="Storage end date"
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
                 invalid={validationObj.isEndDateInvalid}
