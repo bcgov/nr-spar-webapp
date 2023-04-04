@@ -7,6 +7,7 @@ import {
   BreadcrumbItem,
   Button
 } from '@carbon/react';
+import { ArrowRight, CheckmarkOutline } from '@carbon/icons-react';
 
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
@@ -41,11 +42,7 @@ const SeedlotRegistrationForm = () => {
 
   const [formStep, setFormStep] = useState<number>(0);
 
-  const setStep = (delta: number) => {
-    const newStep = formStep + delta;
-    setFormStep(newStep);
-  };
-
+  // Initialize all step's state here
   const [allStepData, setAllStepData] = useState<AllStepData>({
     interimStep: initInterimState(defaultAgency, defaultCode),
     ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
@@ -64,10 +61,18 @@ const SeedlotRegistrationForm = () => {
     console.log(allStepData);
   };
 
+  const setStep = (delta: number) => {
+    logState();
+    const newStep = formStep + delta;
+    setFormStep(newStep);
+  };
+
   const renderStep = () => {
     switch (formStep) {
+      // Collection
       case 0:
         return null;
+      // Ownership
       case 1:
         return (
           <OwnershipStep
@@ -75,10 +80,10 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
-            setStep={(delta: number) => setStep(delta)}
             setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
           />
         );
+      // Interim Storage
       case 2:
         return (
           <InterimStorage
@@ -86,20 +91,21 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
-            setStep={(delta: number) => setStep(delta)}
             setStepData={(data: InterimForm) => setStepData('interimStep', data)}
           />
         );
+      // Orchard
       case 3:
         return (
           <OrchardStep
             state={allStepData.orchardStep}
-            setStep={(delta: number) => setStep(delta)}
             setStepData={(data: SeedlotOrchard) => setStepData('orchardStep', data)}
           />
         );
+      // Parent Tree and SMP
       case 4:
         return null;
+      // Extraction and Storage
       case 5:
         return null;
       default:
@@ -132,15 +138,61 @@ const SeedlotRegistrationForm = () => {
             }}
           />
         </Row>
-        <Row className="seedlot-registration-forms">
+        <Row className="seedlot-registration-row">
           <div className="seedlot-current-form">
             {renderStep()}
           </div>
         </Row>
-        <div>
-          <Button onClick={() => logState()}>
-            Log
-          </Button>
+        <div className="btns-container">
+          {
+            formStep !== 0
+              ? (
+                <Button
+                  kind="secondary"
+                  size="lg"
+                  className="back-next-btn"
+                  onClick={() => setStep(-1)}
+                >
+                  Back
+                </Button>
+              )
+              : (
+                <Button
+                  kind="secondary"
+                  size="lg"
+                  className="back-next-btn"
+                >
+                  Cancel
+                </Button>
+              )
+
+          }
+          {
+            formStep !== 5
+              ? (
+                <Button
+                  kind="primary"
+                  size="lg"
+                  className="back-next-btn"
+                  onClick={() => setStep(1)}
+                  renderIcon={ArrowRight}
+                  disabled={formStep === 5}
+                >
+                  Next
+                </Button>
+              )
+              : (
+                <Button
+                  kind="primary"
+                  size="lg"
+                  className="back-next-btn"
+                  renderIcon={CheckmarkOutline}
+                >
+                  Submit registration
+                </Button>
+              )
+          }
+
         </div>
       </div>
     </FlexGrid>

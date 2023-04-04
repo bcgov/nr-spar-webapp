@@ -1,10 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import moment from 'moment';
 
 import {
-  Button,
   Checkbox,
   Column,
   ComboBox,
@@ -17,20 +14,14 @@ import {
   FlexGrid
 } from '@carbon/react';
 
-import { ArrowRight } from '@carbon/icons-react';
 import Subtitle from '../../Subtitle';
-import InterimStorageRegistration from '../../../types/InterimStorageRegistration';
 import { FilterObj, filterInput } from '../../../utils/filterUtils';
 import InterimForm from './definitions';
-import ApiAddresses from '../../../utils/ApiAddresses';
-import getUrl from '../../../utils/ApiUtils';
-import { useAuth } from '../../../contexts/AuthContext';
 import './styles.scss';
 
 const DATE_FORMAT = 'Y/m/d';
 interface InterimStorageStepProps {
   state: InterimForm,
-  setStep: Function,
   setStepData: Function,
   defaultAgency: string,
   defaultCode: string,
@@ -44,16 +35,12 @@ interface ComboBoxEvent {
 const InterimStorage = (
   {
     state,
-    setStep,
     setStepData,
     defaultAgency,
     defaultCode,
     agencyOptions
   }: InterimStorageStepProps
 ) => {
-  const { token } = useAuth();
-  const { seedlot } = useParams();
-
   type FormValidation = {
     isNameInvalid: boolean,
     isCodeInvalid: boolean,
@@ -75,20 +62,6 @@ const InterimStorage = (
   const [validationObj, setValidationObj] = useState<FormValidation>(initialValidationObj);
 
   const [otherRadioChecked, setOtherChecked] = useState(false);
-
-  const interimStorageData: InterimStorageRegistration = {
-    seedlotNumber: (seedlot ? +seedlot : 0),
-    applicant: {
-      name: state.agencyName,
-      number: state.locationCode
-    },
-    storageInformation: {
-      startDate: state.startDate,
-      endDate: state.endDate,
-      location: state.storageLocation
-    },
-    facilityType: state.facilityType
-  };
 
   const validateInput = (name: string, value: string) => {
     const newValidObj = { ...validationObj };
@@ -168,19 +141,6 @@ const InterimStorage = (
     }
   };
 
-  const getAxiosConfig = () => {
-    const axiosConfig = {};
-    if (token) {
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      Object.assign(axiosConfig, headers);
-    }
-    return axiosConfig;
-  };
-
   const nameInputRef = useRef<HTMLInputElement>(null);
   const numberInputRef = useRef<HTMLInputElement>(null);
   const storageLocationInputRef = useRef<HTMLInputElement>(null);
@@ -188,45 +148,38 @@ const InterimStorage = (
 
   const [isChecked, setIsChecked] = useState<boolean>(true);
 
-  const logForm = () => {
-    setStep(1);
-  };
+  // Leaving these for future use
+  // const validateAndSubmit = () => {
+  //   let sendForm = true;
 
-  const goBack = () => {
-    setStep(-1);
-  };
-
-  const validateAndSubmit = () => {
-    let sendForm = true;
-
-    if (validationObj.isNameInvalid) {
-      nameInputRef.current?.focus();
-      sendForm = false;
-    } else if (validationObj.isCodeInvalid) {
-      numberInputRef.current?.focus();
-      sendForm = false;
-    } else if (validationObj.isStartDateInvalid) {
-      sendForm = false;
-    } else if (validationObj.isEndDateInvalid) {
-      sendForm = false;
-    } else if (validationObj.isStorageInvalid) {
-      storageLocationInputRef.current?.focus();
-      sendForm = false;
-    } else if (validationObj.isFacilityInvalid) {
-      storageFacilityTypeInputRef.current?.focus();
-      sendForm = false;
-    }
-    if (sendForm) {
-      axios.post(getUrl(ApiAddresses.InterimStoragePost), interimStorageData, getAxiosConfig())
-        .then(() => {
-          logForm();
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(`Error: ${error}`);
-        });
-    }
-  };
+  //   if (validationObj.isNameInvalid) {
+  //     nameInputRef.current?.focus();
+  //     sendForm = false;
+  //   } else if (validationObj.isCodeInvalid) {
+  //     numberInputRef.current?.focus();
+  //     sendForm = false;
+  //   } else if (validationObj.isStartDateInvalid) {
+  //     sendForm = false;
+  //   } else if (validationObj.isEndDateInvalid) {
+  //     sendForm = false;
+  //   } else if (validationObj.isStorageInvalid) {
+  //     storageLocationInputRef.current?.focus();
+  //     sendForm = false;
+  //   } else if (validationObj.isFacilityInvalid) {
+  //     storageFacilityTypeInputRef.current?.focus();
+  //     sendForm = false;
+  //   }
+  //   if (sendForm) {
+  //     axios.post(getUrl(ApiAddresses.InterimStoragePost), interimStorageData, getAxiosConfig())
+  //       .then(() => {
+  //         logForm();
+  //       })
+  //       .catch((error) => {
+  //         // eslint-disable-next-line
+  //         console.error(`Error: ${error}`);
+  //       });
+  //   }
+  // };
 
   const collectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
@@ -426,27 +379,6 @@ const InterimStorage = (
             </Row>
           )
         }
-
-        <Row className="collection-form-buttons">
-          <Button
-            kind="secondary"
-            onClick={goBack}
-            size="lg"
-            className="btn-collection-form"
-          >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            kind="primary"
-            size="lg"
-            className="btn-collection-form"
-            renderIcon={ArrowRight}
-            onClick={validateAndSubmit}
-          >
-            Next
-          </Button>
-        </Row>
       </FlexGrid>
     </div>
   );

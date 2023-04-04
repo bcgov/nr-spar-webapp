@@ -14,7 +14,7 @@ import {
   Checkbox,
   Button
 } from '@carbon/react';
-import { Add, TrashCan, ArrowRight } from '@carbon/icons-react';
+import { Add, TrashCan } from '@carbon/icons-react';
 
 import Subtitle from '../../Subtitle';
 
@@ -37,11 +37,10 @@ type NumStepperVal = {
 }
 interface OrchardStepProps {
   state: SeedlotOrchard
-  setStep: Function
   setStepData: Function
 }
 
-const OrchardStep = ({ setStep, state, setStepData }: OrchardStepProps) => {
+const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
   const { token } = useAuth();
   const { seedlot } = useParams();
   const [seedlotApplicantData, setSeedlotApplicantData] = useState<SeedlotRegistration>();
@@ -206,76 +205,60 @@ const OrchardStep = ({ setStep, state, setStepData }: OrchardStepProps) => {
     }
   };
 
-  const validateBeforeSubmit = () => {
-    // Check for any invalid state or empty fields
-    if (invalidOrchardId) {
-      refControl.current.orchardId.focus();
-      return false;
-    }
+  // Leaving these here for future use
+  // const validateBeforeSubmit = () => {
+  //   // Check for any invalid state or empty fields
+  //   if (invalidOrchardId) {
+  //     refControl.current.orchardId.focus();
+  //     return false;
+  //   }
 
-    // This conditional covers the case where no change was
-    // made to the field and the user tries to submit
-    if (!state.orchardId) {
-      setInvalidOrchardId(true);
-      setInvalidOrchardText(invalidOrchardValue);
-      refControl.current.orchardId.focus();
-      return false;
-    }
+  //   // This conditional covers the case where no change was
+  //   // made to the field and the user tries to submit
+  //   if (!state.orchardId) {
+  //     setInvalidOrchardId(true);
+  //     setInvalidOrchardText(invalidOrchardValue);
+  //     refControl.current.orchardId.focus();
+  //     return false;
+  //   }
 
-    if (invalidAddOrchardId && additionalOrchard) {
-      refControl.current.additionalId.focus();
-      return false;
-    }
+  //   if (invalidAddOrchardId && additionalOrchard) {
+  //     refControl.current.additionalId.focus();
+  //     return false;
+  //   }
 
-    // This conditional covers the case where no change was
-    // made to the additional orchard field and the user tries to submit
-    if (!state.additionalId && additionalOrchard) {
-      setInvalidAddOrchardId(true);
-      setInvalidAddOrchardText(invalidOrchardValue);
-      refControl.current.additionalId.focus();
-      return false;
-    }
+  //   // This conditional covers the case where no change was
+  //   // made to the additional orchard field and the user tries to submit
+  //   if (!state.additionalId && additionalOrchard) {
+  //     setInvalidAddOrchardId(true);
+  //     setInvalidAddOrchardText(invalidOrchardValue);
+  //     refControl.current.additionalId.focus();
+  //     return false;
+  //   }
 
-    if (!state.femaleGametic) {
-      setInvalidFemGametic(true);
-      refControl.current.femaleGametic.focus();
-      return false;
-    }
+  //   if (!state.femaleGametic) {
+  //     setInvalidFemGametic(true);
+  //     refControl.current.femaleGametic.focus();
+  //     return false;
+  //   }
 
-    if (!state.maleGametic) {
-      setInvalidMalGametic(true);
-      refControl.current.maleGametic.focus();
-      return false;
-    }
+  //   if (!state.maleGametic) {
+  //     setInvalidMalGametic(true);
+  //     refControl.current.maleGametic.focus();
+  //     return false;
+  //   }
 
-    if (invalidBreeding) {
-      refControl.current.breedingPercentage.focus();
-      return false;
-    }
+  //   if (invalidBreeding) {
+  //     refControl.current.breedingPercentage.focus();
+  //     return false;
+  //   }
 
-    return true;
-  };
-
-  const validateAndSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (seedlot && validateBeforeSubmit()) {
-      axios.post(getUrl(ApiAddresses.SeedlotOrchardPost).replace(':seedlotnumber', seedlot), state, getAxiosConfig())
-        .then((response) => {
-          if (response.status === 201) {
-            setStep(1);
-          }
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(`Error: ${error}`);
-        });
-    }
-  };
+  //   return true;
+  // };
 
   return (
     <div className="seedlot-orchard-step-form">
-      <form onSubmit={validateAndSubmit}>
+      <form>
         <Row className="seedlot-orchard-title-row">
           <Column lg={8}>
             <h2>Orchard information</h2>
@@ -544,24 +527,6 @@ const OrchardStep = ({ setStep, state, setStepData }: OrchardStepProps) => {
             </Column>
           </Row>
         </div>
-        <Row className="seedlot-orchard-btn-row">
-          <Column lg={8}>
-            <Button
-              size="lg"
-              kind="secondary"
-              onClick={() => setStep(-1)}
-            >
-              Back
-            </Button>
-            <Button
-              size="lg"
-              type="submit"
-              renderIcon={ArrowRight}
-            >
-              Next
-            </Button>
-          </Column>
-        </Row>
       </form>
     </div>
   );

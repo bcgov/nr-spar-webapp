@@ -1,18 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import {
   Accordion,
-  AccordionItem,
-  Button
+  AccordionItem
 } from '@carbon/react';
-import { ArrowRight } from '@carbon/icons-react';
 
 import TitleAccordion from '../../TitleAccordion';
 import SingleOwnerInfo from './SingleOwnerInfo';
-import getUrl from '../../../utils/ApiUtils';
-import ApiAddresses from '../../../utils/ApiAddresses';
-import { useAuth } from '../../../contexts/AuthContext';
 
 import {
   StateReturnObj,
@@ -30,8 +23,7 @@ import {
   skipForInvalidLength,
   getValidKey,
   isInputInvalid,
-  arePortionsValid,
-  getInvalidIdAndKey
+  arePortionsValid
 } from './utils';
 import {
   DEFAULT_INDEX,
@@ -69,7 +61,6 @@ interface OwnershipStepProps {
   agencyOptions: Array<string>,
   state: Array<SingleOwnerForm>,
   setStepData: Function,
-  setStep: Function,
 }
 
 /*
@@ -79,39 +70,11 @@ const OwnershipStep = (
   {
     state,
     setStepData,
-    setStep,
     defaultCode,
     defaultAgency,
     agencyOptions
   }: OwnershipStepProps
 ) => {
-  const { token } = useAuth();
-  const { seedlot } = useParams();
-  const getAxiosConfig = () => {
-    const axiosConfig = {};
-    if (token) {
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      Object.assign(axiosConfig, headers);
-    }
-    return axiosConfig;
-  };
-
-  const postData = (data: Array<SingleOwnerForm>, seedlotNumber: string) => {
-    axios.post(getUrl(ApiAddresses.SeedlotOwnerRegister).replace(':seedlotnumber', seedlotNumber), data, getAxiosConfig())
-      .then((response) => {
-        if (response.status === 201) {
-          setStep(1);
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
-  };
   const initialValidState = { ...validTemplate };
   initialValidState.id = DEFAULT_INDEX;
   const [validationArray, setValidationArray] = useState([initialValidState]);
@@ -302,34 +265,25 @@ const OwnershipStep = (
     setAccordionControls(newAccCtrls);
   };
 
-  const areAllInputsValid = (): boolean => {
-    const {
-      allValid,
-      invalidId,
-      invalidField,
-      invalidValue,
-      ownerOk
-    } = getInvalidIdAndKey(state, validationArray);
-    if (!allValid) {
-      if (!ownerOk) {
-        validateInput(invalidId, invalidField, invalidValue);
-      }
-      toggleAccordion(invalidId, true);
-      refControl.current[invalidId][invalidField].focus();
-      return false;
-    }
-    return true;
-  };
-
-  const submitForm = () => {
-    if (areAllInputsValid() && seedlot) {
-      postData(state, seedlot);
-    }
-  };
-
-  const goBack = () => {
-    setStep(-1);
-  };
+  // Leaving these here for future use
+  // const areAllInputsValid = (): boolean => {
+  //   const {
+  //     allValid,
+  //     invalidId,
+  //     invalidField,
+  //     invalidValue,
+  //     ownerOk
+  //   } = getInvalidIdAndKey(state, validationArray);
+  //   if (!allValid) {
+  //     if (!ownerOk) {
+  //       validateInput(invalidId, invalidField, invalidValue);
+  //     }
+  //     toggleAccordion(invalidId, true);
+  //     refControl.current[invalidId][invalidField].focus();
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   return (
     <div>
@@ -396,25 +350,6 @@ const OwnershipStep = (
             ))
           }
         </Accordion>
-      </div>
-      <div className="btns-container">
-        <Button
-          kind="secondary"
-          size="lg"
-          className="back-next-btn"
-          onClick={goBack}
-        >
-          Back
-        </Button>
-        <Button
-          kind="primary"
-          size="lg"
-          className="back-next-btn"
-          onClick={submitForm}
-          renderIcon={ArrowRight}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );
