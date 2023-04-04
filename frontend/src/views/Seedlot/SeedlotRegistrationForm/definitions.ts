@@ -1,4 +1,4 @@
-import InterimForm from '../../../components/SeedlotRegistrationProgress/InterimStorage/definitions';
+import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimStep/definitions';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 

@@ -11,7 +11,7 @@ import {
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
-import InterimStorage from '../../../components/SeedlotRegistrationProgress/InterimStorage';
+import InterimStorage from '../../../components/SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
 import { AllStepData } from './definitions';
 import {
@@ -21,7 +21,7 @@ import {
 } from './utils';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import './styles.scss';
-import InterimForm from '../../../components/SeedlotRegistrationProgress/InterimStorage/definitions';
+import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimStep/definitions';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 
 const defaultCode = '16';
