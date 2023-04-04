@@ -97,32 +97,6 @@ const InterimStorage = (
     setValidationObj(newValidObj);
   };
 
-  const getMinDate = () => {
-    let minDate = '';
-    if ((state.startDate !== '' && state.endDate === '')
-      || (state.startDate !== '' && state.endDate !== '')) {
-      minDate = state.startDate;
-    } else if ((state.startDate === '' && state.endDate === '')
-      || (state.startDate === '' && state.endDate !== '')) {
-      return minDate;
-    }
-    return minDate;
-  };
-
-  const getTodayDate = () => moment().format('Y/M/D');
-
-  const getMaxDate = () => {
-    let maxDate = '';
-    if ((state.startDate === '' && state.endDate === '')
-      || (state.startDate !== '' && state.endDate === '')) {
-      maxDate = getTodayDate();
-    } else if ((state.startDate === '' && state.endDate !== '')
-      || (state.startDate !== '' && state.endDate !== '')) {
-      maxDate = state.endDate;
-    }
-    return maxDate;
-  };
-
   const handleFormInput = (
     name: keyof InterimForm,
     value: string,
@@ -268,8 +242,6 @@ const InterimStorage = (
               datePickerType="single"
               name="startDate"
               dateFormat={DATE_FORMAT}
-              maxDate={getMaxDate()}
-              minDate=""
               value={state.startDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('startDate', selectedDate);
@@ -281,7 +253,7 @@ const InterimStorage = (
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
                 invalid={validationObj.isStartDateInvalid}
-                invalidText="Please, enter a valid date"
+                invalidText="Please enter a valid date"
               />
             </DatePicker>
           </Column>
@@ -290,8 +262,7 @@ const InterimStorage = (
               datePickerType="single"
               name="endDate"
               dateFormat={DATE_FORMAT}
-              maxDate={getTodayDate()}
-              minDate={getMinDate()}
+              minDate={state.startDate}
               value={state.endDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('endDate', selectedDate);
@@ -303,7 +274,7 @@ const InterimStorage = (
                 helperText="year/month/day"
                 placeholder="yyyy/mm/dd"
                 invalid={validationObj.isEndDateInvalid}
-                invalidText="Please, enter a valid date"
+                invalidText="Please enter a valid date"
               />
             </DatePicker>
           </Column>

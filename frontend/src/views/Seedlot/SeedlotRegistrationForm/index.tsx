@@ -161,6 +161,7 @@ const SeedlotRegistrationForm = () => {
                   kind="secondary"
                   size="lg"
                   className="back-next-btn"
+                  onClick={() => navigate(`/seedlot/details/${seedlotNumber}`)}
                 >
                   Cancel
                 </Button>
@@ -192,7 +193,6 @@ const SeedlotRegistrationForm = () => {
                 </Button>
               )
           }
-
         </div>
       </div>
     </FlexGrid>
