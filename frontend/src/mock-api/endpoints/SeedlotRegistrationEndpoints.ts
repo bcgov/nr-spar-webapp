@@ -60,6 +60,48 @@ const SeedlotRegistrationEndpoints = (server: Server) => {
   });
 
   server.get(getUrl(ApiAddresses.SeedlotRetrieveAll, true), (schema: AppSchema) => schema.all('seedlotData'));
+
+  server.post(getUrl(ApiAddresses.SeedlotOrchardPost, true), (schema: AppSchema, request) => {
+    const { seedlotnumber } = request.params;
+    const attrs = JSON.parse(request.requestBody);
+    const { seedlotOrchards } = schema.db;
+
+    seedlotOrchards.insert({
+      [seedlotnumber]: attrs
+    });
+    return {
+      status: 201
+    };
+  });
+
+  server.post(getUrl(ApiAddresses.InterimStoragePost, true), (schema: AppSchema, request) => {
+    const attrs = JSON.parse(request.requestBody);
+
+    const { interimStorageRegistrations } = schema.db;
+    const { interimAgencyInfos } = schema.db;
+    const { storageInfos } = schema.db;
+
+    interimStorageRegistrations.insert(attrs);
+    interimAgencyInfos.insert(attrs.applicant);
+    storageInfos.insert(attrs.storageInformation);
+    return {
+      status: 'OK'
+    };
+  });
+
+  // Get post request for ownership registration step
+  server.post(getUrl(ApiAddresses.SeedlotOwnerRegister, true), (schema: AppSchema, request) => {
+    const attrs = JSON.parse(request.requestBody);
+    const { seedlotnumber } = request.params;
+    const { registerOwnerData } = schema.db;
+
+    registerOwnerData.insert({
+      [seedlotnumber]: attrs
+    });
+    return {
+      status: 201
+    };
+  });
 };
 
 export default SeedlotRegistrationEndpoints;

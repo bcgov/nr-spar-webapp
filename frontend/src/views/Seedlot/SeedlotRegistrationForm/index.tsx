@@ -9,6 +9,9 @@ import {
 
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
+import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
+import InterimStorage from '../../../components/SeedlotRegistrationProgress/InterimStorage';
+import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
 import ExtractionAndStorage from '../../../components/SeedlotRegistrationProgress/ExtractionAndStorage';
 
 import './styles.scss';
@@ -54,13 +57,13 @@ const SeedlotRegistrationForm = () => {
             <p>Collection placeholder</p>
           </div>
           <div className={formStep === 1 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Ownership placeholder</p>
+            <OwnershipStep setStep={(delta: number) => setStep(delta)} />
           </div>
           <div className={formStep === 2 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Interim storage placeholder</p>
+            <InterimStorage setStep={(delta: number) => setStep(delta)} />
           </div>
           <div className={formStep === 3 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Orchard placeholder</p>
+            <OrchardStep setStep={(delta: number) => setStep(delta)} />
           </div>
           <div className={formStep === 4 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
             <p>Parent tree and SMP placeholder</p>
