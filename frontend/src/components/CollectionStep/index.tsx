@@ -29,11 +29,11 @@ import CollectionInformation from '../../types/CollectionInformation';
 
 import fieldsConfig from './constants';
 
-interface CollectionFormProps {
+interface CollectionStepProps {
   setStep: Function
 }
 
-const CollectionForm = ({ setStep }: CollectionFormProps) => {
+const CollectionStep = ({ setStep }: CollectionStepProps) => {
   const { token } = useAuth();
   const navigate = useNavigate();
 
@@ -258,4 +258,4 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
   );
 };
 
-export default CollectionForm;
+export default CollectionStep;
