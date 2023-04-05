@@ -18,14 +18,14 @@ import {
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/icons-react';
 
-import Subtitle from '../Subtitle';
+import Subtitle from '../../Subtitle';
 
-import getUrl from '../../utils/ApiUtils';
-import ApiAddresses from '../../utils/ApiAddresses';
-import { useAuth } from '../../contexts/AuthContext';
+import getUrl from '../../../utils/ApiUtils';
+import ApiAddresses from '../../../utils/ApiAddresses';
+import { useAuth } from '../../../contexts/AuthContext';
 
 import './styles.scss';
-import CollectionInformation from '../../types/CollectionInformation';
+import CollectionInformation from '../../../types/CollectionInformation';
 
 import fieldsConfig from './constants';
 

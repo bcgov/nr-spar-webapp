@@ -14,7 +14,7 @@ import InterimStorage from '../../../components/SeedlotRegistrationProgress/Inte
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
 
 import './styles.scss';
-import CollectionStep from '../../../components/CollectionStep';
+import CollectionStep from '../../../components/SeedlotRegistrationSteps/CollectionStep';
 
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
