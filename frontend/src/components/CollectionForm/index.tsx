@@ -25,7 +25,9 @@ import ApiAddresses from '../../utils/ApiAddresses';
 import { useAuth } from '../../contexts/AuthContext';
 
 import './styles.scss';
-import SeedlotCollector from '../../types/SeedlotCollector';
+import CollectionInformation from '../../types/CollectionInformation';
+
+import fieldsConfig from './constants';
 
 interface CollectionFormProps {
   setStep: Function
@@ -35,36 +37,35 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  // const getAxiosConfig = () => {
-  //   const axiosConfig = {};
-  //   if (token) {
-  //     const headers = {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     };
-  //     Object.assign(axiosConfig, headers);
-  //   }
-  //   return axiosConfig;
-  // };
+  const getAxiosConfig = () => {
+    const axiosConfig = {};
+    if (token) {
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      Object.assign(axiosConfig, headers);
+    }
+    return axiosConfig;
+  };
 
   const agencyItems: string[] = [
     'teste',
     'teste2'
   ];
 
-  const seedlotCollectorData: SeedlotCollector = {
+  const seedlotCollectorData: CollectionInformation = {
     seedlotNumber: 0,
     applicant: {
       name: '',
-      number: '',
-      email: ''
+      locationCode: ''
     },
     startDate: '',
     endDate: '',
-    containerNumbers: 0,
-    volumeContainer: 0,
-    volumeCones: 0,
+    numberOfContainers: 0,
+    volumePerContainer: 0,
+    volumeOfCones: 0,
     collectionMethods: {
       aerialRaking: false,
       aerialClippingTopping: false,
@@ -100,8 +101,8 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
             <Column lg={12}>
               <Checkbox
                 id="collection-form-applicant"
-                name="applicant"
-                labelText="Use applicant agency as collector agency"
+                name={fieldsConfig.checkbox.name}
+                labelText={fieldsConfig.checkbox.labelText}
                 defaultChecked
                 onChange={() => {}}
               />
@@ -110,21 +111,27 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
           <Row>
             <Column sm={12} md={4} lg={6}>
               <Dropdown
-                titleText="Cone collector agency"
-                helperText="You can enter your agency number, name or acronym"
+                name={fieldsConfig.collector.name}
+                placeholder={fieldsConfig.collector.placeholder}
+                titleText={fieldsConfig.collector.titleText}
+                helperText={fieldsConfig.collector.helperText}
+                invalidText={fieldsConfig.collector.invalidText}
                 items={agencyItems}
                 size="md"
               />
             </Column>
             <Column sm={12} md={4} lg={6}>
               <NumberInput
+                name={fieldsConfig.code.name}
+                placeholder={fieldsConfig.code.placeholder}
+                label={fieldsConfig.code.label}
+                helperText={fieldsConfig.code.helperText}
+                invalidText={fieldsConfig.code.invalidText}
                 min={0}
                 max={99}
                 value={50}
-                label="Cone collector location code"
-                helperText="2-digit code that identifies the address of operated office or division"
-                invalidText="Number is not valid"
                 hideSteppers
+                disableWheel
               />
             </Column>
           </Row>
@@ -138,20 +145,22 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
             <Column sm={12} md={4} lg={6}>
               <DatePicker datePickerType="single">
                 <DatePickerInput
-                  placeholder="yyyy/mm/dd"
-                  labelText="Collection start date"
+                  name={fieldsConfig.startDate.name}
+                  placeholder={fieldsConfig.startDate.placeholder}
+                  labelText={fieldsConfig.startDate.labelText}
+                  helperText={fieldsConfig.startDate.helperText}
                   size="md"
-                  helperText="year/month/day"
                 />
               </DatePicker>
             </Column>
             <Column sm={12} md={4} lg={6}>
               <DatePicker datePickerType="single">
                 <DatePickerInput
-                  placeholder="yyyy/mm/dd"
-                  labelText="Collection end date"
+                  name={fieldsConfig.endDate.name}
+                  placeholder={fieldsConfig.endDate.placeholder}
+                  labelText={fieldsConfig.endDate.labelText}
+                  helperText={fieldsConfig.endDate.helperText}
                   size="md"
-                  helperText="year/month/day"
                 />
               </DatePicker>
             </Column>
@@ -159,35 +168,41 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
           <Row>
             <Column sm={12} md={4} lg={6}>
               <NumberInput
+                name={fieldsConfig.numberContainers.name}
+                label={fieldsConfig.numberContainers.labelText}
+                invalidText={fieldsConfig.numberContainers.invalidText}
                 min={0}
                 max={99}
                 value={1}
-                label="Number of containers "
-                invalidText="Number is not valid"
                 hideSteppers
+                disableWheel
               />
             </Column>
             <Column sm={12} md={4} lg={6}>
               <NumberInput
+                name={fieldsConfig.volumeContainers.name}
+                label={fieldsConfig.volumeContainers.labelText}
+                invalidText={fieldsConfig.volumeContainers.invalidText}
                 min={0}
                 max={99}
                 value={1}
-                label="Volume per container (HI)"
-                invalidText="Number is not valid"
                 hideSteppers
+                disableWheel
               />
             </Column>
           </Row>
           <Row>
             <Column sm={12} md={12} lg={12}>
               <NumberInput
+                name={fieldsConfig.volumeCones.name}
+                label={fieldsConfig.volumeCones.labelText}
+                invalidText={fieldsConfig.volumeCones.invalidText}
+                helperText={fieldsConfig.volumeCones.helperText}
                 min={0}
                 max={99}
                 value={50}
-                label="Volume of cones (HI)"
-                helperText='This value should be the "Volume per container" X "Number of containers".'
-                invalidText="Number is not valid"
                 hideSteppers
+                disableWheel
               />
             </Column>
           </Row>
@@ -209,10 +224,10 @@ const CollectionForm = ({ setStep }: CollectionFormProps) => {
           <Row>
             <Column sm={12} md={12} lg={12}>
               <TextArea
-                labelText="Comments (optional)"
-                placeholder="Additional comments about the seedlot"
+                name={fieldsConfig.comments.name}
+                labelText={fieldsConfig.comments.labelText}
+                placeholder={fieldsConfig.comments.placeholder}
                 rows={5}
-                id="text-area-1"
                 maxCount={400}
                 enableCounter
               />
