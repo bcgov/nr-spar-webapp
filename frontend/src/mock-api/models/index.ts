@@ -39,7 +39,7 @@ const models = {
   seedlotInfos: SeedlotInfoModel,
   seedlotData: SeedlotModel,
   collectionInformation: CollectionInformationModel,
-  collectorAgency: CollectorAgencyModel,,
+  collectorAgency: CollectorAgencyModel,
   orchards: OrchardModel,
   seedlotOrchard: SeedlotOrchardModel,
   interimAgencyInfo: InterimAgencyInfoModel,

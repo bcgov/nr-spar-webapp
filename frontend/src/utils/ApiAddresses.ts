@@ -13,7 +13,7 @@ enum ApiAddresses {
   AClassSeedlotPost,
   SeedlotRetrieveOne,
   SeedlotRetrieveAll,
-  CollectionStepPost,,
+  CollectionStepPost,
 
   SeedlotOrchardPost,
 
