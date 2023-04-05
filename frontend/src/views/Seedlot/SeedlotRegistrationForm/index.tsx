@@ -14,6 +14,7 @@ import InterimStorage from '../../../components/SeedlotRegistrationProgress/Inte
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
 
 import './styles.scss';
+import ParentTreeStep from '../../../components/SeedlotRegistrationSteps/ParentTreeStep';
 
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const SeedlotRegistrationForm = () => {
             <OrchardStep setStep={(delta: number) => setStep(delta)} />
           </div>
           <div className={formStep === 4 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
-            <p>Parent tree and SMP placeholder</p>
+            <ParentTreeStep />
           </div>
           <div className={formStep === 5 ? 'seedlot-current-form' : 'seedlot-form-not-selected'}>
             <p>Extraction and storage placeholder</p>

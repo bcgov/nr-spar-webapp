@@ -1,0 +1,11 @@
+@use '../../../theme/variables.scss' as vars;
+
+.seedlot-parent-tree-step {
+  .#{vars.$bcgov-prefix}--tabs {
+    margin-left: -2.5rem;
+  }
+
+  .#{vars.$bcgov-prefix}--tabs .#{vars.$bcgov-prefix}--tabs__nav-link {
+    max-width: 12rem;
+  }
+}
