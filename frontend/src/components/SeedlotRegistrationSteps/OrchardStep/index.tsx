@@ -197,7 +197,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
   const validateBreedingPercentage = () => {
     const intNumber = +state.breedingPercentage;
     if (intNumber < 0
-      || intNumber > 99
+      || intNumber > 100
       || !state.breedingPercentage) {
       setInvalidBreeding(true);
     } else {
