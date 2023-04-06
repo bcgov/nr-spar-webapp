@@ -14,16 +14,16 @@ import SeedlotRegistrationProgress from '../../../components/SeedlotRegistration
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../../../components/SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
+import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimStep/definitions';
+import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
+import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import { AllStepData } from './definitions';
 import {
   initInterimState,
   initOrchardState,
   initOwnershipState
 } from './utils';
-import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import './styles.scss';
-import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimStep/definitions';
-import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 
 const defaultCode = '16';
 const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
