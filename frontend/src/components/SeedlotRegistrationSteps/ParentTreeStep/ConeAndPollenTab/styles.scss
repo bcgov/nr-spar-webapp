@@ -1,0 +1,39 @@
+@use '@carbon/type';
+@use '../../../../theme/variables.scss' as vars;
+
+.cone-pollen-tab {
+  h2 {
+    @include type.type-style('heading-03');
+    margin-bottom: 0.5rem;
+  }
+
+  .cone-pollen-title-row {
+    margin-bottom: 2.5rem;
+  }
+
+  .cone-pollen-summary-row,
+  .cone-pollen-traits-row {
+    margin-bottom: 3rem;
+  }
+
+  .cone-pollen-genetic-row {
+    margin-bottom: 2rem;
+  }
+
+  .cone-pollen-notification-row {
+    padding-left: 1rem;
+  }
+
+  .#{vars.$bcgov-prefix}--inline-notification {
+    max-width: 100%;
+  }
+
+  .#{vars.$bcgov-prefix}--inline-notification__text-wrapper {
+    display: block;
+    width: 44rem;
+  }
+
+  .#{vars.$bcgov-prefix}--inline-notification__title {
+    font-weight: 700;
+  }
+}

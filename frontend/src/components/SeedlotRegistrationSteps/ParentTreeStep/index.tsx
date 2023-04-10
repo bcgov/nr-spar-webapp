@@ -7,6 +7,8 @@ import {
   TabPanel
 } from '@carbon/react';
 
+import ConeAndPollenTab from './ConeAndPollenTab';
+
 import { pageTexts } from './constants';
 
 import './styles.scss';
@@ -22,7 +24,9 @@ const ParentTreeStep = () => {
           <Tab>{pageTexts.tabTitles.mixTab}</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>Tab 1</TabPanel>
+          <TabPanel>
+            <ConeAndPollenTab />
+          </TabPanel>
           <TabPanel>Tab 2</TabPanel>
           <TabPanel>Tab 3</TabPanel>
         </TabPanels>

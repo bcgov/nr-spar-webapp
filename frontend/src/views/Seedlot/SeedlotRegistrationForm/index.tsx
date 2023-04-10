@@ -14,6 +14,7 @@ import SeedlotRegistrationProgress from '../../../components/SeedlotRegistration
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../../../components/SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
+import ParentTreeStep from '../../../components/SeedlotRegistrationSteps/ParentTreeStep';
 import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimStep/definitions';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
@@ -104,7 +105,9 @@ const SeedlotRegistrationForm = () => {
         );
       // Parent Tree and SMP
       case 4:
-        return null;
+        return (
+          <ParentTreeStep />
+        );
       // Extraction and Storage
       case 5:
         return null;
