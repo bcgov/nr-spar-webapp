@@ -16,8 +16,8 @@ import PageTitle from '../../../components/PageTitle';
 import SeedlotDataTable from './SeedlotDataTable';
 
 import { useAuth } from '../../../contexts/AuthContext';
-import getUrl from '../../../utils/ApiUtils';
-import ApiAddresses from '../../../utils/ApiAddresses';
+import getUrl from '../../../api-service/ApiUtils';
+import ApiAddresses from '../../../api-service/ApiAddresses';
 import Seedlot from '../../../types/Seedlot';
 
 import './styles.scss';

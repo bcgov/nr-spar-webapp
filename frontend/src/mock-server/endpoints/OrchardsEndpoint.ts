@@ -1,7 +1,7 @@
 import { Server } from 'miragejs';
 import AppSchema from '../schema';
-import getUrl from '../../utils/ApiUtils';
-import ApiAddresses from '../../utils/ApiAddresses';
+import getUrl from '../../api-service/ApiUtils';
+import ApiAddresses from '../../api-service/ApiAddresses';
 
 const OrchardsEndpoints = (server: Server) => {
   server.get(getUrl(ApiAddresses.OrchardRetriveOne, true), (schema: AppSchema, request) => {

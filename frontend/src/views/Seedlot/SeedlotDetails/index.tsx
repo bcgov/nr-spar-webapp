@@ -20,9 +20,8 @@ import SeedlotRegistration from '../../../types/SeedlotRegistration';
 
 import { useAuth } from '../../../contexts/AuthContext';
 
-import getUrl from '../../../utils/ApiUtils';
-import ApiAddresses from '../../../utils/ApiAddresses';
-
+import getUrl from '../../../api-service/ApiUtils';
+import ApiAddresses from '../../../api-service/ApiAddresses';
 import PageTitle from '../../../components/PageTitle';
 import ComboButton from '../../../components/ComboButton';
 import SeedlotSummary from '../../../components/SeedlotSummary';

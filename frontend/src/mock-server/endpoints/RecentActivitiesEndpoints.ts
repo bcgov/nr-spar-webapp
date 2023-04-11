@@ -1,6 +1,6 @@
 import { Server } from 'miragejs';
-import ApiAddresses from '../../utils/ApiAddresses';
-import getUrl from '../../utils/ApiUtils';
+import ApiAddresses from '../../api-service/ApiAddresses';
+import getUrl from '../../api-service/ApiUtils';
 
 const RecentActivitiesEndpoints = (server: Server) => {
   server.get(getUrl(ApiAddresses.RecentActivitiesRetrieveAll, true), ({ db }) => db.recent);

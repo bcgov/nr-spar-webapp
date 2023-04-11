@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ClassPrefix } from '@carbon/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemePreference } from './utils/ThemePreference';
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +18,9 @@ root.render(
     <React.StrictMode>
       <ClassPrefix prefix="bcgov">
         <ThemePreference>
-          <App />
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
         </ThemePreference>
       </ClassPrefix>
     </React.StrictMode>

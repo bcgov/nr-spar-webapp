@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { Content } from '@carbon/react';
 
 import { env } from '../../env';
-import makeServer from '../../mock-api/server';
+import makeServer from '../../mock-server/server';
 
 import BCHeader from '../../components/BCHeader';
 

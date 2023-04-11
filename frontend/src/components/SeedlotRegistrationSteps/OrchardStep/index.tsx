@@ -22,8 +22,8 @@ import SeedlotRegistration from '../../../types/SeedlotRegistration';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 
 import { useAuth } from '../../../contexts/AuthContext';
-import getUrl from '../../../utils/ApiUtils';
-import ApiAddresses from '../../../utils/ApiAddresses';
+import getUrl from '../../../api-service/ApiUtils';
+import ApiAddresses from '../../../api-service/ApiAddresses';
 import { filterInput, FilterObj } from '../../../utils/filterUtils';
 
 import FemaleGameticOptions from './data';

@@ -8,8 +8,8 @@ import SeedlotTable from '../SeedlotTable';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
-import ApiAddresses from '../../utils/ApiAddresses';
-import getUrl from '../../utils/ApiUtils';
+import ApiAddresses from '../../api-service/ApiAddresses';
+import getUrl from '../../api-service/ApiUtils';
 import { useAuth } from '../../contexts/AuthContext';
 import Seedlot from '../../types/Seedlot';
 

@@ -18,8 +18,8 @@ import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
 
 import './styles.scss';
-import getUrl from '../../utils/ApiUtils';
-import ApiAddresses from '../../utils/ApiAddresses';
+import getUrl from '../../api-service/ApiUtils';
+import ApiAddresses from '../../api-service/ApiAddresses';
 import { useAuth } from '../../contexts/AuthContext';
 import FilesDocsTable from '../FilesDocsTable';
 

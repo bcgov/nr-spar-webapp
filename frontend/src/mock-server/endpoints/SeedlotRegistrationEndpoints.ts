@@ -4,8 +4,8 @@ import AppSchema from '../schema';
 import KeycloakService from '../../service/KeycloakService';
 
 import formatDate from '../../utils/DateUtils';
-import getUrl from '../../utils/ApiUtils';
-import ApiAddresses from '../../utils/ApiAddresses';
+import getUrl from '../../api-service/ApiUtils';
+import ApiAddresses from '../../api-service/ApiAddresses';
 
 const SeedlotRegistrationEndpoints = (server: Server) => {
   server.post(getUrl(ApiAddresses.AClassSeedlotPost, true), (schema: AppSchema, request) => {

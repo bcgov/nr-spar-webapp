@@ -21,8 +21,8 @@ import Subtitle from '../Subtitle';
 import SeedlotRegistration from '../../types/SeedlotRegistration';
 import GeneticClassesType from '../../types/GeneticClasses';
 
-import getUrl from '../../utils/ApiUtils';
-import ApiAddresses from '../../utils/ApiAddresses';
+import getUrl from '../../api-service/ApiUtils';
+import ApiAddresses from '../../api-service/ApiAddresses';
 import { useAuth } from '../../contexts/AuthContext';
 import { FilterObj, filterInput } from '../../utils/filterUtils';
 
