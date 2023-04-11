@@ -21,10 +21,9 @@ import Subtitle from '../Subtitle';
 import SeedlotRegistration from '../../types/SeedlotRegistration';
 import GeneticClassesType from '../../types/GeneticClasses';
 
-import getUrl from '../../api-service/ApiUtils';
-import ApiAddresses from '../../api-service/ApiAddresses';
-import { useAuth } from '../../contexts/AuthContext';
 import { FilterObj, filterInput } from '../../utils/filterUtils';
+import api from '../../api-service/api';
+import ApiConfig from '../../api-service/ApiConfig';
 
 import './styles.scss';
 
@@ -39,21 +38,7 @@ const ApplicantInformation = () => {
     '0038 - Okay Seeds Orchard - OSO'
   ];
 
-  const { token } = useAuth();
   const navigate = useNavigate();
-
-  const getAxiosConfig = () => {
-    const axiosConfig = {};
-    if (token) {
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      Object.assign(axiosConfig, headers);
-    }
-    return axiosConfig;
-  };
 
   const seedlotData: SeedlotRegistration = {
     seedlotNumber: 0,
@@ -81,7 +66,8 @@ const ApplicantInformation = () => {
   const [geneticClasses, setGeneticClasses] = useState<string[]>([]);
 
   const getGeneticClasses = () => {
-    axios.get(getUrl(ApiAddresses.GeneticClassesRetrieveAll), getAxiosConfig())
+    const url = ApiConfig.geneticClasses;
+    api.get(url)
       .then((response) => {
         const classes: string[] = [];
         if (response.data.geneticClasses) {

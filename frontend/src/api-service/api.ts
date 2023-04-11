@@ -7,22 +7,18 @@ const headers = {
   Authorization: `Bearer ${token}`
 };
 
-export const api = {
-  get: <T>(url: string, params?: object) => {
-    axios.get<T>(url, {
-      headers,
-      ...params
-    });
-  },
+const api = {
+  get: (url: string, params?: object) => axios.get(url, {
+    headers,
+    ...params
+  }),
 
-  post: <T>(url: string, data: any) => {
-    axios.post<T>(url, data, {
-      headers
-    });
-  },
+  post: (url: string, data: any) => axios.post(url, data, {
+    headers
+  }),
 
-  patch: <T>(url: string, data: any) => {
-    axios.patch<T>(url, data, {
+  patch: (url: string, data: any) => {
+    axios.patch(url, data, {
       headers
     });
   },
