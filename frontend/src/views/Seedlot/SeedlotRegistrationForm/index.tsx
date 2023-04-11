@@ -12,7 +12,7 @@ import SeedlotRegistrationProgress from '../../../components/SeedlotRegistration
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../../../components/SeedlotRegistrationProgress/InterimStorage';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
-import ExtractionAndStorage from '../../../components/SeedlotRegistrationProgress/ExtractionAndStorage';
+import ExtractionAndStorage from '../../../components/SeedlotRegistrationSteps/ExtractionAndStorage';
 
 import './styles.scss';
 

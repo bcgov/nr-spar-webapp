@@ -17,6 +17,12 @@ import {
 
 import ReactDOM from 'react-dom';
 import Subtitle from '../../Subtitle';
+
+import {
+  inputText,
+  DATE_FORMAT
+} from './constants';
+
 import './styles.scss';
 
 interface ExtractionAndStorageProps {
@@ -103,8 +109,8 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
       <FlexGrid fullWidth>
         <Row className="extraction-information-title">
           <Column lg={16}>
-            <h2>Extraction information</h2>
-            <Subtitle text="Enter the extractory agency information and extraction’s star and end dates for this seedlot" />
+            <h2>{inputText.extractionTitle.titleText}</h2>
+            <Subtitle text={inputText.extractionTitle.subtitleText} />
           </Column>
         </Row>
         <Row className="extractory-agency-tsc-checkbox-row">
@@ -112,7 +118,7 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             <Checkbox
               id="extractory-agency-tsc-checkbox"
               name="extractory-agency-tsc"
-              labelText="The extractory agency is the Tree Seed Center (TSC)"
+              labelText={inputText.extractorCheckbox.labelText}
               defaultChecked
               // eslint-disable-next-line max-len
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => extractoryAgencyIsTSCisChecked(e)}
@@ -125,13 +131,13 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
               id="extractory-agency-combobox"
               // ref={nameInputRef}
               name="extractory-agency"
-              helperText="You can enter your agency number, name or acronym"
+              helperText={inputText.extractor.helperText}
               onChange={(e: ComboBoxEvent) => { handleFormInput('extractoryAgency', e.selectedItem); }}
               selectedItem={extractionAndStorageForm.extractoryAgency}
               // shouldFilterItem={
               //   ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               // }
-              titleText="Extractory agency"
+              titleText={inputText.extractor.titleText}
               // placeholder="Select Interim agency name"
               // readOnly={isChecked}
               items={mockAgencyOptions}
@@ -146,8 +152,8 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
               // ref={numberInputRef}
               // value={interimForm.locationCode}
               type="number"
-              labelText="Extractory agency location code"
-              helperText="2-digit code that identifies the address of operated office or division"
+              labelText={inputText.extractorCode.labelText}
+              helperText={inputText.extractorCode.helperText}
               // invalid={validationObj.isCodeInvalid}
               // invalidText="Please enter a valid value"
               // readOnly={isChecked}
@@ -162,7 +168,7 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             <DatePicker
               datePickerType="single"
               name="extractionStartDate"
-              // dateFormat={DATE_FORMAT}
+              dateFormat={DATE_FORMAT}
               // maxDate={getMaxDate()}
               // minDate=""
               // value={initialForm.startDate === '' ? '' : moment(initialForm.startDate)}
@@ -172,9 +178,9 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             >
               <DatePickerInput
                 id="extraction-start-date-input"
-                labelText="Extraction start date"
-                helperText="year/month/day"
-                placeholder="yyyy/mm/dd"
+                labelText={inputText.date.extraction.labelText.start}
+                helperText={inputText.date.helperText}
+                placeholder={inputText.date.placeholder}
                 // invalid={validationObj.isStartDateInvalid}
                 // invalidText="Please, enter a valid date"
               />
@@ -184,7 +190,7 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             <DatePicker
               datePickerType="single"
               name="extractionEndDate"
-              // dateFormat={DATE_FORMAT}
+              dateFormat={DATE_FORMAT}
               // maxDate={getTodayDate()}
               // minDate={getMinDate()}
               // value={initialForm.endDate === '' ? '' : moment(initialForm.endDate)}
@@ -194,9 +200,9 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             >
               <DatePickerInput
                 id="extraction-end-date-input"
-                labelText="Extraction end date"
-                helperText="year/month/day"
-                placeholder="yyyy/mm/dd"
+                labelText={inputText.date.extraction.labelText.end}
+                helperText={inputText.date.helperText}
+                placeholder={inputText.date.placeholder}
                 // invalid={validationObj.isEndDateInvalid}
                 // invalidText="Please, enter a valid date"
               />
@@ -206,13 +212,13 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
         <InlineNotification
           lowContrast
           kind="info"
-          title="Extraction start and end dates"
-          subtitle="The extraction start and end dates will be filled by the TSC. You will receive a notification once it’s completed."
+          title={inputText.date.extraction.notification.title}
+          subtitle={inputText.date.extraction.notification.subtitle}
         />
         <Row className="temporary-seed-storage-title">
           <Column lg={16}>
-            <h2>Temporary seed storage</h2>
-            <Subtitle text="Enter the seed storage agency information and storage’s star and end dates for this seedlot" />
+            <h2>{inputText.storageTitle.titleText}</h2>
+            <Subtitle text={inputText.storageTitle.subtitleText} />
           </Column>
         </Row>
         <Row className="seed-storage-agency-tsc-checkbox-row">
@@ -220,7 +226,7 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             <Checkbox
               id="seed-storage-agency-tsc-checkbox"
               name="seed-storage-agency-tsc"
-              labelText="The seed storage agency is the Tree Seed Center (TSC)"
+              labelText={inputText.storageCheckbox.labelText}
               defaultChecked
               // eslint-disable-next-line max-len
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => extractoryAgencyIsTSCisChecked(e)}
@@ -233,13 +239,13 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
               id="seed-storage-agency-combobox"
               // ref={nameInputRef}
               name="seed-storage-agency"
-              helperText="You can enter your agency number, name or acronym"
+              helperText={inputText.storage.helperText}
               onChange={(e: ComboBoxEvent) => { handleFormInput('seedStorageAgency', e.selectedItem); }}
               selectedItem={extractionAndStorageForm.seedStorageAgency}
               // shouldFilterItem={
               //   ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               // }
-              titleText="Seed storage agency"
+              titleText={inputText.storage.titleText}
               // placeholder="Select Interim agency name"
               // readOnly={isChecked}
               items={mockAgencyOptions}
@@ -253,8 +259,8 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
               // ref={numberInputRef}
               // value={interimForm.locationCode}
               type="number"
-              labelText="Seed storage location code"
-              helperText="2-digit code that identifies the address of operated office or division"
+              labelText={inputText.storageCode.labelText}
+              helperText={inputText.storageCode.helperText}
               // invalid={validationObj.isCodeInvalid}
               // invalidText="Please enter a valid value"
               // readOnly={isChecked}
@@ -269,7 +275,7 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             <DatePicker
               datePickerType="single"
               name="storageStartDate"
-              // dateFormat={DATE_FORMAT}
+              dateFormat={DATE_FORMAT}
               // maxDate={getMaxDate()}
               // minDate=""
               // value={initialForm.startDate === '' ? '' : moment(initialForm.startDate)}
@@ -279,9 +285,9 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             >
               <DatePickerInput
                 id="storage-start-date-input"
-                labelText="Storage start date"
-                helperText="year/month/day"
-                placeholder="yyyy/mm/dd"
+                labelText={inputText.date.storage.labelText.start}
+                helperText={inputText.date.helperText}
+                placeholder={inputText.date.placeholder}
                 // invalid={validationObj.isStartDateInvalid}
                 // invalidText="Please, enter a valid date"
               />
@@ -291,7 +297,7 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             <DatePicker
               datePickerType="single"
               name="storageEndDate"
-              // dateFormat={DATE_FORMAT}
+              dateFormat={DATE_FORMAT}
               // maxDate={getTodayDate()}
               // minDate={getMinDate()}
               // value={initialForm.endDate === '' ? '' : moment(initialForm.endDate)}
@@ -301,9 +307,9 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
             >
               <DatePickerInput
                 id="storage-end-date-input"
-                labelText="Storage end date"
-                helperText="year/month/day"
-                placeholder="yyyy/mm/dd"
+                labelText={inputText.date.storage.labelText.end}
+                helperText={inputText.date.helperText}
+                placeholder={inputText.date.placeholder}
                 // invalid={validationObj.isEndDateInvalid}
                 // invalidText="Please, enter a valid date"
               />
@@ -313,46 +319,44 @@ const ExtractionAndStorage = ({ setStep }: ExtractionAndStorageProps) => {
         <InlineNotification
           lowContrast
           kind="info"
-          title="Storage start and end dates"
-          subtitle="The storage start and end dates will be filled by the TSC. You will receive a notification once it’s completed."
+          title={inputText.date.storage.notification.title}
+          subtitle={inputText.date.storage.notification.subtitle}
         />
         <ModalStateManager
           renderLauncher={({ setOpen }: any) => (
-            <Button onClick={() => setOpen(true)}>Launch modal</Button>
+            <Button onClick={() => setOpen(true)}>{inputText.modal.buttonText}</Button>
           )}
         >
           {({ open, setOpen }: any) => (
             <Modal
               size="sm"
               className="seedlot-registration-modal"
-              modalLabel="Seedlot registration"
-              modalHeading="Declaration"
-              primaryButtonText="Submit seedlot"
-              secondaryButtonText="Cancel"
+              modalLabel={inputText.modal.modalLabel}
+              modalHeading={inputText.modal.modalHeading}
+              primaryButtonText={inputText.modal.primaryButtonText}
+              secondaryButtonText={inputText.modal.secondaryButtonText}
               open={open}
               onRequestClose={() => setOpen(false)}
             >
-              <p>
-                Read and accept the declaration to complete the seedlot registration
-              </p>
+              <p>{inputText.modal.helperText}</p>
               <Checkbox
                 id="declaration-modal-checkbox"
                 name="declaration-modal"
-                labelText="I hereby declare that the information provided in this application is true and correct, and that I am the owner of the seedlot or have been authorized by the owner(s) of the seedlot to submit this application."
+                labelText={inputText.modal.checkboxLabelText}
                 // eslint-disable-next-line max-len
                 // onChange={(e: React.ChangeEvent<HTMLInputElement>) => extractoryAgencyIsTSCisChecked(e)}
               />
               <InlineNotification
                 lowContrast
                 kind="info"
-                title="Review the form:"
+                title={inputText.modal.notification.title}
                 // Fix here! Error: 'Failed prop type: Invalid prop `subtitle` of type `object` supplied to `InlineNotification`, expected `string`'
                 subtitle={(
                   <span>
-                    Please, be sure to review the content and check if everything is correct with your seedlot registration.
+                    {inputText.modal.notification.subtitle}
                     <br />
                     <br />
-                    Go to first step and review the form
+                    {inputText.modal.notification.link}
                   </span>
                 )}
               />
