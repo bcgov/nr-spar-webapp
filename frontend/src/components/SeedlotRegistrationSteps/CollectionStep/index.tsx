@@ -18,43 +18,24 @@ import Subtitle from '../../Subtitle';
 
 import { DATE_FORMAT, fieldsConfig } from './constants';
 import { filterInput, FilterObj } from '../../../utils/filterUtils';
-import { CollectionStepProps, CollectionForm, FormValidation, ComboBoxEvent } from './utils';
+import {
+  CollectionStepProps,
+  CollectionForm,
+  FormValidation,
+  ComboBoxEvent
+} from './utils';
 
 import './styles.scss';
 
 const CollectionStep = (
-  { 
+  {
     state,
     setStepData,
     defaultAgency,
     defaultCode,
-    agencyOptions 
-  }: CollectionStepProps) => {
-
-  // const seedlotCollectorData: CollectionInformation = {
-  //   seedlotNumber: 0,
-  //   applicant: {
-  //     name: '',
-  //     locationCode: ''
-  //   },
-  //   startDate: '',
-  //   endDate: '',
-  //   numberOfContainers: 0,
-  //   volumePerContainer: 0,
-  //   volumeOfCones: 0,
-  //   collectionMethods: {
-  //     aerialRaking: false,
-  //     aerialClippingTopping: false,
-  //     felledTrees: false,
-  //     climbing: false,
-  //     squirrelCache: false,
-  //     ground: false,
-  //     squirrelHarvesting: false,
-  //     other: false
-  //   },
-  //   comments: ''
-  // };
-
+    agencyOptions
+  }: CollectionStepProps
+) => {
   const initialValidationObj: FormValidation = {
     isNameInvalid: false,
     isLocationCodeInvalid: false,
@@ -63,7 +44,7 @@ const CollectionStep = (
     isNumberOfContainersInvalid: false,
     isVolumePerContainersInvalid: false,
     isVolumeOfConesInvalid: false,
-    isCollectionMethodsInvalid: false,
+    isCollectionMethodsInvalid: false
   };
 
   const [validationObj, setValidationObj] = useState<FormValidation>(initialValidationObj);
@@ -159,7 +140,9 @@ const CollectionStep = (
               name={fieldsConfig.checkbox.name}
               labelText={fieldsConfig.checkbox.labelText}
               defaultChecked
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => collectorAgencyisChecked(event)}
+              onChange={
+                (event: React.ChangeEvent<HTMLInputElement>) => collectorAgencyisChecked(event)
+              }
             />
           </Column>
         </Row>
@@ -209,7 +192,7 @@ const CollectionStep = (
         </Row>
         <Row className="collector-information-dates">
           <Column sm={12} md={4} lg={6}>
-            <DatePicker 
+            <DatePicker
               datePickerType="single"
               dateFormat={DATE_FORMAT}
               value={state.startDate}
@@ -229,7 +212,7 @@ const CollectionStep = (
             </DatePicker>
           </Column>
           <Column sm={12} md={4} lg={6}>
-            <DatePicker 
+            <DatePicker
               datePickerType="single"
               dateFormat={DATE_FORMAT}
               minDate={state.startDate}

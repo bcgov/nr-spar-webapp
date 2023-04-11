@@ -1,5 +1,3 @@
-import CollectionInformation from '../../../types/CollectionInformation';
-
 export interface ComboBoxEvent {
   selectedItem: string;
 }

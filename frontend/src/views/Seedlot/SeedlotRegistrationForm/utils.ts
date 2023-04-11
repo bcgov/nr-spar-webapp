@@ -1,5 +1,27 @@
 import { ownerTemplate } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/constants';
 
+export const initCollectionState = (
+  defaultAgency: string,
+  defaultCode: string
+) => ({
+  collectorAgency: defaultAgency,
+  locationCode: defaultCode,
+  startDate: '',
+  endDate: '',
+  numberOfContainers: '0',
+  volumePerContainers: '0',
+  volumeOfCones: '0',
+  aerialRaking: false,
+  aerialClippingTopping: false,
+  felledTrees: false,
+  climbing: false,
+  squirrelCache: false,
+  ground: false,
+  squirrelHarvesting: false,
+  other: false,
+  comments: ''
+});
+
 export const initOwnershipState = (
   defaultAgency: string,
   defaultCode: string,

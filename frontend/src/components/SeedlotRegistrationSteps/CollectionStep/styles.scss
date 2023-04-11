@@ -2,8 +2,6 @@
 @use '../../../theme/variables.scss' as vars;
 
 .seedlot-collection-form {
-  padding: 0 3.5rem;
-
   h2 {
     @include type.type-style('heading-03');
     margin-bottom: 0.5rem;
