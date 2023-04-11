@@ -2,14 +2,13 @@ import CollectionMethods from './CollectionMethods';
 import CollectorAgency from './CollectorAgency';
 
 type CollectionInformation = {
-    seedlotNumber: number;
-    applicant?: CollectorAgency;
-    locationCode?: string;
+    seedlotNumber: string;
+    applicant: CollectorAgency;
     startDate?: string;
     endDate?: string;
-    numberOfContainers?: number;
-    volumePerContainer?: number;
-    volumeOfCones?: number;
+    numberOfContainers?: string;
+    volumePerContainer?: string;
+    volumeOfCones?: string;
     collectionMethods?: CollectionMethods;
     comments?: string;
 }

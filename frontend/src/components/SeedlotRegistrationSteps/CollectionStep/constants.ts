@@ -1,3 +1,5 @@
+const DATE_FORMAT = 'Y/m/d';
+
 const fieldsConfig = {
   checkbox: {
     name: 'applicant',
@@ -11,7 +13,7 @@ const fieldsConfig = {
     invalidText: 'Please choose a valid collector agency, filter with agency number, name or acronym'
   },
   code: {
-    name: 'collectorCode',
+    name: 'locationCode',
     placeholder: 'Example: 00',
     label: 'Cone Collector location code',
     helperText: '2-digit code that identifies the address of operated office or division',
@@ -21,35 +23,37 @@ const fieldsConfig = {
     name: 'starDate',
     placeholder: 'yyyy/mm/dd',
     labelText: 'Collection start date',
-    helperText: 'year/month/day'
+    helperText: 'year/month/day',
+    invalidText: 'Please enter a valid date'
   },
   endDate: {
     name: 'endDate',
     placeholder: 'yyyy/mm/dd',
     labelText: 'Collection end date',
-    helperText: 'year/month/day'
+    helperText: 'year/month/day',
+    invalidText: 'Please enter a valid date'
   },
-  numberContainers: {
-    name: 'numberContainers',
+  numberOfContainers: {
+    name: 'numberOfContainers',
     labelText: 'Number of Containers',
     invalidText: 'Number is not valid'
   },
-  volumeContainers: {
-    name: 'volumeContainers',
+  volumePerContainers: {
+    name: 'volumePerContainers',
     labelText: 'Volume per Containers (HI)',
     invalidText: 'Number is not valid'
   },
-  volumeCones: {
-    name: 'volumeCones',
+  volumeOfCones: {
+    name: 'volumeOfCones',
     labelText: 'Volume of Cones (HI)',
     invalidText: 'Number is not valid',
     helperText: 'This value should be the "Volume per container" X "Number of containers".'
   },
   comments: {
-    name: 'volumeCones',
+    name: 'comments',
     labelText: 'Comments (optional)',
     placeholder: 'Additional comments about the seedlot'
   }
 };
 
-export default fieldsConfig;
+export { DATE_FORMAT, fieldsConfig };
