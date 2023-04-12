@@ -1,6 +1,6 @@
 type CollectorAgency = {
-    name?: string;
-    locationCode?: string;
+  name?: string;
+  locationCode?: string;
 }
 
 export default CollectorAgency;
