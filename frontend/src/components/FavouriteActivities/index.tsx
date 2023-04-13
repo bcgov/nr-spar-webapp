@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Tooltip,
@@ -28,8 +28,10 @@ const FavouriteActivities = () => {
     const url = ApiConfig.favouriteActivities;
     api.get(url)
       .then((response) => {
+        // eslint-disable-next-line no-debugger
+        debugger;
         console.log(response);
-        const newCards = response.data.favourites || response.data;
+        const newCards = [...response.data];
         newCards.forEach((item: CardType, i: number) => {
           const card = item;
           const activityProps = getActivityProps(item.activity);
@@ -66,16 +68,16 @@ const FavouriteActivities = () => {
       });
   };
 
-  if (cards.length === 0) {
-    getCards();
-  }
-
-  // useEffect(() => {
+  // if (cards.length === 0) {
   //   getCards();
-  //   setInterval(() => {
-  //     getCards();
-  //   }, 3 * 60 * 1000);
-  // }, []);
+  // }
+
+  useEffect(() => {
+    getCards();
+    setInterval(() => {
+      getCards();
+    }, 3 * 60 * 1000);
+  }, []);
 
   const highlightFunction = (index: number) => {
     const target = cards[index];

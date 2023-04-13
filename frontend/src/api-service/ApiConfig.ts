@@ -1,7 +1,7 @@
-// import { env } from '../env';
+import { env } from '../env';
 import mockServerConfig from '../mock-server/config';
 
-const serverHost = 'https://nr-spar-backend-test-backend.apps.silver.devops.gov.bc.ca';
+const serverHost = env.REACT_APP_SERVER_URL;
 
 const mockServerHost = mockServerConfig.namespace;
 

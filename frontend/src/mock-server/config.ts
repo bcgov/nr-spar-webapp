@@ -1,5 +1,5 @@
 const mockServerConfig = {
-  namespace: 'http://localhost:3000/mock-api'
+  namespace: 'mock-api'
 };
 
 export default mockServerConfig;

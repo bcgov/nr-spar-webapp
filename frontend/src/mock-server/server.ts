@@ -8,7 +8,7 @@ import mockServerConfig from './config';
 import endpoints from './endpoints';
 import fixtures from './fixtures';
 import models from './models';
-// import { env } from '../env';
+import { env } from '../env';
 
 // eslint-disable-next-line
 export default function makeServer(environment = 'development') {
@@ -25,7 +25,7 @@ export default function makeServer(environment = 'development') {
       }
     },
     routes() {
-      this.passthrough('https://nr-spar-backend-test-backend.apps.silver.devops.gov.bc.ca/**');
+      this.passthrough(`${env.REACT_APP_SERVER_URL}/api/**`);
       this.passthrough('https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
       this.passthrough('https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
       this.namespace = mockServerConfig.namespace;
