@@ -23,6 +23,11 @@
   padding-left: 1rem;
 }
 
+.form-item{
+  padding-left: 1.5rem;
+  padding-top:  2.0rem
+}
+
 .item-description-section {
   @include type.type-style('body-compact-01');
   color: var(--#{vars.$bcgov-prefix}-text-secondary);

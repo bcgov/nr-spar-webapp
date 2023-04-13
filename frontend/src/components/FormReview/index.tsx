@@ -144,23 +144,25 @@ const FormReview = () => {
                   />
                     )}
               >
-                <OwnershipStep
-                  state={allStepData.ownershipStep}
-                  defaultAgency={defaultAgency}
-                  defaultCode={defaultCode}
-                  agencyOptions={agencyOptions}
-                  setStepData={() => {}}
-                  readOnly
-                  ownershipData={ownershipMock}
-                />
-                <Button
-                  kind="tertiary"
-                  size="md"
-                  className="btn-edit-step"
-                  renderIcon={Edit}
-                >
-                  Edit step
-                </Button>
+                <div className="form-item">
+                  <OwnershipStep
+                    state={allStepData.ownershipStep}
+                    defaultAgency={defaultAgency}
+                    defaultCode={defaultCode}
+                    agencyOptions={agencyOptions}
+                    setStepData={() => {}}
+                    readOnly
+                    ownershipData={ownershipMock}
+                  />
+                  <Button
+                    kind="tertiary"
+                    size="md"
+                    className="btn-edit-step"
+                    renderIcon={Edit}
+                  >
+                    Edit step
+                  </Button>
+                </div>
               </AccordionItem>
               <AccordionItem
                 key={2}
@@ -171,23 +173,25 @@ const FormReview = () => {
                   />
                     )}
               >
-                <InterimStorage
-                  state={allStepData.interimStep}
-                  defaultAgency={defaultAgency}
-                  defaultCode={defaultCode}
-                  agencyOptions={agencyOptions}
-                  setStepData={() => {}}
-                  readOnly
-                  interimStorageData={interimStorageMock}
-                />
-                <Button
-                  kind="tertiary"
-                  size="md"
-                  className="btn-edit-step"
-                  renderIcon={Edit}
-                >
-                  Edit step
-                </Button>
+                <div className="form-item">
+                  <InterimStorage
+                    state={allStepData.interimStep}
+                    defaultAgency={defaultAgency}
+                    defaultCode={defaultCode}
+                    agencyOptions={agencyOptions}
+                    setStepData={() => {}}
+                    readOnly
+                    interimStorageData={interimStorageMock}
+                  />
+                  <Button
+                    kind="tertiary"
+                    size="md"
+                    className="btn-edit-step"
+                    renderIcon={Edit}
+                  >
+                    Edit step
+                  </Button>
+                </div>
               </AccordionItem>
               <AccordionItem
                 key={3}
@@ -198,20 +202,22 @@ const FormReview = () => {
                   />
                     )}
               >
-                <OrchardStep
-                  state={allStepData.orchardStep}
-                  setStepData={() => {}}
-                  readOnly
-                  orchardData={orchardMock}
-                />
-                <Button
-                  kind="tertiary"
-                  size="md"
-                  className="btn-edit-step"
-                  renderIcon={Edit}
-                >
-                  Edit step
-                </Button>
+                <div className="form-item">
+                  <OrchardStep
+                    state={allStepData.orchardStep}
+                    setStepData={() => {}}
+                    readOnly
+                    orchardData={orchardMock}
+                  />
+                  <Button
+                    kind="tertiary"
+                    size="md"
+                    className="btn-edit-step"
+                    renderIcon={Edit}
+                  >
+                    Edit step
+                  </Button>
+                </div>
               </AccordionItem>
               <AccordionItem
                 key={4}
