@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 
 import {
   Accordion,
-  AccordionItem
+  AccordionItem,
+  Button
 } from '@carbon/react';
+import { Edit } from '@carbon/icons-react';
 
 import Subtitle from '../Subtitle';
 import TitleAccordion from '../TitleAccordion';
@@ -151,6 +153,14 @@ const FormReview = () => {
                   readOnly
                   ownershipData={ownershipMock}
                 />
+                <Button
+                  kind="tertiary"
+                  size="md"
+                  className="btn-edit-step"
+                  renderIcon={Edit}
+                >
+                  Edit step
+                </Button>
               </AccordionItem>
               <AccordionItem
                 key={2}
@@ -170,6 +180,14 @@ const FormReview = () => {
                   readOnly
                   interimStorageData={interimStorageMock}
                 />
+                <Button
+                  kind="tertiary"
+                  size="md"
+                  className="btn-edit-step"
+                  renderIcon={Edit}
+                >
+                  Edit step
+                </Button>
               </AccordionItem>
               <AccordionItem
                 key={3}
@@ -186,6 +204,14 @@ const FormReview = () => {
                   readOnly
                   orchardData={orchardMock}
                 />
+                <Button
+                  kind="tertiary"
+                  size="md"
+                  className="btn-edit-step"
+                  renderIcon={Edit}
+                >
+                  Edit step
+                </Button>
               </AccordionItem>
               <AccordionItem
                 key={4}
