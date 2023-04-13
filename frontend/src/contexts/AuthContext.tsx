@@ -30,6 +30,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
   const [user, setUser] = useState<KeycloakUser | {}>({});
 
   /**
+   * Refresh the token
+   */
+  setInterval(() => {
+    const newToken = KeycloakService.refreshToken() || '';
+    localStorage.setItem('token', newToken);
+  }, 1 * 60 * 1000);
+
+  /**
    * Starts Keycloak instance.
    */
   async function startKeycloak() {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -22,7 +22,7 @@ import './styles.scss';
 const MySeedlots = () => {
   const navigate = useNavigate();
 
-  const [seedlotsData, setSeedlotsData] = useState<Seedlot[]>();
+  const [seedlotsData, setSeedlotsData] = useState<Array<Seedlot>>([]);
 
   const getSeedlotsData = () => {
     const url = ApiConfig.seedlot;
@@ -36,7 +36,9 @@ const MySeedlots = () => {
       });
   };
 
-  getSeedlotsData();
+  useEffect(() => {
+    getSeedlotsData();
+  }, []);
 
   return (
     <FlexGrid>
@@ -62,7 +64,7 @@ const MySeedlots = () => {
         </Button>
       </Row>
       <Row className="my-seedlot-data-table-row">
-        {seedlotsData && <SeedlotDataTable seedlots={seedlotsData} /> }
+        {seedlotsData.length > 0 && <SeedlotDataTable seedlots={seedlotsData} /> }
       </Row>
     </FlexGrid>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Row, Column } from '@carbon/react';
 
@@ -13,7 +13,7 @@ import Seedlot from '../../types/Seedlot';
 import './styles.scss';
 
 const RecentSeedlots = () => {
-  const [seedlotsData, setSeedlotsData] = useState<Seedlot[]>();
+  const [seedlotsData, setSeedlotsData] = useState<Array<Seedlot>>([]);
 
   const getSeedlotsData = () => {
     const url = ApiConfig.seedlot;
@@ -27,9 +27,9 @@ const RecentSeedlots = () => {
       });
   };
 
-  getSeedlotsData();
-
-  const listItems = seedlotsData;
+  useEffect(() => {
+    getSeedlotsData();
+  }, []);
 
   const tableHeaders: string[] = [
     'Seedlot number',
@@ -50,23 +50,24 @@ const RecentSeedlots = () => {
         <Subtitle text="Check a summary of your recent seedlots" className="recent-seedlots-subtitle" />
       </Column>
       <Column sm={4} className="recent-seedlots-table">
-        {listItems
-          && (
-            <SeedlotTable
-              elements={listItems}
-              headers={tableHeaders}
-            />
-          )}
-        {(listItems?.length === 0)
-          && (
-            <div className="empty-recent-seedlots">
-              <EmptySection
-                pictogram="Magnify"
-                title="There is no seedlot to show yet!"
-                description="Your recent seedlots will appear here once you generate one"
+        {
+          seedlotsData.length !== 0
+            ? (
+              <SeedlotTable
+                elements={seedlotsData}
+                headers={tableHeaders}
               />
-            </div>
-          )}
+            )
+            : (
+              <div className="empty-recent-seedlots">
+                <EmptySection
+                  pictogram="Magnify"
+                  title="There is no seedlot to show yet!"
+                  description="Your recent seedlots will appear here once you generate one"
+                />
+              </div>
+            )
+        }
       </Column>
     </Row>
   );

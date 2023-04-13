@@ -65,15 +65,8 @@ const FavouriteActivities = () => {
       });
   };
 
-  // if (cards.length === 0) {
-  //   getCards();
-  // }
-
   useEffect(() => {
     getCards();
-    setInterval(() => {
-      getCards();
-    }, 3 * 60 * 1000);
   }, []);
 
   const highlightFunction = (index: number) => {

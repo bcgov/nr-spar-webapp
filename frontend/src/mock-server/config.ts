@@ -1,5 +1,5 @@
 const mockServerConfig = {
-  namespace: 'mock-api'
+  namespace: '/mock-api'
 };
 
 export default mockServerConfig;

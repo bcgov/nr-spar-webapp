@@ -24,6 +24,8 @@ const updateToken = (successCallback: any) => {
     .catch(console.error);
 };
 
+const refreshToken = () => keycloak.refreshToken;
+
 const authMethod = (): string => {
   let method = '';
   if (isLoggedIn()) {
@@ -71,7 +73,8 @@ const KeycloakService = {
   getToken,
   updateToken,
   authMethod,
-  getUser
+  getUser,
+  refreshToken
 };
 
 export default KeycloakService;

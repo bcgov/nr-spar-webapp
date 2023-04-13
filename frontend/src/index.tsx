@@ -6,6 +6,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemePreference } from './utils/ThemePreference';
+import { env } from './env';
+import makeServer from './mock-server/server';
+
+if (env.REACT_APP_NRSPARWEBAPP_VERSION === 'dev') {
+  makeServer('development');
+}
 
 const queryClient = new QueryClient();
 

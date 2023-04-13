@@ -41,14 +41,13 @@ export default function makeServer(environment = 'development') {
       this.passthrough(`${env.REACT_APP_SERVER_URL}/api/**`);
       this.passthrough('https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
       this.passthrough('https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
+      this.pretender.handledRequest = (verb) => {
+        if (verb.toLowerCase() !== 'get' && verb.toLowerCase() !== 'head') {
+          localStorage.setItem('spar-mock-db', JSON.stringify(this.db.dump()));
+        }
+      };
     }
   });
-
-  mirageServer.pretender.handledRequest = (verb) => {
-    if (verb.toLowerCase() !== 'get' && verb.toLowerCase() !== 'head') {
-      localStorage.setItem('spar-mock-db', JSON.stringify(mirageServer.db.dump()));
-    }
-  };
 
   Object.keys(endpoints).forEach((endpoint) => {
     // @ts-ignore
