@@ -20,12 +20,24 @@ import InterimForm from './definitions';
 import './styles.scss';
 
 const DATE_FORMAT = 'Y/m/d';
+
+interface InterimStorageDataTypes {
+  applicantAgency: boolean,
+  interimAgencyName: string,
+  locationCode: number,
+  storageStartDate: string,
+  storageEndDate: string,
+  storageLocation: string,
+  storageFacilityType: string,
+}
 interface InterimStorageStepProps {
   state: InterimForm,
   setStepData: Function,
   defaultAgency: string,
   defaultCode: string,
-  agencyOptions: Array<string>
+  agencyOptions: Array<string>,
+  readOnly?: boolean
+  interimStorageData?: InterimStorageDataTypes
 }
 
 interface ComboBoxEvent {
@@ -38,7 +50,9 @@ const InterimStorage = (
     setStepData,
     defaultAgency,
     defaultCode,
-    agencyOptions
+    agencyOptions,
+    readOnly,
+    interimStorageData
   }: InterimStorageStepProps
 ) => {
   type FormValidation = {
@@ -190,6 +204,7 @@ const InterimStorage = (
               labelText="Use applicant agency as collector agency"
               defaultChecked
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => collectorAgencyisChecked(e)}
+              readOnly={readOnly}
             />
           </Column>
         </Row>
@@ -201,15 +216,17 @@ const InterimStorage = (
               name="name"
               helperText="You can enter your agency number, name or acronym"
               onChange={(e: ComboBoxEvent) => { handleFormInput('agencyName', e.selectedItem); }}
-              selectedItem={state.agencyName}
+              selectedItem={interimStorageData
+                ? interimStorageData.interimAgencyName
+                : state.agencyName}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
               titleText="Interim agency name"
               placeholder="Select Interim agency name"
-              readOnly={isChecked}
               items={agencyOptions}
               invalid={validationObj.isNameInvalid}
+              readOnly={readOnly || isChecked}
             />
           </Column>
           <Column sm={4} md={2} lg={4}>
@@ -217,16 +234,18 @@ const InterimStorage = (
               id="agency-number-input"
               name="locationCode"
               ref={numberInputRef}
-              value={state.locationCode}
+              value={interimStorageData
+                ? interimStorageData.locationCode
+                : state.locationCode}
               type="number"
               labelText="Interim agency location code"
               helperText="2-digit code that identifies the address of operated office or division"
               invalid={validationObj.isCodeInvalid}
               invalidText="Please enter a valid value"
-              readOnly={isChecked}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleFormInput('locationCode', e.target.value);
               }}
+              readOnly={readOnly || isChecked}
             />
           </Column>
         </Row>
@@ -242,10 +261,11 @@ const InterimStorage = (
               datePickerType="single"
               name="startDate"
               dateFormat={DATE_FORMAT}
-              value={state.startDate}
+              value={interimStorageData ? interimStorageData.storageStartDate : state.startDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('startDate', selectedDate);
               }}
+              readOnly={readOnly}
             >
               <DatePickerInput
                 id="start-date-input"
@@ -254,6 +274,7 @@ const InterimStorage = (
                 placeholder="yyyy/mm/dd"
                 invalid={validationObj.isStartDateInvalid}
                 invalidText="Please enter a valid date"
+                readOnly={readOnly}
               />
             </DatePicker>
           </Column>
@@ -263,10 +284,11 @@ const InterimStorage = (
               name="endDate"
               dateFormat={DATE_FORMAT}
               minDate={state.startDate}
-              value={state.endDate}
+              value={interimStorageData ? interimStorageData.storageEndDate : state.endDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('endDate', selectedDate);
               }}
+              readOnly={readOnly}
             >
               <DatePickerInput
                 id="end-date-input"
@@ -286,7 +308,9 @@ const InterimStorage = (
               name="location"
               ref={storageLocationInputRef}
               type="text"
-              value={state.storageLocation}
+              value={interimStorageData
+                ? interimStorageData.storageLocation
+                : state.storageLocation}
               labelText="Storage location"
               placeholder="Enter the location were the cones were stored"
               helperText="Enter a short name or description of the location where the cones are being temporarily stored"
@@ -295,6 +319,7 @@ const InterimStorage = (
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 handleFormInput('storageLocation', e.target.value);
               }}
+              readOnly={readOnly}
             />
           </Column>
         </Row>
@@ -304,8 +329,9 @@ const InterimStorage = (
               legendText="Storage facility type"
               name="storage-type-radiogroup"
               orientation="vertical"
-              defaultSelected="OCV"
+              defaultSelected={interimStorageData ? interimStorageData.storageFacilityType : 'OCV'}
               onChange={(e: string) => inputChangeHandlerRadio(e)}
+              readOnly={readOnly}
             >
               <RadioButton
                 id="outside-radio"
@@ -345,6 +371,7 @@ const InterimStorage = (
                   invalid={validationObj.isFacilityInvalid}
                   invalidText="Storage facility type lenght should be <= 50"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFormInput('facilityType', e.target.value)}
+                  readOnly={readOnly}
                 />
               </Column>
             </Row>

@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
 
 import {
   Accordion,
@@ -9,7 +10,18 @@ import Subtitle from '../Subtitle';
 import TitleAccordion from '../TitleAccordion';
 import EmptySection from '../EmptySection';
 
+import {
+  initInterimState,
+  initOrchardState,
+  initOwnershipState
+} from '../../views/Seedlot/SeedlotRegistrationForm/utils';
+
+import { AllStepData } from '../../views/Seedlot/SeedlotRegistrationForm/definitions';
+
 import './styles.scss';
+import OrchardStep from '../SeedlotRegistrationSteps/OrchardStep';
+import InterimStorage from '../SeedlotRegistrationSteps/InterimStep';
+import OwnershipStep from '../SeedlotRegistrationSteps/OwnershipStep';
 
 // this is for testing only
 // TODO: remove this once the PR is approved
@@ -49,32 +61,150 @@ const mockFormData = [
   }
 ];
 
-const FormReview = () => (
-  <div className="form-review">
-    <div className="form-review-title-section">
-      <p className="form-review-title">
-        Form review
-      </p>
-      <Subtitle text="Review data filled in the form (view-only)" />
-    </div>
-    <div>
-      {
+const defaultCode = '16';
+const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
+const defaultPayment = 'ITC - Invoice to client address';
+const agencyOptions = [
+  '0032 - Strong Seeds Orchard - SSO',
+  '0035 - Weak Seeds Orchard - WSO',
+  '0038 - Okay Seeds Orchard - OSO',
+  '0041 - Great Seeds Orchard - GSO',
+  '0043 - Bad Seeds Orchard - BSO'
+];
+
+const orchardMock = {
+  orchardNumber: 123,
+  orchardName: 'Strong seeds orchard',
+  seedlotSpecies: 'SX - Spruce hybrid',
+  femaleGametic: 'F1 - Visual estimate',
+  maleGametic: 'M2',
+  controledCrosses: true,
+  biotechnologicalProcesses: true,
+  polenContamination: true
+};
+
+const interimStorageMock = {
+  applicantAgency: true,
+  interimAgencyName: 'Strong Seeds Orchard - SSO',
+  locationCode: 32,
+  storageStartDate: '2023/01/04',
+  storageEndDate: '2023/01/26',
+  storageLocation: 'Strong Seeds Seed Orchard Company',
+  storageFacilityType: 'VRM'
+};
+
+const ownershipMock = {
+  applicantAgency: true,
+  agencyName: 'Strong seeds orchard',
+  locationCode: 32,
+  ownerPortion: 100,
+  reserved: 100,
+  surplus: 0,
+  fundingSource: 'LFP - Licensee Funded Program',
+  paymentMethod: 'ITC - Invoice to client address'
+};
+
+const FormReview = () => {
+  const [allStepData, setAllStepData] = useState<AllStepData>({
+    interimStep: initInterimState(defaultAgency, defaultCode),
+    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
+    orchardStep: initOrchardState()
+  });
+
+  return (
+    <div className="form-review">
+      <div className="form-review-title-section">
+        <p className="form-review-title">
+          Form review
+        </p>
+        <Subtitle text="Review data filled in the form (view-only)" />
+      </div>
+      <div>
+        {
         mockFormData.length
           ? (
             <Accordion className="steps-accordion">
-              {
-                mockFormData.map((data) => (
-                  <AccordionItem
-                    key={data.id}
-                    title={(
-                      <TitleAccordion
-                        title={data.title}
-                        description={data.description}
-                      />
-                    )}
+              <AccordionItem
+                key={0}
+                title={(
+                  <TitleAccordion
+                    title="Collection"
+                    description="Review collection information"
                   />
-                ))
-              }
+                    )}
+              />
+              <AccordionItem
+                key={1}
+                title={(
+                  <TitleAccordion
+                    title="Ownership"
+                    description="Review ownership information"
+                  />
+                    )}
+              >
+                <OwnershipStep
+                  state={allStepData.ownershipStep}
+                  defaultAgency={defaultAgency}
+                  defaultCode={defaultCode}
+                  agencyOptions={agencyOptions}
+                  setStepData={() => {}}
+                  readOnly
+                  ownershipData={ownershipMock}
+                />
+              </AccordionItem>
+              <AccordionItem
+                key={2}
+                title={(
+                  <TitleAccordion
+                    title="Interim storage"
+                    description="Review interim storage information"
+                  />
+                    )}
+              >
+                <InterimStorage
+                  state={allStepData.interimStep}
+                  defaultAgency={defaultAgency}
+                  defaultCode={defaultCode}
+                  agencyOptions={agencyOptions}
+                  setStepData={() => {}}
+                  readOnly
+                  interimStorageData={interimStorageMock}
+                />
+              </AccordionItem>
+              <AccordionItem
+                key={3}
+                title={(
+                  <TitleAccordion
+                    title="Orchard"
+                    description="Review orchard information"
+                  />
+                    )}
+              >
+                <OrchardStep
+                  state={allStepData.orchardStep}
+                  setStepData={() => {}}
+                  readOnly
+                  orchardData={orchardMock}
+                />
+              </AccordionItem>
+              <AccordionItem
+                key={4}
+                title={(
+                  <TitleAccordion
+                    title="Parent tree and SMP"
+                    description="Review parent tree and SPM information"
+                  />
+                    )}
+              />
+              <AccordionItem
+                key={5}
+                title={(
+                  <TitleAccordion
+                    title="Extraction and storage"
+                    description="Review extraction and storage information"
+                  />
+                    )}
+              />
             </Accordion>
           )
           : (
@@ -83,8 +213,9 @@ const FormReview = () => (
             </div>
           )
       }
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default FormReview;
