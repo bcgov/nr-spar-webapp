@@ -14,13 +14,13 @@ const fieldsConfig = {
   },
   code: {
     name: 'locationCode',
-    placeholder: 'Example: 00',
+    placeholder: 'Example: 123',
     label: 'Cone Collector location code',
     helperText: '2-digit code that identifies the address of operated office or division',
     invalidText: 'Please enter a valid 2-digit code that identifies the address of operated office or division'
   },
   startDate: {
-    name: 'starDate',
+    name: 'startDate',
     placeholder: 'yyyy/mm/dd',
     labelText: 'Collection start date',
     helperText: 'year/month/day',
@@ -47,7 +47,46 @@ const fieldsConfig = {
     name: 'volumeOfCones',
     labelText: 'Volume of Cones (HI)',
     invalidText: 'Number is not valid',
-    helperText: 'This value should be the "Volume per container" X "Number of containers".'
+    helperText: 'This value should be the "Volume per container" X "Number of containers".',
+    warnText: 'The total volume of cones does not equal, please note that this value should be the "Volume per container" x "Number of containers"'
+  },
+  aerialRanking: {
+    name: 'aerialRanking',
+    labelText: 'Aerial raking'
+  },
+  aerialClippingTopping: {
+    name: 'aerialClippingTopping',
+    labelText: 'Aerial clipping or topping'
+  },
+  felledTrees: {
+    name: 'felledTrees',
+    labelText: 'Felled trees'
+  },
+  climbing: {
+    name: 'climbing',
+    labelText: 'Climbing'
+  },
+  squirrelCache: {
+    name: 'squirrelCache',
+    labelText: 'Squirrel cache'
+  },
+  ground: {
+    name: 'ground',
+    labelText: 'Ground, Ladder and or Hydraulic lift'
+  },
+  squirrelHarvesting: {
+    name: 'squirrelHarvesting',
+    labelText: 'Squirrel harvesting or dropping'
+  },
+  other: {
+    name: 'other',
+    labelText: 'Other'
+  },
+  collectionMethod: {
+    name: 'collectionMethodName',
+    labelText: 'Collection method name',
+    placeholder: 'Enter the collection method name',
+    helperText: 'Describe the new collection method used'
   },
   comments: {
     name: 'comments',

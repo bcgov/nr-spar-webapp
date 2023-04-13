@@ -5,12 +5,21 @@ export interface ComboBoxEvent {
 export interface CollectionForm {
   collectorAgency: string,
   locationCode: string,
-  startDate: string;
-  endDate: string;
-  numberOfContainers: string;
-  volumePerContainers: string;
-  volumeOfCones: string;
-  comments: string;
+  startDate: string,
+  endDate: string,
+  numberOfContainers: string,
+  volumePerContainers: string,
+  volumeOfCones: string,
+  aerialRanking: boolean,
+  aerialClippingTopping: boolean,
+  felledTrees: boolean,
+  climbing: boolean,
+  squirrelCache: boolean,
+  ground: boolean,
+  squirrelHarvesting: boolean,
+  other: boolean,
+  collectionMethodName: string,
+  comments: string,
 }
 export interface CollectionStepProps {
   state: CollectionForm,

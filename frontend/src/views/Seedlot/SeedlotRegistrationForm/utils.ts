@@ -11,7 +11,7 @@ export const initCollectionState = (
   numberOfContainers: '1',
   volumePerContainers: '1',
   volumeOfCones: '1',
-  aerialRaking: false,
+  aerialRanking: false,
   aerialClippingTopping: false,
   felledTrees: false,
   climbing: false,
@@ -19,6 +19,7 @@ export const initCollectionState = (
   ground: false,
   squirrelHarvesting: false,
   other: false,
+  collectionMethodName: '',
   comments: ''
 });
 

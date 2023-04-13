@@ -1,5 +1,5 @@
 type CollectionMethods = {
-  aerialRaking: boolean;
+  aerialRanking: boolean;
   aerialClippingTopping: boolean;
   felledTrees: boolean;
   climbing: boolean;
@@ -7,6 +7,7 @@ type CollectionMethods = {
   ground: boolean;
   squirrelHarvesting: boolean;
   other: boolean;
+  collectionMethod: string;
 }
 
 export default CollectionMethods;
