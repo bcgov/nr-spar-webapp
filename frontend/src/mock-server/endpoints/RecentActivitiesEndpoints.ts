@@ -1,9 +1,10 @@
 import { Server } from 'miragejs';
-import ApiAddresses from '../../api-service/ApiAddresses';
-import getUrl from '../../api-service/ApiUtils';
+import ApiConfig from '../../api-service/ApiConfig';
+import mockServerConfig from '../config';
 
 const RecentActivitiesEndpoints = (server: Server) => {
-  server.get(getUrl(ApiAddresses.RecentActivitiesRetrieveAll, true), ({ db }) => db.recent);
+  const url = ApiConfig.recentActivities.replace(mockServerConfig.namespace, '');
+  server.get(url, ({ db }) => db.recent);
 };
 
 export default RecentActivitiesEndpoints;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 import {
   Column,
@@ -11,10 +10,8 @@ import Subtitle from '../Subtitle';
 
 import CardType from '../../types/Card';
 
-import getUrl from '../../api-service/ApiUtils';
-import ApiAddresses from '../../api-service/ApiAddresses';
-
-import { useAuth } from '../../contexts/AuthContext';
+import api from '../../api-service/api';
+import ApiConfig from '../../api-service/ApiConfig';
 
 import './styles.scss';
 
@@ -31,57 +28,34 @@ const PageTitle = ({
   favourite,
   activity
 }: PageTitleProps) => {
-  const { token } = useAuth();
   const [isFavouriteButtonPressed, setFavouriteButton] = useState(false);
   const [favouriteActivityId, setFavouriteActivityId] = useState('0');
 
-  /**
-   * Get Axios Config Headers
-   */
-  async function getAxiosConfig() {
-    const axiosConfig = {};
-    if (token) {
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      Object.assign(axiosConfig, headers);
-    }
-    return axiosConfig;
-  }
-
-  /**
-   * Get FavouriteActivities (TODO: change to local storage)
-   */
-  async function getFavouriteActivities() {
-    try {
-      await axios.get(getUrl(ApiAddresses.FavouriteActiviteRetrieveAll), await getAxiosConfig())
-        .then((response) => {
-          const newCards = response.data.favourites || response.data;
-          newCards.forEach((item: CardType) => {
-            const card = item;
-            if (card.activity === activity) {
-              setFavouriteActivityId(card.id);
-              setFavouriteButton(true);
-            }
-          });
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(`Error: ${error}`);
+  const getFavouriteActivities = () => {
+    const url = ApiConfig.favouriteActivities;
+    api.get(url)
+      .then((response) => {
+        const newCards = response.data.favourites || response.data;
+        newCards.forEach((item: CardType) => {
+          const card = item;
+          if (card.activity === activity) {
+            setFavouriteActivityId(card.id);
+            setFavouriteButton(true);
+          }
         });
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('Favourite Activities error:', e);
-    }
-  }
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.error(`Error: ${error}`);
+      });
+  };
 
   getFavouriteActivities();
 
-  const favoritePage = async (pageActivity: string) => {
-    const postUrl = getUrl(ApiAddresses.FavouriteActiviteCreate);
-    axios.post(postUrl, { activity: pageActivity }, await getAxiosConfig())
+  const favoritePage = (pageActivity: string) => {
+    const url = ApiConfig.favouriteActivities;
+    const data = { activity: pageActivity };
+    api.post(url, data)
       .then(() => {
         setFavouriteButton(true);
       })
@@ -91,9 +65,9 @@ const PageTitle = ({
       });
   };
 
-  const unfavoritePage = async (index:string) => {
-    const deleteUrl = getUrl(ApiAddresses.FavouriteActiviteDelete).replace(':id', index);
-    axios.delete(deleteUrl, await getAxiosConfig())
+  const unfavoritePage = (index: string) => {
+    const url = `${ApiConfig.favouriteActivities}/${index}`;
+    api.delete(url)
       .then(() => {
         setFavouriteButton(false);
       })

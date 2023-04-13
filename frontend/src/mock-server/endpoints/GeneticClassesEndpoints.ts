@@ -1,10 +1,11 @@
 import { Server } from 'miragejs';
 import AppSchema from '../schema';
-import getUrl from '../../api-service/ApiUtils';
-import ApiAddresses from '../../api-service/ApiAddresses';
+import ApiConfig from '../../api-service/ApiConfig';
+import mockServerConfig from '../config';
 
 const GeneticClassesEndpoints = (server: Server) => {
-  server.get(getUrl(ApiAddresses.GeneticClassesRetrieveAll, true), (schema: AppSchema) => schema.all('geneticClasses'));
+  const url = ApiConfig.geneticClasses.replace(mockServerConfig.namespace, '');
+  server.get(url, (schema: AppSchema) => schema.all('geneticClasses'));
 };
 
 export default GeneticClassesEndpoints;

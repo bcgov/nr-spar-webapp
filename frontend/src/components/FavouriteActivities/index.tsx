@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 import {
   Tooltip,
@@ -15,48 +14,23 @@ import Subtitle from '../Subtitle';
 
 import CardType from '../../types/Card';
 
-import getUrl from '../../api-service/ApiUtils';
-import ApiAddresses from '../../api-service/ApiAddresses';
-
-import { useAuth } from '../../contexts/AuthContext';
-
-import getActivityProps from '../../enums/ActivityType';
-
-import { env } from '../../env';
+import api from '../../api-service/api';
+import ApiConfig from '../../api-service/ApiConfig';
 
 import './styles.scss';
 
 const FavouriteActivities = () => {
-  const { token } = useAuth();
   const [cards, setCards] = useState<CardType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getAxiosConfig = () => {
-    const axiosConfig = {};
-    if (token) {
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      Object.assign(axiosConfig, headers);
-    }
-    return axiosConfig;
-  };
-
   const getCards = () => {
-    axios.get(getUrl(ApiAddresses.FavouriteActiviteRetrieveAll), getAxiosConfig())
+    const url = ApiConfig.favouriteActivities;
+    api.get(url)
       .then((response) => {
+        console.log(response);
         const newCards = response.data.favourites || response.data;
         newCards.forEach((item: CardType, i: number) => {
           const card = item;
-          if (env.REACT_APP_ENABLE_MOCK_SERVER === 'false') {
-            const activityProps = getActivityProps(item.activity);
-            card.image = activityProps.icon;
-            card.header = activityProps.header;
-            card.description = activityProps.description;
-            card.link = activityProps.link;
-          }
           if (card.highlighted) {
             newCards.splice(i, 1);
             newCards.unshift(item);
@@ -74,8 +48,8 @@ const FavouriteActivities = () => {
   };
 
   const updateCards = (index: string, card: CardType) => {
-    const putUrl = getUrl(ApiAddresses.FavouriteActiviteSave).replace(':id', index);
-    axios.put(putUrl, card, getAxiosConfig())
+    const url = `${ApiConfig.favouriteActivities}/${index}`;
+    api.put(url, card)
       .then(() => {
         getCards();
       })
@@ -85,12 +59,16 @@ const FavouriteActivities = () => {
       });
   };
 
-  useEffect(() => {
+  if (cards.length === 0) {
     getCards();
-    setInterval(() => {
-      getCards();
-    }, 3 * 60 * 1000);
-  }, []);
+  }
+
+  // useEffect(() => {
+  //   getCards();
+  //   setInterval(() => {
+  //     getCards();
+  //   }, 3 * 60 * 1000);
+  // }, []);
 
   const highlightFunction = (index: number) => {
     const target = cards[index];
@@ -113,9 +91,9 @@ const FavouriteActivities = () => {
     updateCards(target.id, target);
   };
 
-  const deleteCard = (index:string) => {
-    const deleteUrl = getUrl(ApiAddresses.FavouriteActiviteDelete).replace(':id', index);
-    axios.delete(deleteUrl, getAxiosConfig())
+  const deleteCard = (index: string) => {
+    const url = `${ApiConfig.favouriteActivities}/${index}`;
+    api.delete(url)
       .then(() => {
         getCards();
       })
@@ -142,24 +120,23 @@ const FavouriteActivities = () => {
       </Column>
       <Column lg={12} className="favourite-activities-cards">
         <Row>
-          { loading && <Loading withOverlay={false} /> }
+          {loading && <Loading withOverlay={false} />}
           {
-            !loading
-            && ((cards.length === 0) ? (
+            ((cards.length === 0) ? (
               <EmptySection
                 icon="Application"
                 title="You don't have any favourites to show yet!"
                 description="You can favourite your most used activities by clicking on the heart icon
                 inside each page"
               />
-            ) : cards.map((card, index) => (
+            ) : cards.map((card) => (
               <Card
                 key={card.id}
                 icon={card.image}
                 header={card.header}
                 description={card.description}
                 highlighted={card.highlighted}
-                highlightFunction={() => { highlightFunction(index); }}
+                highlightFunction={() => { highlightFunction(Number(card.id)); }}
                 deleteFunction={() => { deleteCard(card.id); }}
                 link={card.link}
               />

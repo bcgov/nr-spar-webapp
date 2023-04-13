@@ -51,6 +51,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
    */
   async function logout() {
     try {
+      localStorage.clear();
       await KeycloakService.logout();
       setUser({});
       setSigned(false);
@@ -63,6 +64,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
   const { createLoginUrl, login } = KeycloakService;
   const provider = KeycloakService.authMethod();
   const token = KeycloakService.getToken();
+  if (token) {
+    localStorage.setItem('token', token);
+  }
 
   // memoize
   const contextValue = useMemo(() => ({
@@ -78,7 +82,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
 
   return (
     <AuthContext.Provider value={contextValue}>
-      { children }
+      {children}
     </AuthContext.Provider>
   );
 };

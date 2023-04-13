@@ -1,11 +1,11 @@
-import FavouriteEndpoints from './FavouriteEndpoints';
+// import FavouriteEndpoints from './FavouriteEndpoints';
 import RecentActivitiesEndpoints from './RecentActivitiesEndpoints';
 import GeneticClassesEndpoints from './GeneticClassesEndpoints';
 import SeedlotRegistrationEndpoints from './SeedlotRegistrationEndpoints';
 import OrchardsEndpoints from './OrchardsEndpoint';
 
 const endpoints = {
-  favourites: FavouriteEndpoints,
+  // favourites: FavouriteEndpoints,
   recent: RecentActivitiesEndpoints,
   geneticClasses: GeneticClassesEndpoints,
   seedlotRegistration: SeedlotRegistrationEndpoints,

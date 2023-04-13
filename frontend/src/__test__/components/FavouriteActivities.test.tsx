@@ -8,7 +8,7 @@ import {
 } from '@testing-library/react';
 import FavouriteActivities from '../../components/FavouriteActivities/index';
 import '@testing-library/jest-dom';
-import makeServer from '../../mock-api/server';
+import makeServer from '../../mock-server/server';
 import { BrowserRouter } from 'react-router-dom';
 
 jest.setTimeout(10000);

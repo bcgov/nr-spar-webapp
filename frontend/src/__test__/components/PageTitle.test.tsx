@@ -3,7 +3,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PageTitle from '../../components/PageTitle';
 import '@testing-library/jest-dom';
-import makeServer from '../../mock-api/server';
+import makeServer from '../../mock-server/server';
 
 describe('the page title component', () => {
   beforeAll(() => {

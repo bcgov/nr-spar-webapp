@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -21,9 +20,8 @@ import Subtitle from '../../Subtitle';
 import SeedlotRegistration from '../../../types/SeedlotRegistration';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 
-import { useAuth } from '../../../contexts/AuthContext';
-import getUrl from '../../../api-service/ApiUtils';
-import ApiAddresses from '../../../api-service/ApiAddresses';
+import api from '../../../api-service/api';
+import ApiConfig from '../../../api-service/ApiConfig';
 import { filterInput, FilterObj } from '../../../utils/filterUtils';
 
 import FemaleGameticOptions from './data';
@@ -41,27 +39,14 @@ interface OrchardStepProps {
 }
 
 const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
-  const { token } = useAuth();
   const { seedlot } = useParams();
   const [seedlotApplicantData, setSeedlotApplicantData] = useState<SeedlotRegistration>();
   const [lodgepoleSpecies, setLodgepoleSpecies] = useState<boolean>();
 
-  const getAxiosConfig = () => {
-    const axiosConfig = {};
-    if (token) {
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-      Object.assign(axiosConfig, headers);
-    }
-    return axiosConfig;
-  };
-
   const getSeedlotData = () => {
     if (seedlot) {
-      axios.get(getUrl(ApiAddresses.SeedlotRetrieveOne).replace(':seedlotnumber', seedlot), getAxiosConfig())
+      const url = `${ApiConfig.seedlot}/${seedlot}`;
+      api.get(url)
         .then((response) => {
           if (response.data.seedlotApplicantInfo) {
             setSeedlotApplicantData(response.data.seedlotApplicantInfo);
@@ -126,7 +111,8 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
   const validateOrchardId = (event: React.ChangeEvent<HTMLInputElement>, nameField: string) => {
     const { value, name } = event.target;
     if (value) {
-      axios.get(getUrl(ApiAddresses.OrchardRetriveOne).replace(':orchardnumber', value), getAxiosConfig())
+      const url = `${ApiConfig.orchard}/${value}`;
+      api.get(url)
         .then((response) => {
           if (response.data.orchard) {
             // Clear any errors, if any

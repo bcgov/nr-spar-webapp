@@ -1,27 +1,34 @@
-export const ApiConfig = {
+// import { env } from '../env';
+import mockServerConfig from '../mock-server/config';
+
+const serverHost = 'https://nr-spar-backend-test-backend.apps.silver.devops.gov.bc.ca';
+
+const mockServerHost = mockServerConfig.namespace;
+
+const ApiConfig = {
   // Favourite activities
-  favouriteActivities: '/api/favourite-activities',
+  favouriteActivities: `${serverHost}/api/favourite-activities`,
 
   // Recent activities
-  recentActivities: '/api/recent-activities',
+  recentActivities: `${mockServerHost}/api/recent-activities`,
 
   // Genetic classes
-  geneticClasses: '/api/genetic-classes',
+  geneticClasses: `${serverHost}/api/genetic-classes`,
 
   // Applicant Info
-  applicantInfo: '/api/application-info',
+  applicantInfo: `${mockServerHost}/api/application-info`,
 
   // A Class Seedlot Register
-  aClassSeedlot: '/api/register-a-class',
+  aClassSeedlot: `${mockServerHost}/api/register-a-class`,
 
   // Retrieve seedlot
-  seedlot: '/api/seedlot',
+  seedlot: `${mockServerHost}/api/seedlot`,
 
   // Seedlot orchard step register
-  seedlotOrchard: '/api/seedlot/orchard',
+  seedlotOrchardStep: `${mockServerHost}/api/seedlot/orchard`,
 
   // Retrieve one orchard
-  orchardRetrieveOneUrl: '/api/orchard'
+  orchard: `${mockServerHost}/api/orchard`
 };
 
 export default ApiConfig;

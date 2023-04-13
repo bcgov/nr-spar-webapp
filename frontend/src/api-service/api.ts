@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
 
-const { token } = useAuth();
+const token = localStorage.getItem('token');
 
 const headers = {
   Authorization: `Bearer ${token}`
@@ -17,17 +16,17 @@ const api = {
     headers
   }),
 
-  patch: (url: string, data: any) => {
-    axios.patch(url, data, {
-      headers
-    });
-  },
+  put: (url: string, data: any) => axios.put(url, data, {
+    headers
+  }),
 
-  delete: <T>(url: string) => {
-    axios.delete<T>(url, {
-      headers
-    });
-  }
+  patch: (url: string, data: any) => axios.patch(url, data, {
+    headers
+  }),
+
+  delete: (url: string) => axios.delete(url, {
+    headers
+  })
 };
 
 export default api;

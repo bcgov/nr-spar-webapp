@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import {
   Row,
@@ -164,7 +163,8 @@ const ApplicantInformation = () => {
       setInvalidSpecies(true);
       speciesInputRef.current?.focus();
     } else {
-      axios.post(getUrl(ApiAddresses.AClassSeedlotPost), responseBody, getAxiosConfig())
+      const url = ApiConfig.aClassSeedlot;
+      api.post(url, responseBody)
         .then((response) => {
           navigate(`/seedlot/successfully-created/${response.data.seedlotNumber}`);
         })

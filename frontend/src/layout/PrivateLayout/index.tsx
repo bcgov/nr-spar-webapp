@@ -3,16 +3,16 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Content } from '@carbon/react';
 
-import { env } from '../../env';
-import makeServer from '../../mock-server/server';
+// import makeServer from '../../mock-server/server';
 
 import BCHeader from '../../components/BCHeader';
 
 import './styles.scss';
+// import { env } from '../../env';
 
-if (env.REACT_APP_ENABLE_MOCK_SERVER === 'true') {
-  makeServer();
-}
+// if (env.REACT_APP_NRSPARWEBAPP_VERSION === 'dev') {
+//   makeServer('development');
+// }
 
 const Layout = () => (
   <>
