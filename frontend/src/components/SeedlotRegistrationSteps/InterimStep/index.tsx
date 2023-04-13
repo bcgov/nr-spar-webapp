@@ -30,6 +30,7 @@ interface InterimStorageDataTypes {
   storageLocation: string,
   storageFacilityType: string,
 }
+
 interface InterimStorageStepProps {
   state: InterimForm,
   setStepData: Function,
