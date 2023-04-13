@@ -32,10 +32,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
   /**
    * Refresh the token
    */
-  setInterval(() => {
-    const newToken = KeycloakService.refreshToken() || '';
-    localStorage.setItem('token', newToken);
-  }, 1 * 60 * 1000);
+  // setInterval(() => {
+  //   console.log('refreshing');
+  //   const newToken = KeycloakService.refreshToken() || '';
+  //   localStorage.setItem('token', newToken);
+  // }, 1 * 60 * 1000);
 
   /**
    * Starts Keycloak instance.

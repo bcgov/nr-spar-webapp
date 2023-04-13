@@ -3,6 +3,8 @@ import mockServerConfig from '../mock-server/config';
 
 const serverHost = env.REACT_APP_SERVER_URL;
 
+const oracleServerHost = env.ORACLE_SERVER_URL;
+
 const mockServerHost = mockServerConfig.namespace;
 
 const ApiConfig = {
@@ -21,14 +23,17 @@ const ApiConfig = {
   // A Class Seedlot Register
   aClassSeedlot: `${mockServerHost}/api/register-a-class`,
 
-  // Retrieve seedlot
+  // Seedlot
   seedlot: `${mockServerHost}/api/seedlot`,
 
   // Seedlot orchard step register
   seedlotOrchardStep: `${mockServerHost}/api/seedlot/orchard`,
 
-  // Retrieve one orchard
-  orchard: `${mockServerHost}/api/orchard`
+  // Orchard
+  orchard: `${mockServerHost}/api/orchard`,
+
+  // Vegetation Code
+  vegetationCode: `${oracleServerHost}/api/vegetation-codes`
 };
 
 export default ApiConfig;

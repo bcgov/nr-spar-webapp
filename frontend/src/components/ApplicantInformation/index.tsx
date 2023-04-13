@@ -18,13 +18,13 @@ import { DocumentAdd } from '@carbon/icons-react';
 import Subtitle from '../Subtitle';
 
 import SeedlotRegistration from '../../types/SeedlotRegistration';
-import GeneticClassesType from '../../types/GeneticClasses';
 
 import { FilterObj, filterInput } from '../../utils/filterUtils';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/ApiConfig';
 
 import './styles.scss';
+import { env } from '../../env';
 
 interface ComboBoxEvent {
   selectedItem: string;
@@ -62,19 +62,19 @@ const ApplicantInformation = () => {
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [invalidSpecies, setInvalidSpecies] = useState<boolean>(false);
 
-  const [geneticClasses, setGeneticClasses] = useState<string[]>([]);
+  const [vegCodes, setVegCodes] = useState<string[]>([]);
 
-  const getGeneticClasses = () => {
-    const url = ApiConfig.geneticClasses;
+  const getVegCodes = () => {
+    const url = ApiConfig.vegetationCode;
     api.get(url)
       .then((response) => {
-        const classes: string[] = [];
+        const newVegCodes: string[] = [];
         if (response.data) {
-          response.data.forEach((element: GeneticClassesType) => {
-            classes.push(element.description);
+          response.data.forEach((data: any) => {
+            newVegCodes.push(data.description);
           });
         }
-        setGeneticClasses(classes);
+        setVegCodes(newVegCodes);
       })
       .catch((error) => {
         // eslint-disable-next-line
@@ -83,7 +83,7 @@ const ApplicantInformation = () => {
   };
 
   useEffect(() => {
-    getGeneticClasses();
+    getVegCodes();
   }, []);
 
   const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -255,7 +255,7 @@ const ApplicantInformation = () => {
               label="Enter or choose an species for the seedlot"
               invalid={invalidSpecies}
               invalidText="Please select a species"
-              items={geneticClasses}
+              items={vegCodes}
               onChange={(e: any) => inputChangeHandlerSpecies(e)}
             />
           </Column>
