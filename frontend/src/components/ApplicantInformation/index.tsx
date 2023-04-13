@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -69,8 +69,8 @@ const ApplicantInformation = () => {
     api.get(url)
       .then((response) => {
         const classes: string[] = [];
-        if (response.data.geneticClasses) {
-          response.data.geneticClasses.forEach((element: GeneticClassesType) => {
+        if (response.data) {
+          response.data.forEach((element: GeneticClassesType) => {
             classes.push(element.description);
           });
         }
@@ -82,7 +82,9 @@ const ApplicantInformation = () => {
       });
   };
 
-  getGeneticClasses();
+  useEffect(() => {
+    getGeneticClasses();
+  }, []);
 
   const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
