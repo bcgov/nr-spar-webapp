@@ -18,6 +18,7 @@ import api from '../../api-service/api';
 import ApiConfig from '../../api-service/ApiConfig';
 
 import './styles.scss';
+import getActivityProps from '../../enums/ActivityType';
 
 const FavouriteActivities = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -31,6 +32,12 @@ const FavouriteActivities = () => {
         const newCards = response.data.favourites || response.data;
         newCards.forEach((item: CardType, i: number) => {
           const card = item;
+          const activityProps = getActivityProps(item.activity);
+          card.image = activityProps.icon;
+          card.header = activityProps.header;
+          card.description = activityProps.description;
+          card.link = activityProps.link;
+
           if (card.highlighted) {
             newCards.splice(i, 1);
             newCards.unshift(item);
