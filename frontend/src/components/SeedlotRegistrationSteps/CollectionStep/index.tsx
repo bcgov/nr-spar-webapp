@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import moment from 'moment';
 
 import {
@@ -6,11 +6,12 @@ import {
   Column,
   FlexGrid,
   NumberInput,
-  Dropdown,
+  ComboBox,
   Checkbox,
   DatePickerInput,
   DatePicker,
-  TextArea
+  TextArea,
+  TextInput
 } from '@carbon/react';
 
 import Subtitle from '../../Subtitle';
@@ -47,12 +48,26 @@ const CollectionStep = (
   };
 
   const [validationObj, setValidationObj] = useState<FormValidation>(initialValidationObj);
+  const [isChecked, setIsChecked] = useState<boolean>(true);
+  const [isCalcWrong, setIsCalcWrong] = useState<boolean>(false);
+  const [isOtherChecked, setIsOtherChecked] = useState<boolean>(state.other);
 
-  const validateInput = (name: string, value: string) => {
+  const refControl = useRef<any>({});
+
+  const addRefs = (element: HTMLInputElement, name: string) => {
+    if (element !== null) {
+      refControl.current = {
+        ...refControl.current,
+        [name]: element
+      };
+    }
+  };
+
+  const validateInput = (name: string, value: string | boolean) => {
     const newValidObj = { ...validationObj };
     let isInvalid = false;
     if (name === fieldsConfig.code.name) {
-      if (value.length !== 2) {
+      if ((value as string).length !== 2) {
         isInvalid = true;
       }
       newValidObj.isLocationCodeInvalid = isInvalid;
@@ -88,13 +103,13 @@ const CollectionStep = (
     setValidationObj(newValidObj);
   };
 
-  const handleFormInput = (
-    name: keyof CollectionForm,
-    value: string,
-    optName?: keyof CollectionForm,
-    optValue?: string
+  const handleFormInput = <K extends keyof CollectionForm>(
+    name: K,
+    value: CollectionForm[K],
+    optName?: K,
+    optValue?: CollectionForm[K]
   ) => {
-    const newForm = { ...state };
+    const newForm: CollectionForm = { ...state };
     newForm[name] = value;
     if (optName && optValue && optName !== name) {
       newForm[optName] = optValue;
@@ -106,20 +121,50 @@ const CollectionStep = (
     }
   };
 
-  const collectorNameInputRef = useRef<HTMLInputElement>(null);
-  const locationCodeInputRef = useRef<HTMLInputElement>(null);
-  const numberOfContainersInputRef = useRef<HTMLInputElement>(null);
-  const volumePerContainersInputRef = useRef<HTMLInputElement>(null);
-  const volumeOfConesInputRef = useRef<HTMLInputElement>(null);
-  const commentsInputRef = useRef<HTMLInputElement>(null);
-
-  const [isChecked, setIsChecked] = useState<boolean>(true);
-
-  const collectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const collectorAgencyIsChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setIsChecked(checked);
-    if (checked) {
-      handleFormInput('collectorAgency', defaultAgency, 'locationCode', defaultCode);
+    handleFormInput(
+      fieldsConfig.collector.name as keyof CollectionForm,
+      defaultAgency,
+      fieldsConfig.code.name as keyof CollectionForm,
+      defaultCode
+    );
+  };
+
+  const collectionVolumeInformationHandler = <K extends keyof CollectionForm>(
+    name: K,
+    value: CollectionForm[K]
+  ) => {
+    const numberOfContainers = +refControl.current[fieldsConfig.numberOfContainers.name].value;
+    const volumePerContainers = +refControl.current[fieldsConfig.volumePerContainers.name].value;
+    const volumeOfCones = +refControl.current[fieldsConfig.volumeOfCones.name].value;
+    const conesCalc = (numberOfContainers * volumePerContainers);
+
+    if (name === fieldsConfig.volumeOfCones.name) {
+      handleFormInput(
+        fieldsConfig.volumeOfCones.name as keyof CollectionForm,
+        value
+      );
+      setIsCalcWrong(
+        (numberOfContainers * volumePerContainers) !== volumeOfCones
+      );
+    } else {
+      handleFormInput(
+        name,
+        value,
+        fieldsConfig.volumeOfCones.name as keyof CollectionForm,
+        conesCalc.toString()
+      );
+      setIsCalcWrong(false);
+    }
+  };
+
+  const collectionMethodsCheckboxes = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    handleFormInput(name as keyof CollectionForm, checked);
+    if (name === fieldsConfig.other.name) {
+      setIsOtherChecked(checked);
     }
   };
 
@@ -135,21 +180,23 @@ const CollectionStep = (
         <Row className="collector-agency-checkbox">
           <Column lg={12}>
             <Checkbox
-              id="collection-form-applicant"
+              id={fieldsConfig.checkbox.name}
               name={fieldsConfig.checkbox.name}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.checkbox.name)}
               labelText={fieldsConfig.checkbox.labelText}
-              defaultChecked
-              onChange={
-                (event: React.ChangeEvent<HTMLInputElement>) => collectorAgencyisChecked(event)
-              }
+              checked={isChecked}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                collectorAgencyIsChecked(e);
+              }}
             />
           </Column>
         </Row>
         <Row>
           <Column sm={12} md={4} lg={6}>
-            <Dropdown
+            <ComboBox
+              id={fieldsConfig.collector.name}
               name={fieldsConfig.collector.name}
-              ref={collectorNameInputRef}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.collector.name)}
               placeholder={fieldsConfig.collector.placeholder}
               titleText={fieldsConfig.collector.titleText}
               helperText={fieldsConfig.collector.helperText}
@@ -157,7 +204,12 @@ const CollectionStep = (
               readOnly={isChecked}
               items={agencyOptions}
               selectedItem={state.collectorAgency}
-              onChange={(e: ComboBoxEvent) => { handleFormInput('collectorAgency', e.selectedItem); }}
+              onChange={(e: ComboBoxEvent) => {
+                handleFormInput(
+                  fieldsConfig.collector.name as keyof CollectionForm,
+                  e.selectedItem
+                );
+              }}
               invalid={validationObj.isNameInvalid}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
@@ -167,8 +219,9 @@ const CollectionStep = (
           </Column>
           <Column sm={12} md={4} lg={6}>
             <NumberInput
+              id={fieldsConfig.code.name}
               name={fieldsConfig.code.name}
-              ref={locationCodeInputRef}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.code.name)}
               value={state.locationCode}
               placeholder={fieldsConfig.code.placeholder}
               label={fieldsConfig.code.label}
@@ -176,7 +229,10 @@ const CollectionStep = (
               invalidText={fieldsConfig.code.invalidText}
               readOnly={isChecked}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleFormInput('locationCode', e.target.value);
+                handleFormInput(
+                  fieldsConfig.code.name as keyof CollectionForm,
+                  e.target.value
+                );
               }}
               hideSteppers
               disableWheel
@@ -196,11 +252,16 @@ const CollectionStep = (
               dateFormat={DATE_FORMAT}
               value={state.startDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
-                handleFormInput('startDate', selectedDate);
+                handleFormInput(
+                  fieldsConfig.startDate.name as keyof CollectionForm,
+                  selectedDate
+                );
               }}
             >
               <DatePickerInput
+                id={fieldsConfig.startDate.name}
                 name={fieldsConfig.startDate.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.startDate.name)}
                 placeholder={fieldsConfig.startDate.placeholder}
                 labelText={fieldsConfig.startDate.labelText}
                 helperText={fieldsConfig.startDate.helperText}
@@ -217,11 +278,16 @@ const CollectionStep = (
               minDate={state.startDate}
               value={state.endDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
-                handleFormInput('endDate', selectedDate);
+                handleFormInput(
+                  fieldsConfig.endDate.name as keyof CollectionForm,
+                  selectedDate
+                );
               }}
             >
               <DatePickerInput
+                id={fieldsConfig.endDate.name}
                 name={fieldsConfig.endDate.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.endDate.name)}
                 placeholder={fieldsConfig.endDate.placeholder}
                 labelText={fieldsConfig.endDate.labelText}
                 helperText={fieldsConfig.endDate.helperText}
@@ -235,13 +301,17 @@ const CollectionStep = (
         <Row>
           <Column sm={12} md={4} lg={6}>
             <NumberInput
+              id={fieldsConfig.numberOfContainers.name}
               name={fieldsConfig.numberOfContainers.name}
-              ref={numberOfContainersInputRef}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.numberOfContainers.name)}
               value={state.numberOfContainers}
               label={fieldsConfig.numberOfContainers.labelText}
               invalidText={fieldsConfig.numberOfContainers.invalidText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleFormInput('numberOfContainers', e.target.value);
+                collectionVolumeInformationHandler(
+                  fieldsConfig.numberOfContainers.name as keyof CollectionForm,
+                  e.target.value
+                );
               }}
               hideSteppers
               disableWheel
@@ -249,13 +319,17 @@ const CollectionStep = (
           </Column>
           <Column sm={12} md={4} lg={6}>
             <NumberInput
+              id={fieldsConfig.volumePerContainers.name}
               name={fieldsConfig.volumePerContainers.name}
-              ref={volumePerContainersInputRef}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.volumePerContainers.name)}
               value={state.volumePerContainers}
               label={fieldsConfig.volumePerContainers.labelText}
               invalidText={fieldsConfig.volumePerContainers.invalidText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleFormInput('volumePerContainers', e.target.value);
+                collectionVolumeInformationHandler(
+                  fieldsConfig.volumePerContainers.name as keyof CollectionForm,
+                  e.target.value
+                );
               }}
               hideSteppers
               disableWheel
@@ -265,14 +339,20 @@ const CollectionStep = (
         <Row>
           <Column sm={12} md={12} lg={12}>
             <NumberInput
+              id={fieldsConfig.volumeOfCones.name}
               name={fieldsConfig.volumeOfCones.name}
-              ref={volumeOfConesInputRef}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.volumeOfCones.name)}
               value={state.volumeOfCones}
               label={fieldsConfig.volumeOfCones.labelText}
               invalidText={fieldsConfig.volumeOfCones.invalidText}
               helperText={fieldsConfig.volumeOfCones.helperText}
+              warn={isCalcWrong}
+              warnText={fieldsConfig.volumeOfCones.warnText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleFormInput('volumeOfCones', e.target.value);
+                collectionVolumeInformationHandler(
+                  fieldsConfig.volumeOfCones.name as keyof CollectionForm,
+                  e.target.value
+                );
               }}
               hideSteppers
               disableWheel
@@ -283,27 +363,122 @@ const CollectionStep = (
           <Column sm={12} md={12} lg={12}>
             <fieldset>
               <Subtitle text="Collection methods (Select at least one method used to collect the cones)" />
-              <Checkbox labelText="Aerial raking" />
-              <Checkbox labelText="Aerial clipping or topping" />
-              <Checkbox labelText="Felled trees" />
-              <Checkbox labelText="Climbing" />
-              <Checkbox labelText="Squirrel cache" />
-              <Checkbox labelText="Ground, Ladder and or Hydraulic lift" />
-              <Checkbox labelText="Squirrel harvesting or dropping" />
-              <Checkbox labelText="Other" />
+              <Checkbox
+                id={fieldsConfig.aerialRanking.name}
+                name={fieldsConfig.aerialRanking.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.aerialRanking.name)}
+                labelText={fieldsConfig.aerialRanking.labelText}
+                checked={state.aerialRanking}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.aerialClippingTopping.name}
+                name={fieldsConfig.aerialClippingTopping.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.aerialClippingTopping.name)}
+                labelText={fieldsConfig.aerialClippingTopping.labelText}
+                checked={state.aerialClippingTopping}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.felledTrees.name}
+                name={fieldsConfig.felledTrees.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.felledTrees.name)}
+                labelText={fieldsConfig.felledTrees.labelText}
+                checked={state.felledTrees}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.climbing.name}
+                name={fieldsConfig.climbing.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.climbing.name)}
+                labelText={fieldsConfig.climbing.labelText}
+                checked={state.climbing}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.squirrelCache.name}
+                name={fieldsConfig.squirrelCache.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.squirrelCache.name)}
+                labelText={fieldsConfig.squirrelCache.labelText}
+                checked={state.squirrelCache}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.ground.name}
+                name={fieldsConfig.ground.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.ground.name)}
+                labelText={fieldsConfig.ground.labelText}
+                checked={state.ground}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.squirrelHarvesting.name}
+                name={fieldsConfig.squirrelHarvesting.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.squirrelHarvesting.name)}
+                labelText={fieldsConfig.squirrelHarvesting.labelText}
+                checked={state.squirrelHarvesting}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
+              <Checkbox
+                id={fieldsConfig.other.name}
+                name={fieldsConfig.other.name}
+                ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.other.name)}
+                labelText={fieldsConfig.other.labelText}
+                checked={state.other}
+                onChange={
+                  (event: React.ChangeEvent<HTMLInputElement>) => collectionMethodsCheckboxes(event)
+                }
+              />
             </fieldset>
+            {
+              isOtherChecked && (
+                <TextInput
+                  id={fieldsConfig.collectionMethod.name}
+                  name={fieldsConfig.collectionMethod.name}
+                  type="text"
+                  ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.collectionMethod.name)}
+                  labelText={fieldsConfig.collectionMethod.labelText}
+                  placeholder={fieldsConfig.collectionMethod.placeholder}
+                  helperText={fieldsConfig.collectionMethod.helperText}
+                  value={state.collectionMethodName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    handleFormInput(
+                      fieldsConfig.collectionMethod.name as keyof CollectionForm,
+                      e.target.value
+                    );
+                  }}
+                />
+              )
+            }
           </Column>
         </Row>
         <Row>
           <Column sm={12} md={12} lg={12}>
             <TextArea
               name={fieldsConfig.comments.name}
-              ref={commentsInputRef}
+              ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.comments.name)}
               value={state.comments}
               labelText={fieldsConfig.comments.labelText}
               placeholder={fieldsConfig.comments.placeholder}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleFormInput('comments', e.target.value);
+                handleFormInput(
+                  fieldsConfig.comments.name as keyof CollectionForm,
+                  e.target.value
+                );
               }}
               rows={5}
               maxCount={400}
