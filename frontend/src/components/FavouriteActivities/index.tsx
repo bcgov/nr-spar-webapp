@@ -28,9 +28,6 @@ const FavouriteActivities = () => {
     const url = ApiConfig.favouriteActivities;
     api.get(url)
       .then((response) => {
-        // eslint-disable-next-line no-debugger
-        debugger;
-        console.log(response);
         const newCards = [...response.data];
         newCards.forEach((item: CardType, i: number) => {
           const card = item;
