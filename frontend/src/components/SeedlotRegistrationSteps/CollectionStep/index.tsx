@@ -172,13 +172,13 @@ const CollectionStep = (
     <div className="seedlot-collection-form">
       <FlexGrid fullWidth>
         <Row className="collector-agency-title">
-          <Column lg={12}>
+          <Column lg={16}>
             <h2>Collector agency</h2>
             <Subtitle text="Enter the collector agency information" />
           </Column>
         </Row>
         <Row className="collector-agency-checkbox">
-          <Column lg={12}>
+          <Column lg={16}>
             <Checkbox
               id={fieldsConfig.checkbox.name}
               name={fieldsConfig.checkbox.name}
@@ -192,7 +192,7 @@ const CollectionStep = (
           </Column>
         </Row>
         <Row>
-          <Column sm={12} md={4} lg={6}>
+          <Column sm={4} md={4} lg={8}>
             <ComboBox
               id={fieldsConfig.collector.name}
               name={fieldsConfig.collector.name}
@@ -217,7 +217,7 @@ const CollectionStep = (
               size="md"
             />
           </Column>
-          <Column sm={12} md={4} lg={6}>
+          <Column sm={4} md={4} lg={8}>
             <NumberInput
               id={fieldsConfig.code.name}
               name={fieldsConfig.code.name}
@@ -240,13 +240,13 @@ const CollectionStep = (
           </Column>
         </Row>
         <Row className="collector-information-title">
-          <Column lg={12}>
+          <Column lg={16}>
             <h2>Collection information</h2>
             <Subtitle text="Enter the collection information about this seedlot" />
           </Column>
         </Row>
         <Row className="collector-information-dates">
-          <Column sm={12} md={4} lg={6}>
+          <Column sm={4} md={4} lg={8}>
             <DatePicker
               datePickerType="single"
               dateFormat={DATE_FORMAT}
@@ -271,7 +271,7 @@ const CollectionStep = (
               />
             </DatePicker>
           </Column>
-          <Column sm={12} md={4} lg={6}>
+          <Column sm={4} md={4} lg={8}>
             <DatePicker
               datePickerType="single"
               dateFormat={DATE_FORMAT}
@@ -299,7 +299,7 @@ const CollectionStep = (
           </Column>
         </Row>
         <Row>
-          <Column sm={12} md={4} lg={6}>
+          <Column sm={4} md={4} lg={8}>
             <NumberInput
               id={fieldsConfig.numberOfContainers.name}
               name={fieldsConfig.numberOfContainers.name}
@@ -317,7 +317,7 @@ const CollectionStep = (
               disableWheel
             />
           </Column>
-          <Column sm={12} md={4} lg={6}>
+          <Column sm={4} md={4} lg={8}>
             <NumberInput
               id={fieldsConfig.volumePerContainers.name}
               name={fieldsConfig.volumePerContainers.name}
@@ -337,7 +337,7 @@ const CollectionStep = (
           </Column>
         </Row>
         <Row>
-          <Column sm={12} md={12} lg={12}>
+          <Column sm={4} md={8} lg={16}>
             <NumberInput
               id={fieldsConfig.volumeOfCones.name}
               name={fieldsConfig.volumeOfCones.name}
@@ -360,7 +360,7 @@ const CollectionStep = (
           </Column>
         </Row>
         <Row className="collection-methods">
-          <Column sm={12} md={12} lg={12}>
+          <Column sm={4} md={8} lg={16}>
             <fieldset>
               <Subtitle text="Collection methods (Select at least one method used to collect the cones)" />
               <Checkbox
@@ -467,7 +467,7 @@ const CollectionStep = (
           </Column>
         </Row>
         <Row>
-          <Column sm={12} md={12} lg={12}>
+          <Column sm={4} md={8} lg={16}>
             <TextArea
               name={fieldsConfig.comments.name}
               ref={(el: HTMLInputElement) => addRefs(el, fieldsConfig.comments.name)}
