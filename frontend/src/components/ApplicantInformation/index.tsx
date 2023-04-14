@@ -24,7 +24,6 @@ import api from '../../api-service/api';
 import ApiConfig from '../../api-service/ApiConfig';
 
 import './styles.scss';
-import { env } from '../../env';
 
 interface ComboBoxEvent {
   selectedItem: string;
@@ -68,6 +67,7 @@ const ApplicantInformation = () => {
     const url = ApiConfig.vegetationCode;
     api.get(url)
       .then((response) => {
+        console.log(response);
         const newVegCodes: string[] = [];
         if (response.data) {
           response.data.forEach((data: any) => {

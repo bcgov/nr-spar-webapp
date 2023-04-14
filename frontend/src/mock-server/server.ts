@@ -39,6 +39,7 @@ export default function makeServer(environment = 'development') {
       this.namespace = mockServerConfig.namespace;
 
       this.passthrough(`${env.REACT_APP_SERVER_URL}/api/**`);
+      this.passthrough(`${env.REACT_APP_ORACLE_SERVER_URL}/api/**`);
       this.passthrough('https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
       this.passthrough('https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token');
       this.pretender.handledRequest = (verb) => {

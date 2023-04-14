@@ -3,7 +3,7 @@ import mockServerConfig from '../mock-server/config';
 
 const serverHost = env.REACT_APP_SERVER_URL;
 
-const oracleServerHost = env.ORACLE_SERVER_URL;
+const oracleServerHost = env.REACT_APP_ORACLE_SERVER_URL;
 
 const mockServerHost = mockServerConfig.namespace;
 
