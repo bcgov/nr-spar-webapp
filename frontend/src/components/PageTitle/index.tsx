@@ -58,8 +58,9 @@ const PageTitle = ({
     const url = ApiConfig.favouriteActivities;
     const data = { activity: pageActivity };
     api.post(url, data)
-      .then(() => {
+      .then((response) => {
         setFavouriteButton(true);
+        setFavouriteActivityId(response.data.id);
       })
       .catch((error) => {
         // eslint-disable-next-line
@@ -67,8 +68,8 @@ const PageTitle = ({
       });
   };
 
-  const unfavoritePage = (index: string) => {
-    const url = `${ApiConfig.favouriteActivities}/${index}`;
+  const unfavoritePage = () => {
+    const url = `${ApiConfig.favouriteActivities}/${favouriteActivityId}`;
     api.delete(url)
       .then(() => {
         setFavouriteButton(false);
@@ -82,19 +83,17 @@ const PageTitle = ({
   return (
     <Column sm={4} md={4} className="title-section">
       <div className={favourite ? 'title-favourite' : 'title-no-favourite'}>
-        <h1>{title + activity}</h1>
-        {favourite && (
+        <h1>{title}</h1>
+        {activity && (
           <IconButton
             kind="ghost"
             label={isFavouriteButtonPressed ? 'Unfavourite' : 'Favourite'}
             align="right"
-            onClick={isFavouriteButtonPressed
-              ? () => { unfavoritePage(favouriteActivityId); }
-              : () => {
-                if (activity) {
-                  favoritePage(activity);
-                }
-              }}
+            onClick={
+              isFavouriteButtonPressed
+                ? () => unfavoritePage()
+                : () => favoritePage(activity)
+            }
           >
             {isFavouriteButtonPressed ? (<FavoriteFilled size={28} />) : (<Favorite size={28} />)}
           </IconButton>

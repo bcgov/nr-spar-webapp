@@ -69,8 +69,8 @@ const FavouriteActivities = () => {
     getCards();
   }, []);
 
-  const highlightFunction = (index: number) => {
-    const target = cards[index];
+  const highlightFunction = (id: number) => {
+    const target = cards.filter((card) => Number(card.id) === id)[0];
 
     if (target.highlighted === false) {
       // We need to remove the current highlighted card
@@ -90,8 +90,8 @@ const FavouriteActivities = () => {
     updateCards(target.id, target);
   };
 
-  const deleteCard = (index: string) => {
-    const url = `${ApiConfig.favouriteActivities}/${index}`;
+  const deleteCard = (id: string) => {
+    const url = `${ApiConfig.favouriteActivities}/${id}`;
     api.delete(url)
       .then(() => {
         getCards();
