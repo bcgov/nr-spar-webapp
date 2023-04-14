@@ -21,6 +21,8 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+const REFRESH_TIMER = 2 * 60 * 1000;
+
 interface Props {
   children: React.ReactNode;
 }
@@ -32,11 +34,17 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
   /**
    * Refresh the token
    */
-  // setInterval(() => {
-  //   console.log('refreshing');
-  //   const newToken = KeycloakService.refreshToken() || '';
-  //   localStorage.setItem('token', newToken);
-  // }, 1 * 60 * 1000);
+  setInterval(() => {
+    KeycloakService.updateToken(30)
+      .then((refreshed) => {
+        if (refreshed) {
+          const newToken = KeycloakService.getToken() || '';
+          localStorage.setItem('token', newToken);
+        }
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error('Keycloack service update error: ', err));
+  }, REFRESH_TIMER);
 
   /**
    * Starts Keycloak instance.

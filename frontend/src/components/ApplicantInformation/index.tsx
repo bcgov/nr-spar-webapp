@@ -67,7 +67,6 @@ const ApplicantInformation = () => {
     const url = ApiConfig.vegetationCode;
     api.get(url)
       .then((response) => {
-        console.log(response);
         const newVegCodes: string[] = [];
         if (response.data) {
           response.data.forEach((data: any) => {
