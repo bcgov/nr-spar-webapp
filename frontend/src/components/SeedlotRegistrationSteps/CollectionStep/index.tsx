@@ -447,6 +447,7 @@ const CollectionStep = (
             {
               isOtherChecked && (
                 <TextInput
+                  className="collection-method__input"
                   id={fieldsConfig.collectionMethod.name}
                   name={fieldsConfig.collectionMethod.name}
                   type="text"

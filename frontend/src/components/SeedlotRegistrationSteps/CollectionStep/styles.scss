@@ -24,13 +24,8 @@
 	}
 }
 
-.collection-form-buttons {
-  .#{vars.$bcgov-prefix}--btn--primary,
-  .#{vars.$bcgov-prefix}--btn--secondary {
-    width: 15rem;
-  }
-
-  .#{vars.$bcgov-prefix}--btn--secondary {
-    margin-right: 1rem;
+.collection-methods {
+  .collection-method__input {
+    padding-top: 0.5rem;
   }
 }
