@@ -22,6 +22,7 @@
 
   .cone-pollen-notification-row {
     padding-left: 1rem;
+    margin-bottom: 2rem;
   }
 
   .#{vars.$bcgov-prefix}--inline-notification {
@@ -35,5 +36,10 @@
 
   .#{vars.$bcgov-prefix}--inline-notification__title {
     font-weight: 700;
+  }
+
+  .#{vars.$bcgov-prefix}--data-table-container {
+    width: 100%;
+    margin-bottom: 3rem;
   }
 }
