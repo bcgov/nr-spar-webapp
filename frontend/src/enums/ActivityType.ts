@@ -37,7 +37,7 @@ const ACTIVITY_TYPE = {
 const getActivityProps = (act: string): ActivityProps => {
   let actEnum = ActivitiesEnum.SEEDLING_REQUEST;
   const defaultProp: ActivityProps = {
-    icon: 'Tree',
+    icon: 'Unknown',
     header: act,
     description: `Missing description for ${act}`,
     link: '#'
