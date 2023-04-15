@@ -51,7 +51,7 @@ const MySeedlots = () => {
         <PageTitle
           title="My Seedlots"
           subtitle="Check and manage my seedlots"
-          favourite
+          enableFavourite
         />
         <Button
           kind="primary"

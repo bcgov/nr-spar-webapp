@@ -18,14 +18,14 @@ import './styles.scss';
 interface PageTitleProps {
   title: string;
   subtitle: string;
-  favourite?: boolean;
+  enableFavourite?: boolean;
   activity?: string;
 }
 
 const PageTitle = ({
   title,
   subtitle,
-  favourite,
+  enableFavourite,
   activity
 }: PageTitleProps) => {
   const [isFavouriteButtonPressed, setFavouriteButton] = useState(false);
@@ -82,9 +82,9 @@ const PageTitle = ({
 
   return (
     <Column sm={4} md={4} className="title-section">
-      <div className={favourite ? 'title-favourite' : 'title-no-favourite'}>
+      <div className="title-favourite">
         <h1>{title}</h1>
-        {activity && (
+        {enableFavourite && activity && (
           <IconButton
             kind="ghost"
             label={isFavouriteButtonPressed ? 'Unfavourite' : 'Favourite'}
@@ -95,7 +95,11 @@ const PageTitle = ({
                 : () => favoritePage(activity)
             }
           >
-            {isFavouriteButtonPressed ? (<FavoriteFilled size={28} />) : (<Favorite size={28} />)}
+            {
+              isFavouriteButtonPressed
+                ? (<FavoriteFilled size={28} />)
+                : (<Favorite size={28} />)
+            }
           </IconButton>
         )}
       </div>

@@ -89,7 +89,7 @@ const SeedlotDetails = () => {
               <PageTitle
                 title={`Seedlot ${seedlotData.number}`}
                 subtitle="Check and manage this seedlot"
-                favourite
+                enableFavourite
               />
             )
           }
