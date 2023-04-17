@@ -35,7 +35,7 @@ interface SingleOwnerInfoProps {
   agencyOptions: Array<string>,
   fundingSources: Array<DropDownObj>,
   methodsOfPayment: Array<DropDownObj>,
-  addRefs: Function,
+  addRefs: Function
 }
 
 const SingleOwnerInfo = ({
