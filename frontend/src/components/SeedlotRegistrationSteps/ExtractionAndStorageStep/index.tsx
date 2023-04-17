@@ -56,41 +56,46 @@ const ExtractionAndStorage = (
   const validateInput = (name: string, value: string) => {
     const newValidObj = { ...validationObj };
     let isInvalid = false;
-    if (name === 'extractoryLocationCode') {
-      if (value.length !== 2) {
-        isInvalid = true;
-      }
-      newValidObj.isExtractorCodeInvalid = isInvalid;
-    }
-    if (name === 'seedStorageLocationCode') {
-      if (value.length !== 2) {
-        isInvalid = true;
-      }
-      newValidObj.isStorageCodeInvalid = isInvalid;
-    }
-    if (isExtractorChecked) {
-      if (name === 'extractionStartDate' || name === 'extractionEndDate') {
-        // Have both start and end dates
-        if (state.extractionStartDate !== '' && state.extractionEndDate !== '') {
-          isInvalid = moment(state.extractionEndDate, 'YYYY/MM/DD')
-            .isBefore(moment(state.extractionStartDate, 'YYYY/MM/DD'));
+    switch (name) {
+      case 'extractoryLocationCode':
+        if (value.length !== 2) {
+          isInvalid = true;
         }
-        newValidObj.isExtractorStartDateInvalid = isInvalid;
-        newValidObj.isExtractorEndDateInvalid = isInvalid;
-      }
-    }
-    if (isStorageChecked) {
-      if (name === 'seedStorageStartDate' || name === 'seedStorageEndDate') {
-        // Have both start and end dates
-        if (state.seedStorageStartDate !== '' && state.seedStorageEndDate !== '') {
-          isInvalid = moment(state.seedStorageEndDate, 'YYYY/MM/DD')
-            .isBefore(moment(state.seedStorageStartDate, 'YYYY/MM/DD'));
+        newValidObj.isExtractorCodeInvalid = isInvalid;
+        break;
+      case 'seedStorageLocationCode':
+        if (value.length !== 2) {
+          isInvalid = true;
         }
-        newValidObj.isStorageStartDateInvalid = isInvalid;
-        newValidObj.isStorageEndDateInvalid = isInvalid;
-      }
+        newValidObj.isStorageCodeInvalid = isInvalid;
+        break;
+      case 'extractionStartDate':
+      case 'extractionEndDate':
+        if (!isExtractorChecked) {
+          // Have both start and end dates
+          if (state.extractionStartDate !== '' && state.extractionEndDate !== '') {
+            isInvalid = moment(state.extractionEndDate, 'YYYY/MM/DD')
+              .isBefore(moment(state.extractionStartDate, 'YYYY/MM/DD'));
+          }
+          newValidObj.isExtractorStartDateInvalid = isInvalid;
+          newValidObj.isExtractorEndDateInvalid = isInvalid;
+        }
+        break;
+      case 'seedStorageStartDate':
+      case 'seedStorageEndDate':
+        if (!isStorageChecked) {
+          // Have both start and end dates
+          if (state.seedStorageStartDate !== '' && state.seedStorageEndDate !== '') {
+            isInvalid = moment(state.seedStorageEndDate, 'YYYY/MM/DD')
+              .isBefore(moment(state.seedStorageStartDate, 'YYYY/MM/DD'));
+          }
+          newValidObj.isStorageStartDateInvalid = isInvalid;
+          newValidObj.isStorageEndDateInvalid = isInvalid;
+        }
+        break;
+      default:
+        break;
     }
-
     setValidationObj(newValidObj);
   };
 

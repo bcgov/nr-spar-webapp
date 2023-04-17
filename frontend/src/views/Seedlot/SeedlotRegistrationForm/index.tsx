@@ -47,12 +47,17 @@ const agencyOptions = [
   '0043 - Bad Seeds Orchard - BSO'
 ];
 
-interface modal {
+interface Declaration {
   renderLauncher: any;
   children: any;
 }
 
-const ModalStateManager = ({ renderLauncher: LauncherContent, children: ModalContent }: modal) => {
+const ModalStateManager = (
+  {
+    renderLauncher: LauncherContent,
+    children: ModalContent
+  }: Declaration
+) => {
   const [open, setOpen] = useState(false);
   return (
     <>
