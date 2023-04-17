@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   FlexGrid,
@@ -9,6 +10,9 @@ import {
 } from '@carbon/react';
 import { ArrowRight, CheckmarkOutline } from '@carbon/icons-react';
 
+import api from '../../../api-service/api';
+import ApiConfig from '../../../api-service/ApiConfig';
+import DropDownObj from '../../../types/DropDownObject';
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
@@ -23,14 +27,14 @@ import {
   initCollectionState,
   initInterimState,
   initOrchardState,
-  initOwnershipState
+  initOwnershipState,
+  getDropDownList
 } from './utils';
 import './styles.scss';
 import { CollectionForm } from '../../../components/SeedlotRegistrationSteps/CollectionStep/utils';
 
 const defaultCode = '16';
 const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
-const defaultPayment = 'ITC - Invoice to client address';
 const agencyOptions = [
   '0032 - Strong Seeds Orchard - SSO',
   '0035 - Weak Seeds Orchard - WSO',
@@ -44,12 +48,52 @@ const SeedlotRegistrationForm = () => {
   const seedlotNumber = useParams().seedlot;
 
   const [formStep, setFormStep] = useState<number>(0);
+  const [fundingSources, setFundingSources] = useState<Array<DropDownObj>>([]);
+  const [paymentMethods, setPaymentMethods] = useState<Array<DropDownObj>>([]);
+
+  const getFundingSources = () => {
+    const url = ApiConfig.fundingSource;
+    api.get(url)
+      .then((res) => {
+        if (res.data) {
+          const newFundingSources = getDropDownList(res.data);
+          setFundingSources(newFundingSources);
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(`Failed to retrieve funding sources: ${err}`);
+      });
+  };
+
+  const getPaymentMethods = () => {
+    const url = ApiConfig.paymentMethod;
+    api.get(url)
+      .then((res) => {
+        if (res.data) {
+          const newPaymentMethods = getDropDownList(res.data);
+          setPaymentMethods(newPaymentMethods);
+        }
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(`Failed to retrieve Payment methods: ${err}`);
+      });
+  };
+
+  useEffect(() => {
+    getFundingSources();
+  }, []);
+
+  useEffect(() => {
+    getPaymentMethods();
+  }, []);
 
   // Initialize all step's state here
   const [allStepData, setAllStepData] = useState<AllStepData>({
     collectionStep: initCollectionState(defaultAgency, defaultCode),
     interimStep: initInterimState(defaultAgency, defaultCode),
-    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
+    ownershipStep: [initOwnershipState(defaultAgency, defaultCode)],
     orchardStep: initOrchardState()
   });
 
@@ -92,6 +136,8 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
+            fundingSources={fundingSources}
+            paymentMethods={paymentMethods}
             setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
           />
         );

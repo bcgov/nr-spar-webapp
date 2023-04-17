@@ -11,6 +11,7 @@ import {
 } from '@carbon/react';
 import { Add, TrashCan } from '@carbon/icons-react';
 
+import DropDownObj from '../../../../types/DropDownObject';
 import {
   SingleOwnerForm,
   ComboBoxEvent,
@@ -32,9 +33,9 @@ interface SingleOwnerInfoProps {
   setDefaultAgencyNCode: Function,
   validationProp: ValidationProp,
   agencyOptions: Array<string>,
-  fundingSources: Array<string>,
-  methodsOfPayment: Array<string>,
-  addRefs: Function
+  fundingSources: Array<DropDownObj>,
+  methodsOfPayment: Array<DropDownObj>,
+  addRefs: Function,
 }
 
 const SingleOwnerInfo = ({

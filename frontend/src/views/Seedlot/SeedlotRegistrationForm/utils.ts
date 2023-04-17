@@ -1,4 +1,5 @@
 import { ownerTemplate } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/constants';
+import DropDownObj from '../../../types/DropDownObject';
 
 export const initCollectionState = (
   defaultAgency: string,
@@ -25,15 +26,13 @@ export const initCollectionState = (
 
 export const initOwnershipState = (
   defaultAgency: string,
-  defaultCode: string,
-  defaultPayment: string
+  defaultCode: string
 ) => {
   const initialOwnerState = { ...ownerTemplate };
   initialOwnerState.id = 0;
   initialOwnerState.ownerAgency = defaultAgency;
   initialOwnerState.ownerCode = defaultCode;
   initialOwnerState.ownerPortion = '100';
-  initialOwnerState.methodOfPayment = defaultPayment;
   return initialOwnerState;
 };
 
@@ -64,3 +63,28 @@ export const initOrchardState = () => (
     pollenMethodology: true
   }
 );
+
+const dropDownItem: DropDownObj = {
+  label: '',
+  code: '',
+  description: ''
+};
+
+export const getDropDownList = (dataList: Array<any>) => {
+  const resultList = [];
+  const len = dataList.length;
+  for (let i = 0; i < len; i += 1) {
+    const data = dataList[i];
+    const newItem = { ...dropDownItem };
+    newItem.code = data.code;
+    newItem.description = data.description;
+    newItem.label = `${data.code} - ${data.description}`;
+    resultList.push(newItem);
+  }
+  resultList.sort((a, b) => (
+    a.label.toLocaleLowerCase() < b.label.toLocaleLowerCase()
+      ? -1
+      : 1
+  ));
+  return resultList;
+};
