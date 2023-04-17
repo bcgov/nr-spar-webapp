@@ -42,4 +42,32 @@
     width: 100%;
     margin-bottom: 3rem;
   }
+
+  .cone-pollen-table-row {
+    .table-input {
+      border: 0;
+      background: transparent;
+      width: 100%;
+      height: 47px;
+    }
+
+    .table-input:focus-visible {
+      outline-color: var(--bcgov-border-interactive);
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    /* Firefox specific rule*/
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    ::placeholder {
+      @include type.type-style('code-02');
+      color: var(--bcgov-text-placeholder);
+    }
+  }
 }

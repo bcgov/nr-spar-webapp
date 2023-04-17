@@ -156,9 +156,15 @@ const ConeAndPollenTab = () => {
                   {rows.map((row, i) => (
                     <TableRow key={hashObject(i)}>
                       <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.id}</TableCell>
+                      <TableCell>
+                        <input type="number" className="table-input" placeholder="Add value" />
+                      </TableCell>
+                      <TableCell>
+                        <input type="number" className="table-input" placeholder="Add value" />
+                      </TableCell>
+                      <TableCell>
+                        <input type="number" className="table-input" placeholder="Add value" />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
