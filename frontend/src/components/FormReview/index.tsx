@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 
 import {
@@ -12,18 +11,18 @@ import Subtitle from '../Subtitle';
 import TitleAccordion from '../TitleAccordion';
 import EmptySection from '../EmptySection';
 
-import {
-  initInterimState,
-  initOrchardState,
-  initOwnershipState
-} from '../../views/Seedlot/SeedlotRegistrationForm/utils';
-
 import { AllStepData } from '../../views/Seedlot/SeedlotRegistrationForm/definitions';
 
 import './styles.scss';
 import OrchardStep from '../SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../SeedlotRegistrationSteps/OwnershipStep';
+
+import {
+  initInterimState,
+  initOrchardState,
+  initOwnershipState
+} from '../../views/Seedlot/SeedlotRegistrationForm/utils';
 
 // this is for testing only
 // TODO: remove this once the PR is approved
@@ -107,7 +106,7 @@ const ownershipMock = {
 };
 
 const FormReview = () => {
-  const [allStepData, setAllStepData] = useState<AllStepData>({
+  const [allStepData] = useState<AllStepData>({
     interimStep: initInterimState(defaultAgency, defaultCode),
     ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
     orchardStep: initOrchardState()
@@ -127,7 +126,6 @@ const FormReview = () => {
           ? (
             <Accordion className="steps-accordion">
               <AccordionItem
-                key={0}
                 title={(
                   <TitleAccordion
                     title="Collection"
@@ -136,7 +134,6 @@ const FormReview = () => {
                     )}
               />
               <AccordionItem
-                key={1}
                 title={(
                   <TitleAccordion
                     title="Ownership"
@@ -165,7 +162,6 @@ const FormReview = () => {
                 </div>
               </AccordionItem>
               <AccordionItem
-                key={2}
                 title={(
                   <TitleAccordion
                     title="Interim storage"
@@ -194,7 +190,6 @@ const FormReview = () => {
                 </div>
               </AccordionItem>
               <AccordionItem
-                key={3}
                 title={(
                   <TitleAccordion
                     title="Orchard"
@@ -220,7 +215,6 @@ const FormReview = () => {
                 </div>
               </AccordionItem>
               <AccordionItem
-                key={4}
                 title={(
                   <TitleAccordion
                     title="Parent tree and SMP"
@@ -229,7 +223,6 @@ const FormReview = () => {
                     )}
               />
               <AccordionItem
-                key={5}
                 title={(
                   <TitleAccordion
                     title="Extraction and storage"
