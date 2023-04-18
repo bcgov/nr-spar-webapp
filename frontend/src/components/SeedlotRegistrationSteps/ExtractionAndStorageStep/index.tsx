@@ -72,27 +72,23 @@ const ExtractionAndStorage = (
         break;
       case 'extractionStartDate':
       case 'extractionEndDate':
-        if (!isExtractorChecked) {
-          // Have both start and end dates
-          if (state.extractionStartDate !== '' && state.extractionEndDate !== '') {
-            isInvalid = moment(state.extractionEndDate, 'YYYY/MM/DD')
-              .isBefore(moment(state.extractionStartDate, 'YYYY/MM/DD'));
-          }
-          newValidObj.isExtractorStartDateInvalid = isInvalid;
-          newValidObj.isExtractorEndDateInvalid = isInvalid;
+        // Have both start and end dates
+        if (state.extractionStartDate !== '' && state.extractionEndDate !== '') {
+          isInvalid = moment(state.extractionEndDate, 'YYYY/MM/DD')
+            .isBefore(moment(state.extractionStartDate, 'YYYY/MM/DD'));
         }
+        newValidObj.isExtractorStartDateInvalid = isInvalid;
+        newValidObj.isExtractorEndDateInvalid = isInvalid;
         break;
       case 'seedStorageStartDate':
       case 'seedStorageEndDate':
-        if (!isStorageChecked) {
-          // Have both start and end dates
-          if (state.seedStorageStartDate !== '' && state.seedStorageEndDate !== '') {
-            isInvalid = moment(state.seedStorageEndDate, 'YYYY/MM/DD')
-              .isBefore(moment(state.seedStorageStartDate, 'YYYY/MM/DD'));
-          }
-          newValidObj.isStorageStartDateInvalid = isInvalid;
-          newValidObj.isStorageEndDateInvalid = isInvalid;
+        // Have both start and end dates
+        if (state.seedStorageStartDate !== '' && state.seedStorageEndDate !== '') {
+          isInvalid = moment(state.seedStorageEndDate, 'YYYY/MM/DD')
+            .isBefore(moment(state.seedStorageStartDate, 'YYYY/MM/DD'));
         }
+        newValidObj.isStorageStartDateInvalid = isInvalid;
+        newValidObj.isStorageEndDateInvalid = isInvalid;
         break;
       default:
         break;
