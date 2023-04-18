@@ -3,7 +3,7 @@
 @use '../../../theme/colors.scss' as colors;
 @use '../../../theme/variables.scss' as vars;
 
-.seedlot-registration-forms.bcgov--row {
+.seedlot-registration-forms.#{vars.$bcgov-prefix}--row {
   padding-top: 0;
 }
 
@@ -33,11 +33,11 @@
     margin-bottom: 2rem;
   }
 
-  .bcgov--inline-notification {
+  .#{vars.$bcgov-prefix}--inline-notification {
     margin-top: 1.5rem;
   }
 
-  .bcgov--inline-notification__title {
+  .#{vars.$bcgov-prefix}--inline-notification__title {
     font-weight: 700;
   }
 

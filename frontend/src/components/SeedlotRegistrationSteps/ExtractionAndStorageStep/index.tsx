@@ -20,13 +20,14 @@ import {
   DATE_FORMAT
 } from './constants';
 
-import './styles.scss';
 import ExtractionStorage from '../../../types/SeedlotTypes/ExtractionStorage';
 import { FilterObj, filterInput } from '../../../utils/filterUtils';
 import {
   FormValidation,
   initialValidationObj
 } from './definitions';
+
+import './styles.scss';
 
 interface ExtractionAndStorageProps {
   state: ExtractionStorage,

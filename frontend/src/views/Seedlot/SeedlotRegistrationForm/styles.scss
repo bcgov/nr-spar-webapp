@@ -45,7 +45,7 @@
 
 .seedlot-registration-modal {
 
-  .bcgov--modal-content {
+  .#{vars.$bcgov-prefix}--modal-content {
 
     p {
       @include type.type-style('body-01');
@@ -53,21 +53,21 @@
     }
 
     p,
-    .bcgov--checkbox-label {
+    .#{vars.$bcgov-prefix}--checkbox-label {
       margin-bottom: 1.5rem;
     }
 
-    .bcgov--toast-notification {
+    .#{vars.$bcgov-prefix}--toast-notification {
       width: 100%;
     }
 
-    .bcgov--toast-notification__title {
+    .#{vars.$bcgov-prefix}--toast-notification__title {
       font-weight: 700;
     }
 
   }
   
-  .bcgov--btn {
+  .#{vars.$bcgov-prefix}--btn {
     padding-bottom: 1rem;
   }
   
