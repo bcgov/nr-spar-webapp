@@ -88,3 +88,19 @@ export const getDropDownList = (dataList: Array<any>) => {
   ));
   return resultList;
 };
+
+export const initExtractionStorageState = (
+  defaultAgency: string,
+  defaultCode: string
+) => (
+  {
+    extractoryAgency: defaultAgency,
+    extractoryLocationCode: defaultCode,
+    extractionStartDate: '',
+    extractionEndDate: '',
+    seedStorageAgency: defaultAgency,
+    seedStorageLocationCode: defaultCode,
+    seedStorageStartDate: '',
+    seedStorageEndDate: ''
+  }
+);
