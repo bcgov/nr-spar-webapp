@@ -36,25 +36,14 @@ type NumStepperVal = {
   direction: string
 }
 
-interface OrchardDataTypes {
-  orchardNumber: number,
-  orchardName: string,
-  seedlotSpecies: string,
-  femaleGametic: string,
-  maleGametic: any,
-  controledCrosses: boolean,
-  biotechnologicalProcesses: boolean,
-  polenContamination: boolean,
-}
 interface OrchardStepProps {
   state: SeedlotOrchard
   setStepData: Function
   readOnly?: boolean
-  orchardData?: OrchardDataTypes
 }
 
 const OrchardStep = ({
-  state, setStepData, readOnly, orchardData
+  state, setStepData, readOnly
 }: OrchardStepProps) => {
   const { token } = useAuth();
   const { seedlot } = useParams();
@@ -286,7 +275,7 @@ const OrchardStep = ({
               id="seedlot-orchard-number-input"
               name="orchardId"
               ref={(el: HTMLInputElement) => addRefs(el, 'orchardId')}
-              value={orchardData ? orchardData.orchardNumber : state.orchardId}
+              value={state.orchardId}
               allowEmpty
               min={100}
               max={999}
@@ -308,7 +297,7 @@ const OrchardStep = ({
               type="text"
               labelText="Orchard name"
               placeholder="Orchard name"
-              value={orchardData ? orchardData.orchardName : state.orchardName}
+              value={state.orchardName}
               readOnly={readOnly}
             />
           </Column>
@@ -385,7 +374,6 @@ const OrchardStep = ({
               label={seedlotApplicantData?.species || 'Seedlot species'}
               items={[seedlotApplicantData?.species]}
               readOnly={readOnly}
-              selectedItem={orchardData ? orchardData.seedlotSpecies : null}
             />
           </Column>
         </Row>
@@ -405,7 +393,7 @@ const OrchardStep = ({
               invalidText="Please select an option"
               onChange={(e: ComboBoxEvent) => femaleGameticHandler(e)}
               readOnly={readOnly}
-              selectedItem={orchardData ? orchardData.femaleGametic : null}
+              selectedItem={state.femaleGametic}
             />
           </Column>
         </Row>
@@ -418,7 +406,7 @@ const OrchardStep = ({
               className={invalidMalGametic ? 'male-gametic-invalid' : ''}
               onChange={(e: string) => maleGameticHandler(e)}
               readOnly={readOnly}
-              defaultSelected={orchardData ? orchardData.maleGametic : null}
+              defaultSelected={state.maleGametic}
             >
               <RadioButton
                 id="m1-radio"
@@ -459,7 +447,7 @@ const OrchardStep = ({
               id="seedlot-produced"
               name="controlledCross"
               labelText="No, the seedlot was not produced through controlled crosses"
-              defaultChecked={orchardData ? orchardData.controledCrosses : true}
+              defaultChecked={state.controlledCross}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
               readOnly={readOnly}
             />
@@ -474,7 +462,7 @@ const OrchardStep = ({
               id="bio-processes"
               name="biotechProcess"
               labelText="No, biotechnological processes have not been used to produce this seedlot"
-              defaultChecked={orchardData ? orchardData.biotechnologicalProcesses : true}
+              defaultChecked={state.biotechProcess}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
               readOnly={readOnly}
             />
@@ -495,7 +483,7 @@ const OrchardStep = ({
               id="pollen-contamination"
               name="noPollenContamination"
               labelText="No, there was no pollen contamination present in the seed orchard"
-              defaultChecked={orchardData ? orchardData.polenContamination : true}
+              defaultChecked={state.noPollenContamination}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
               readOnly={readOnly}
             />
@@ -536,6 +524,7 @@ const OrchardStep = ({
                   }
                 }
                 onBlur={() => validateBreedingPercentage()}
+                readOnly={readOnly}
               />
             </Column>
           </Row>
@@ -548,8 +537,8 @@ const OrchardStep = ({
                 id="pollen-methodology"
                 name="pollenMethodology"
                 labelText="Regional pollen monitoring"
-                defaultChecked
-                readOnly
+                defaultChecked={state.pollenMethodology}
+                readOnly={readOnly}
               />
             </Column>
           </Row>

@@ -16,18 +16,8 @@ export type SingleOwnerForm = {
     reservedPerc: string,
     surplusPerc: string,
     fundingSource: string,
-    methodOfPayment: string
-}
-
-export interface SingleOwnerDataTypes {
-  applicantAgency: boolean,
-  agencyName: string,
-  locationCode: number,
-  ownerPortion: number,
-  reserved: number,
-  surplus: number,
-  fundingSource: string,
-  paymentMethod: string,
+    methodOfPayment: string,
+    applicantAgency: boolean
 }
 
 export type SingleInvalidObj = {

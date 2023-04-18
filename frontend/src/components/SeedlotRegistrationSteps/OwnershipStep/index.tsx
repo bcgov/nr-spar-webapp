@@ -12,8 +12,7 @@ import {
   ValidationProp,
   SingleOwnerForm,
   AccordionCtrlObj,
-  AccordionItemHeadClick,
-  SingleOwnerDataTypes
+  AccordionItemHeadClick
 } from './definitions';
 import {
   insertOwnerForm,
@@ -63,7 +62,6 @@ interface OwnershipStepProps {
   state: Array<SingleOwnerForm>,
   setStepData: Function,
   readOnly?: boolean,
-  ownershipData?: SingleOwnerDataTypes
 }
 
 /*
@@ -76,8 +74,7 @@ const OwnershipStep = (
     defaultCode,
     defaultAgency,
     agencyOptions,
-    readOnly,
-    ownershipData
+    readOnly
   }: OwnershipStepProps
 ) => {
   const initialValidState = { ...validTemplate };
@@ -353,7 +350,6 @@ const OwnershipStep = (
                   addAnOwner={addAnOwner}
                   deleteAnOwner={(id: number) => deleteAnOwner(id)}
                   readOnly={readOnly}
-                  singleOwnerData={ownershipData}
                 />
               </AccordionItem>
             ))

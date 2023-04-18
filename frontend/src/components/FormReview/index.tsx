@@ -18,12 +18,6 @@ import OrchardStep from '../SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../SeedlotRegistrationSteps/OwnershipStep';
 
-import {
-  initInterimState,
-  initOrchardState,
-  initOwnershipState
-} from '../../views/Seedlot/SeedlotRegistrationForm/utils';
-
 // this is for testing only
 // TODO: remove this once the PR is approved
 // eslint-disable-next-line
@@ -64,7 +58,6 @@ const mockFormData = [
 
 const defaultCode = '16';
 const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
-const defaultPayment = 'ITC - Invoice to client address';
 const agencyOptions = [
   '0032 - Strong Seeds Orchard - SSO',
   '0035 - Weak Seeds Orchard - WSO',
@@ -74,42 +67,45 @@ const agencyOptions = [
 ];
 
 const orchardMock = {
-  orchardNumber: 123,
+  orchardId: '123',
   orchardName: 'Strong seeds orchard',
-  seedlotSpecies: 'SX - Spruce hybrid',
   femaleGametic: 'F1 - Visual estimate',
   maleGametic: 'M2',
-  controledCrosses: true,
-  biotechnologicalProcesses: true,
-  polenContamination: true
+  controlledCross: true,
+  biotechProcess: true,
+  noPollenContamination: true,
+  additionalId: '4',
+  additionalName: 'teste',
+  breedingPercentage: '100',
+  pollenMethodology: false
 };
 
 const interimStorageMock = {
-  applicantAgency: true,
-  interimAgencyName: 'Strong Seeds Orchard - SSO',
-  locationCode: 32,
-  storageStartDate: '2023/01/04',
-  storageEndDate: '2023/01/26',
+  agencyName: 'Strong Seeds Orchard - SSO',
+  locationCode: '32',
+  startDate: '2023/01/04',
+  endDate: '2023/01/26',
   storageLocation: 'Strong Seeds Seed Orchard Company',
-  storageFacilityType: 'VRM'
+  facilityType: 'VRM'
 };
 
 const ownershipMock = {
-  applicantAgency: true,
-  agencyName: 'Strong seeds orchard',
-  locationCode: 32,
-  ownerPortion: 100,
-  reserved: 100,
-  surplus: 0,
+  id: 0,
+  ownerAgency: '0032 - Strong Seeds Orchard - SSO',
+  ownerCode: '32',
+  ownerPortion: '100',
+  reservedPerc: '100',
+  surplusPerc: '0',
   fundingSource: 'LFP - Licensee Funded Program',
-  paymentMethod: 'ITC - Invoice to client address'
+  methodOfPayment: 'ITC - Invoice to client address',
+  applicantAgency: true
 };
 
 const FormReview = () => {
   const [allStepData] = useState<AllStepData>({
-    interimStep: initInterimState(defaultAgency, defaultCode),
-    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
-    orchardStep: initOrchardState()
+    interimStep: interimStorageMock,
+    ownershipStep: [ownershipMock],
+    orchardStep: orchardMock
   });
 
   return (
@@ -149,7 +145,6 @@ const FormReview = () => {
                     agencyOptions={agencyOptions}
                     setStepData={() => {}}
                     readOnly
-                    ownershipData={ownershipMock}
                   />
                   <Button
                     kind="tertiary"
@@ -177,7 +172,6 @@ const FormReview = () => {
                     agencyOptions={agencyOptions}
                     setStepData={() => {}}
                     readOnly
-                    interimStorageData={interimStorageMock}
                   />
                   <Button
                     kind="tertiary"
@@ -202,7 +196,6 @@ const FormReview = () => {
                     state={allStepData.orchardStep}
                     setStepData={() => {}}
                     readOnly
-                    orchardData={orchardMock}
                   />
                   <Button
                     kind="tertiary"

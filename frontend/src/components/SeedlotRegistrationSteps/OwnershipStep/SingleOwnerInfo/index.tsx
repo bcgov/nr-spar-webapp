@@ -16,8 +16,7 @@ import {
   ComboBoxEvent,
   CheckBoxValue,
   NumStepperVal,
-  ValidationProp,
-  SingleOwnerDataTypes
+  ValidationProp
 } from '../definitions';
 import { inputText, DEFAULT_INDEX, DEFAULT_PAYMENT_INDEX } from '../constants';
 import { FilterObj, filterInput } from '../../../../utils/filterUtils';
@@ -37,13 +36,12 @@ interface SingleOwnerInfoProps {
   methodsOfPayment: Array<string>,
   addRefs: Function,
   readOnly?: boolean,
-  singleOwnerData?: SingleOwnerDataTypes
 }
 
 const SingleOwnerInfo = ({
   addRefs, ownerInfo, agencyOptions, fundingSources, methodsOfPayment, disableInputs,
   validationProp, handleInputChange, addAnOwner, deleteAnOwner, setDefaultAgencyNCode,
-  readOnly, singleOwnerData
+  readOnly
 }: SingleOwnerInfoProps) => (
   <div className="single-owner-info-container">
     <FlexGrid fullWidth>
@@ -54,7 +52,7 @@ const SingleOwnerInfo = ({
               <Checkbox
                 labelText={inputText.checkbox.labelText}
                 id="default-agency-code-checkbox"
-                defaultChecked={singleOwnerData ? singleOwnerData.applicantAgency : true}
+                defaultChecked={ownerInfo.applicantAgency}
                 onChange={
                   (_event: React.ChangeEvent<HTMLInputElement>, { checked }: CheckBoxValue) => {
                     setDefaultAgencyNCode(checked);
@@ -75,14 +73,14 @@ const SingleOwnerInfo = ({
             disabled={ownerInfo.id === DEFAULT_INDEX ? disableInputs : false}
             name="ownerAgency"
             items={agencyOptions}
-            selectedItem={singleOwnerData ? singleOwnerData.agencyName : ownerInfo.ownerAgency}
+            selectedItem={ownerInfo.ownerAgency}
             shouldFilterItem={
               ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
             }
             placeholder={inputText.owner.placeholder}
             titleText={inputText.owner.titleText}
             helperText={inputText.owner.helperText}
-            onChange={(e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)}
+            onChange={!readOnly ? ((e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)) : null}
             // We need to check if validationProp is here since deleting a Single Owner Form
             //    might delete the valid prop first and throwing an error
             invalid={validationProp ? validationProp.owner.isInvalid : false}
@@ -100,7 +98,7 @@ const SingleOwnerInfo = ({
             placeholder={inputText.code.placeholder}
             type="number"
             maxCount={2}
-            value={singleOwnerData ? singleOwnerData.locationCode : ownerInfo.ownerCode}
+            value={ownerInfo.ownerCode}
             labelText={inputText.code.labelText}
             helperText={inputText.code.helperText}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,6 +106,7 @@ const SingleOwnerInfo = ({
             }}
             invalid={validationProp ? validationProp.code.isInvalid : false}
             invalidText={validationProp ? validationProp.code.invalidText : ''}
+            readOnly={readOnly}
           />
         </Column>
       </Row>
@@ -118,7 +117,7 @@ const SingleOwnerInfo = ({
             ref={(el: HTMLInputElement) => addRefs(el, 'ownerPortion')}
             name="ownerPortion"
             label={inputText.portion.label}
-            value={singleOwnerData ? singleOwnerData.ownerPortion : ownerInfo.ownerPortion}
+            value={ownerInfo.ownerPortion}
             step={10.00}
             max={100}
             min={0}
@@ -154,7 +153,7 @@ const SingleOwnerInfo = ({
                 ref={(el: HTMLInputElement) => addRefs(el, 'reservedPerc')}
                 name="reservedPerc"
                 label={inputText.reserved.label}
-                value={singleOwnerData ? singleOwnerData.reserved : ownerInfo.reservedPerc}
+                value={ownerInfo.reservedPerc}
                 step={10}
                 max={100}
                 min={0}
@@ -184,7 +183,7 @@ const SingleOwnerInfo = ({
                 ref={(el: HTMLInputElement) => addRefs(el, 'surplusPerc')}
                 name="surplusPerc"
                 label={inputText.surplus.label}
-                value={singleOwnerData ? singleOwnerData.surplus : ownerInfo.surplusPerc}
+                value={ownerInfo.surplusPerc}
                 step={10}
                 max={100}
                 min={0}
@@ -219,7 +218,7 @@ const SingleOwnerInfo = ({
             ref={(el: HTMLInputElement) => addRefs(el, 'fundingSource')}
             name="fundingSource"
             items={fundingSources}
-            selectedItem={singleOwnerData ? singleOwnerData.fundingSource : ownerInfo.fundingSource}
+            selectedItem={ownerInfo.fundingSource}
             shouldFilterItem={
               ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
             }
@@ -239,9 +238,7 @@ const SingleOwnerInfo = ({
             ref={(el: HTMLInputElement) => addRefs(el, 'methodOfPayment')}
             name="methodOfPayment"
             items={methodsOfPayment}
-            selectedItem={singleOwnerData
-              ? singleOwnerData.paymentMethod
-              : ownerInfo.methodOfPayment}
+            selectedItem={ownerInfo.methodOfPayment}
             initialSelectedItem={methodsOfPayment[DEFAULT_PAYMENT_INDEX]}
             shouldFilterItem={
               ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })

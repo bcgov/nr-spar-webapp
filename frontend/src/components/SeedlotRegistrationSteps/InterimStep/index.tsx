@@ -21,16 +21,6 @@ import './styles.scss';
 
 const DATE_FORMAT = 'Y/m/d';
 
-interface InterimStorageDataTypes {
-  applicantAgency: boolean,
-  interimAgencyName: string,
-  locationCode: number,
-  storageStartDate: string,
-  storageEndDate: string,
-  storageLocation: string,
-  storageFacilityType: string,
-}
-
 interface InterimStorageStepProps {
   state: InterimForm,
   setStepData: Function,
@@ -38,7 +28,6 @@ interface InterimStorageStepProps {
   defaultCode: string,
   agencyOptions: Array<string>,
   readOnly?: boolean
-  interimStorageData?: InterimStorageDataTypes
 }
 
 interface ComboBoxEvent {
@@ -52,8 +41,7 @@ const InterimStorage = (
     defaultAgency,
     defaultCode,
     agencyOptions,
-    readOnly,
-    interimStorageData
+    readOnly
   }: InterimStorageStepProps
 ) => {
   type FormValidation = {
@@ -217,9 +205,7 @@ const InterimStorage = (
               name="name"
               helperText="You can enter your agency number, name or acronym"
               onChange={(e: ComboBoxEvent) => { handleFormInput('agencyName', e.selectedItem); }}
-              selectedItem={interimStorageData
-                ? interimStorageData.interimAgencyName
-                : state.agencyName}
+              selectedItem={state.agencyName}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
@@ -235,9 +221,7 @@ const InterimStorage = (
               id="agency-number-input"
               name="locationCode"
               ref={numberInputRef}
-              value={interimStorageData
-                ? interimStorageData.locationCode
-                : state.locationCode}
+              value={state.locationCode}
               type="number"
               labelText="Interim agency location code"
               helperText="2-digit code that identifies the address of operated office or division"
@@ -262,7 +246,7 @@ const InterimStorage = (
               datePickerType="single"
               name="startDate"
               dateFormat={DATE_FORMAT}
-              value={interimStorageData ? interimStorageData.storageStartDate : state.startDate}
+              value={state.startDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('startDate', selectedDate);
               }}
@@ -285,7 +269,7 @@ const InterimStorage = (
               name="endDate"
               dateFormat={DATE_FORMAT}
               minDate={state.startDate}
-              value={interimStorageData ? interimStorageData.storageEndDate : state.endDate}
+              value={state.endDate}
               onChange={(_e: Array<Date>, selectedDate: string) => {
                 handleFormInput('endDate', selectedDate);
               }}
@@ -309,9 +293,7 @@ const InterimStorage = (
               name="location"
               ref={storageLocationInputRef}
               type="text"
-              value={interimStorageData
-                ? interimStorageData.storageLocation
-                : state.storageLocation}
+              value={state.storageLocation}
               labelText="Storage location"
               placeholder="Enter the location were the cones were stored"
               helperText="Enter a short name or description of the location where the cones are being temporarily stored"
@@ -330,7 +312,7 @@ const InterimStorage = (
               legendText="Storage facility type"
               name="storage-type-radiogroup"
               orientation="vertical"
-              defaultSelected={interimStorageData ? interimStorageData.storageFacilityType : 'OCV'}
+              defaultSelected={state.facilityType}
               onChange={(e: string) => inputChangeHandlerRadio(e)}
               readOnly={readOnly}
             >
