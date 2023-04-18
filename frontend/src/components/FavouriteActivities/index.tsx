@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   Tooltip,
@@ -11,96 +12,17 @@ import { Information } from '@carbon/icons-react';
 import Card from '../Card/FavouriteCard';
 import EmptySection from '../EmptySection';
 import Subtitle from '../Subtitle';
-
-import CardType from '../../types/Card';
-
-import api from '../../api-service/api';
-import ApiConfig from '../../api-service/ApiConfig';
+import { getFavAct } from '../../api-service/favouriteActivitiesAPI';
 
 import './styles.scss';
-import getActivityProps from '../../enums/ActivityType';
 
 const FavouriteActivities = () => {
-  const [cards, setCards] = useState<CardType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const favActQueryKey = ['favourite-activities'];
 
-  const getCards = () => {
-    const url = ApiConfig.favouriteActivities;
-    api.get(url)
-      .then((response) => {
-        const newCards = [...response.data];
-        newCards.forEach((item: CardType, i: number) => {
-          const card = item;
-          const activityProps = getActivityProps(item.activity);
-          card.image = activityProps.icon;
-          card.header = activityProps.header;
-          card.description = activityProps.description;
-          card.link = activityProps.link;
-
-          if (card.highlighted) {
-            newCards.splice(i, 1);
-            newCards.unshift(item);
-          }
-        });
-        setCards(newCards);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setCards([]);
-        setLoading(false);
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
-
-  const updateCards = (index: string, card: CardType) => {
-    const url = `${ApiConfig.favouriteActivities}/${index}`;
-    api.put(url, card)
-      .then(() => {
-        getCards();
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
-
-  useEffect(() => {
-    getCards();
-  }, []);
-
-  const highlightFunction = (id: number) => {
-    const target = cards.filter((card) => Number(card.id) === id)[0];
-
-    if (target.highlighted === false) {
-      // We need to remove the current highlighted card
-      // if it exists, so we can submit new highlighted one
-      cards.forEach((item: CardType) => {
-        const card = item;
-        if (card.highlighted && card.id !== target.id) {
-          card.highlighted = false;
-          updateCards(card.id, card);
-        }
-      });
-      target.highlighted = true;
-    } else {
-      target.highlighted = false;
-    }
-
-    updateCards(target.id, target);
-  };
-
-  const deleteCard = (id: string) => {
-    const url = `${ApiConfig.favouriteActivities}/${id}`;
-    api.delete(url)
-      .then(() => {
-        getCards();
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
+  const favActQuery = useQuery({
+    queryKey: favActQueryKey,
+    queryFn: getFavAct
+  });
 
   return (
     <Row className="favourite-activities">
@@ -119,28 +41,24 @@ const FavouriteActivities = () => {
       </Column>
       <Column lg={12} className="favourite-activities-cards">
         <Row>
-          {loading && <Loading withOverlay={false} />}
-          {
-            ((cards.length === 0) ? (
-              <EmptySection
-                icon="Application"
-                title="You don't have any favourites to show yet!"
-                description="You can favourite your most used activities by clicking on the heart icon
+          {favActQuery.isLoading && <Loading withOverlay={false} />}
+          {favActQuery.isSuccess && (
+            (favActQuery.data.length === 0)
+              ? (
+                <EmptySection
+                  icon="Application"
+                  title="You don't have any favourites to show yet!"
+                  description="You can favourite your most used activities by clicking on the heart icon
                 inside each page"
-              />
-            ) : cards.map((card) => (
-              <Card
-                key={card.id}
-                icon={card.image}
-                header={card.header}
-                description={card.description}
-                highlighted={card.highlighted}
-                highlightFunction={() => { highlightFunction(Number(card.id)); }}
-                deleteFunction={() => { deleteCard(card.id); }}
-                link={card.link}
-              />
-            )))
-          }
+                />
+              ) : favActQuery.data.map((card, index) => (
+                <Card
+                  key={card.id}
+                  activity={card}
+                  index={index}
+                />
+              ))
+          )}
         </Row>
       </Column>
     </Row>

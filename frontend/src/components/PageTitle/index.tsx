@@ -29,7 +29,7 @@ const PageTitle = ({
   activity
 }: PageTitleProps) => {
   const [isFavouriteButtonPressed, setFavouriteButton] = useState(false);
-  const [favouriteActivityId, setFavouriteActivityId] = useState('0');
+  const [favouriteActivityId, setFavouriteActivityId] = useState(0);
 
   const getFavouriteActivities = () => {
     const url = ApiConfig.favouriteActivities;
