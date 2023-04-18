@@ -12,11 +12,13 @@ import TitleAccordion from '../TitleAccordion';
 import EmptySection from '../EmptySection';
 
 import { AllStepData } from '../../views/Seedlot/SeedlotRegistrationForm/definitions';
+import inputText from './constants';
 
 import './styles.scss';
 import OrchardStep from '../SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../SeedlotRegistrationSteps/OwnershipStep';
+import CollectionStep from '../SeedlotRegistrationSteps/CollectionStep';
 
 // this is for testing only
 // TODO: remove this once the PR is approved
@@ -101,20 +103,41 @@ const ownershipMock = {
   applicantAgency: true
 };
 
+const collectorMock = {
+  collectorAgency: 'Strong Seeds Orchard - SSO',
+  locationCode: '32',
+  startDate: '2023/01/04',
+  endDate: '2023/01/22',
+  numberOfContainers: '2',
+  volumePerContainers: '2',
+  volumeOfCones: '4',
+  aerialRanking: true,
+  aerialClippingTopping: false,
+  felledTrees: false,
+  climbing: true,
+  squirrelCache: false,
+  ground: true,
+  squirrelHarvesting: false,
+  other: false,
+  collectionMethodName: 'Other',
+  comments: 'Example of additional comments about the seedlot'
+};
+
 const FormReview = () => {
   const [allStepData] = useState<AllStepData>({
     interimStep: interimStorageMock,
     ownershipStep: [ownershipMock],
-    orchardStep: orchardMock
+    orchardStep: orchardMock,
+    collectionStep: collectorMock
   });
 
   return (
     <div className="form-review">
       <div className="form-review-title-section">
         <p className="form-review-title">
-          Form review
+          {inputText.reviewForm.title}
         </p>
-        <Subtitle text="Review data filled in the form (view-only)" />
+        <Subtitle text={inputText.reviewForm.subtitle} />
       </div>
       <div>
         {
@@ -128,7 +151,26 @@ const FormReview = () => {
                     description="Review collection information"
                   />
                     )}
-              />
+              >
+                <div className="form-item">
+                  <CollectionStep
+                    state={allStepData.collectionStep}
+                    defaultAgency={defaultAgency}
+                    defaultCode={defaultCode}
+                    agencyOptions={agencyOptions}
+                    setStepData={() => {}}
+                    readOnly
+                  />
+                  <Button
+                    kind="tertiary"
+                    size="md"
+                    className="btn-edit-step"
+                    renderIcon={Edit}
+                  >
+                    {inputText.editButton.labelText}
+                  </Button>
+                </div>
+              </AccordionItem>
               <AccordionItem
                 title={(
                   <TitleAccordion
@@ -152,7 +194,7 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    Edit step
+                    {inputText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
@@ -179,7 +221,7 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    Edit step
+                    {inputText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
@@ -203,7 +245,7 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    Edit step
+                    {inputText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
