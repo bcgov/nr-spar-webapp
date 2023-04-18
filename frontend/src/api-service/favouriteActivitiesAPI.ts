@@ -1,7 +1,7 @@
 import ApiConfig from './ApiConfig';
 import api from './api';
 import getActivityProps from '../enums/ActivityType';
-import CardType from '../types/Card';
+import { FavActivityType, FavActivityPostType } from '../types/FavActivityTypes';
 
 export const getFavAct = () => {
   const url = ApiConfig.favouriteActivities;
@@ -30,10 +30,17 @@ export const getFavAct = () => {
     });
 };
 
-export const toggleFavActHighlight = (activity: CardType) => {
+export const postFavAct = (newAct: FavActivityPostType) => {
+  const url = ApiConfig.favouriteActivities;
+  return api.post(url, newAct);
+};
+
+export const putFavAct = (field: string, activity: FavActivityType) => {
   const url = `${ApiConfig.favouriteActivities}/${activity.id}`;
   const modifiedAct = { ...activity };
-  modifiedAct.highlighted = !modifiedAct.highlighted;
+  if (field === 'highlighted') {
+    modifiedAct.highlighted = !modifiedAct.highlighted;
+  }
   return api.put(url, modifiedAct);
 };
 

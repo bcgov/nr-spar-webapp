@@ -1,4 +1,4 @@
-type CardType = {
+export type FavActivityType = {
   id: number;
   image: string;
   header: string;
@@ -8,4 +8,6 @@ type CardType = {
   activity: string;
 }
 
-export default CardType;
+export type FavActivityPostType = {
+  activity: string;
+}

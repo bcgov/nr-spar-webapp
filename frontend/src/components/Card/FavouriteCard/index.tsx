@@ -5,12 +5,12 @@ import { Tile, OverflowMenu, OverflowMenuItem } from '@carbon/react';
 import * as Icons from '@carbon/icons-react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import CardType from '../../../types/Card';
-import { toggleFavActHighlight, deleteFavAct } from '../../../api-service/favouriteActivitiesAPI';
+import { FavActivityType } from '../../../types/FavActivityTypes';
+import { putFavAct, deleteFavAct } from '../../../api-service/favouriteActivitiesAPI';
 import './styles.scss';
 
 interface FavouriteCardProps {
-  activity: CardType,
+  activity: FavActivityType,
   index: number
 }
 
@@ -23,8 +23,8 @@ const FavouriteCard = ({
   const favActQueryKey = ['favourite-activities'];
   const queryClient = useQueryClient();
 
-  const modifyFavAct = useMutation({
-    mutationFn: () => toggleFavActHighlight(activity),
+  const highlightFavAct = useMutation({
+    mutationFn: () => putFavAct('highlighted', activity),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: favActQueryKey });
     }
@@ -51,7 +51,7 @@ const FavouriteCard = ({
             itemText={activity.highlighted ? 'Dehighlight shortcut' : 'Highlight shortcut'}
             onClick={(e: Event) => {
               e.stopPropagation();
-              modifyFavAct.mutate();
+              highlightFavAct.mutate();
             }}
           />
           <OverflowMenuItem

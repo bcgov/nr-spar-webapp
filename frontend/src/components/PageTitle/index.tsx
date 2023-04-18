@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
   Column,
@@ -8,10 +10,8 @@ import { Favorite, FavoriteFilled } from '@carbon/icons-react';
 
 import Subtitle from '../Subtitle';
 
-import CardType from '../../types/Card';
-
-import api from '../../api-service/api';
-import ApiConfig from '../../api-service/ApiConfig';
+import { getFavAct, postFavAct, deleteFavAct } from '../../api-service/favouriteActivitiesAPI';
+import { FavActivityPostType } from '../../types/FavActivityTypes';
 
 import './styles.scss';
 
@@ -28,57 +28,31 @@ const PageTitle = ({
   enableFavourite,
   activity
 }: PageTitleProps) => {
-  const [isFavouriteButtonPressed, setFavouriteButton] = useState(false);
-  const [favouriteActivityId, setFavouriteActivityId] = useState(0);
+  const favActQueryKey = ['favourite-activities'];
+  const queryClient = useQueryClient();
 
-  const getFavouriteActivities = () => {
-    const url = ApiConfig.favouriteActivities;
-    api.get(url)
-      .then((response) => {
-        const newCards = response.data.favourites || response.data;
-        newCards.forEach((item: CardType) => {
-          const card = item;
-          if (card.activity === activity) {
-            setFavouriteActivityId(card.id);
-            setFavouriteButton(true);
-          }
-        });
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
+  const favActQuery = useQuery({
+    queryKey: favActQueryKey,
+    queryFn: getFavAct
+  });
 
-  useEffect(() => {
-    getFavouriteActivities();
-  }, []);
+  const highlightFavAct = useMutation({
+    mutationFn: (actObj: FavActivityPostType) => postFavAct(actObj),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: favActQueryKey });
+    }
+  });
 
-  const favoritePage = (pageActivity: string) => {
-    const url = ApiConfig.favouriteActivities;
-    const data = { activity: pageActivity };
-    api.post(url, data)
-      .then((response) => {
-        setFavouriteButton(true);
-        setFavouriteActivityId(response.data.id);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
+  const removeFavAct = useMutation({
+    mutationFn: (id: number) => deleteFavAct(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: favActQueryKey });
+    }
+  });
 
-  const unfavoritePage = () => {
-    const url = `${ApiConfig.favouriteActivities}/${favouriteActivityId}`;
-    api.delete(url)
-      .then(() => {
-        setFavouriteButton(false);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
+  const thisFavAct = favActQuery?.data?.filter((act) => act.activity === activity)[0];
+
+  const isFavourited = thisFavAct !== undefined;
 
   return (
     <Column sm={4} md={4} className="title-section">
@@ -87,16 +61,16 @@ const PageTitle = ({
         {enableFavourite && activity && (
           <IconButton
             kind="ghost"
-            label={isFavouriteButtonPressed ? 'Unfavourite' : 'Favourite'}
+            label={isFavourited ? 'Unfavourite' : 'Favourite'}
             align="right"
             onClick={
-              isFavouriteButtonPressed
-                ? () => unfavoritePage()
-                : () => favoritePage(activity)
+              isFavourited
+                ? () => removeFavAct.mutate(thisFavAct.id)
+                : () => highlightFavAct.mutate({ activity })
             }
           >
             {
-              isFavouriteButtonPressed
+              isFavourited
                 ? (<FavoriteFilled size={28} />)
                 : (<Favorite size={28} />)
             }
