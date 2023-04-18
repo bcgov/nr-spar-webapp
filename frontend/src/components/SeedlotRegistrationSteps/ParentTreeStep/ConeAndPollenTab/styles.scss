@@ -38,12 +38,12 @@
     font-weight: 700;
   }
 
-  .#{vars.$bcgov-prefix}--data-table-container {
-    width: 100%;
-    margin-bottom: 3rem;
-  }
 
   .cone-pollen-table-row {
+    .#{vars.$bcgov-prefix}--data-table-container {
+      width: 100%;
+    }
+
     .table-input {
       border: 0;
       background: transparent;
@@ -68,6 +68,10 @@
     ::placeholder {
       @include type.type-style('code-02');
       color: var(--bcgov-text-placeholder);
+    }
+
+    .table-pagination {
+      margin-bottom: 3rem;
     }
   }
 }

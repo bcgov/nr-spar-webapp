@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import { hashObject } from 'react-hash-string';
 import {
   FlexGrid,
@@ -19,12 +19,14 @@ import {
   TableHeader,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
+  Pagination
 } from '@carbon/react';
 
 import Subtitle from '../../../Subtitle';
-
 import { pageTexts } from '../constants';
+
+import paginationOnChange from '../../../../utils/PaginationUtils';
 
 import './styles.scss';
 
@@ -92,6 +94,9 @@ const ConeAndPollenTab = () => {
     }
   ];
 
+  const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
+  const [currentPageSize, setCurrentPageSize] = useState<number>(40);
+
   return (
     <FlexGrid className="cone-pollen-tab">
       <Row className="cone-pollen-title-row">
@@ -111,7 +116,10 @@ const ConeAndPollenTab = () => {
         />
       </Row>
       <Row className="cone-pollen-table-row">
-        <DataTable rows={parentTrees} headers={parentTreeHeaders}>
+        <DataTable
+          rows={parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize)}
+          headers={parentTreeHeaders}
+        >
           {({
             rows,
             headers
@@ -172,6 +180,26 @@ const ConeAndPollenTab = () => {
             </TableContainer>
           )}
         </DataTable>
+        <Pagination
+          className="table-pagination"
+          backwardText="Previous page"
+          forwardText="Next page"
+          itemsPerPageText=""
+          page={1}
+          pageNumberText="Page Number"
+          pageSize={currentPageSize}
+          pageSizes={[20, 40, 60, 80, 100]}
+          totalItems={parentTrees.length}
+          onChange={({ page, pageSize }:{page: number, pageSize: number}) => {
+            paginationOnChange(
+              pageSize,
+              currentPageSize,
+              page,
+              setFirstRowIndex,
+              setCurrentPageSize
+            );
+          }}
+        />
       </Row>
       <Row className="cone-pollen-title-row">
         <Column sm={4} md={5} lg={9}>
