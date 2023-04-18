@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   Row,
@@ -22,6 +23,7 @@ import SeedlotRegistration from '../../types/SeedlotRegistration';
 import { FilterObj, filterInput } from '../../utils/filterUtils';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/ApiConfig';
+import getVegCodes from '../../api-service/vegetationCodeAPI';
 
 import './styles.scss';
 
@@ -61,29 +63,10 @@ const ApplicantInformation = () => {
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [invalidSpecies, setInvalidSpecies] = useState<boolean>(false);
 
-  const [vegCodes, setVegCodes] = useState<string[]>([]);
-
-  const getVegCodes = () => {
-    const url = ApiConfig.vegetationCode;
-    api.get(url)
-      .then((response) => {
-        const newVegCodes: string[] = [];
-        if (response.data) {
-          response.data.forEach((data: any) => {
-            newVegCodes.push(data.description);
-          });
-        }
-        setVegCodes(newVegCodes);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.error(`Error: ${error}`);
-      });
-  };
-
-  useEffect(() => {
-    getVegCodes();
-  }, []);
+  const vegCodeQuery = useQuery({
+    queryKey: ['vegetation-codes'],
+    queryFn: getVegCodes
+  });
 
   const inputChangeHandlerApplicant = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -254,7 +237,7 @@ const ApplicantInformation = () => {
               label="Enter or choose an species for the seedlot"
               invalid={invalidSpecies}
               invalidText="Please select a species"
-              items={vegCodes}
+              items={vegCodeQuery.isSuccess ? vegCodeQuery.data : []}
               onChange={(e: any) => inputChangeHandlerSpecies(e)}
             />
           </Column>
