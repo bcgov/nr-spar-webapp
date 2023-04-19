@@ -7,6 +7,7 @@ describe('Login page test', () => {
 
   beforeEach(() => {
     cy.visit('/');
+    cy.wait(2 * 1000);
 
     // Clear cookies and local storage
     cy.clearCookies({ log: true });
@@ -50,6 +51,7 @@ describe('Login page test', () => {
 
   it('log in with BCeID and validate user role', () => {
     cy.login();
+    cy.wait(2 * 1000);
     cy.contains('Main activities');
     cy.getByDataTest('header-button__user').click();
     cy.get('.user-data').find('p').contains('IDIR: undefined');
@@ -57,6 +59,7 @@ describe('Login page test', () => {
 
   it('log in with BCeID and validate user information', () => {
     cy.login();
+    cy.wait(2 * 1000);
     cy.contains('Main activities');
     cy.getByDataTest('header-button__user').click();
     cy.get('.user-data').find('p').contains('NRS Load Test-3');
