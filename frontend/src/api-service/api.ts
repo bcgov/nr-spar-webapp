@@ -1,7 +1,8 @@
 import axios from 'axios';
+import KeycloakService from '../service/KeycloakService';
 
 const getHeader = () => {
-  const token = localStorage.getItem('token');
+  const token = KeycloakService.getToken();
   return {
     Authorization: `Bearer ${token}`
   };

@@ -32,21 +32,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
   const [user, setUser] = useState<KeycloakUser | {}>({});
 
   /**
-   * Refresh the token
-   */
-  setInterval(() => {
-    KeycloakService.updateToken(30)
-      .then((refreshed) => {
-        if (refreshed) {
-          const newToken = KeycloakService.getToken() || '';
-          localStorage.setItem('token', newToken);
-        }
-      })
-      // eslint-disable-next-line no-console
-      .catch((err) => console.error('Keycloack service update error: ', err));
-  }, REFRESH_TIMER);
-
-  /**
    * Starts Keycloak instance.
    */
   async function startKeycloak() {
@@ -78,12 +63,21 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }: Pro
     }
   }
 
+  /**
+   * Refresh the token
+   */
+  setInterval(() => {
+    KeycloakService.updateToken(30)
+      .catch(async (err) => {
+        // eslint-disable-next-line no-console
+        console.error('Keycloack service update error: ', err);
+        await logout();
+      });
+  }, REFRESH_TIMER);
+
   const { createLoginUrl, login } = KeycloakService;
   const provider = KeycloakService.authMethod();
   const token = KeycloakService.getToken();
-  if (token) {
-    localStorage.setItem('token', token);
-  }
 
   // memoize
   const contextValue = useMemo(() => ({
