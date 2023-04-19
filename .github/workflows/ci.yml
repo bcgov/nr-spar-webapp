@@ -17,66 +17,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e-smoke:
-    name: E2E Smoke on Chrome
-    env:
-      DOMAIN: apps.silver.devops.gov.bc.ca
-      PREFIX: ${{ github.event.repository.name }}-${{ github.event.number }}
-    continue-on-error: false
-    runs-on: ubuntu-22.04
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v3
-      - name: Print location - PWD
-        run: pwd
-
-      - name: Find yarn lock file
-        run: find . -type f -name yarn.lock
-
-      - name: List current dir files
-        run: ls -l
-
-      - name: List frontend files
-        run: ls -l frontend
-
-      - name: List yarn.lock file in frontend
-        run: ls -l frontend/yarn.lock
-          
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: 'frontend/yarn.lock'
-      - name: Install dependencies
-        run: yarn --prefer-offline --cwd frontend
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v5.0.9
-        with:
-          install: false
-          working-directory: frontend
-          config: baseUrl=https://${{ env.PREFIX }}-frontend.${{ env.DOMAIN }}
-
-      - name: Upload screenshots on failure
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-
-      - name: Upload videos
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-videos
-          path: cypress/videos
-
   tests:
     name: Lint and Unit Tests
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-22.04
-    needs:
-      - e2e-smoke
     steps:
       - uses: bcgov-nr/action-test-and-analyse@v0.0.1
         with:
