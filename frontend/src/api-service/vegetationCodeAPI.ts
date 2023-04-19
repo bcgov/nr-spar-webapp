@@ -1,12 +1,13 @@
 import ApiConfig from './ApiConfig';
 import api from './api';
+import VegCode from '../types/VegetationCodeType';
 
 const getVegCodes = () => {
   const url = ApiConfig.vegetationCode;
   return api.get(url).then((res) => {
     const vegCodeOptions: Array<string> = [];
     if (res.data) {
-      res.data.forEach((vegCode: any) => {
+      res.data.forEach((vegCode: VegCode) => {
         vegCodeOptions.push(vegCode.description);
       });
     }
