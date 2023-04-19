@@ -75,3 +75,34 @@
     }
   }
 }
+
+// This needs to be out because the overflow menu
+//  is appended to a parent element of cone-pollen-tab
+.parent-tree-table-options {
+  width: 12.9375rem;
+
+  button {
+    max-width: 13.25rem;
+  }
+}
+
+.parent-tree-view-options {
+  width: 18rem;
+
+  button {
+    max-width: 19.25rem;
+  }
+
+  .view-options-separator {
+    @include type.type-style('label-01');
+    padding: 1rem 1rem 0.625rem;
+  }
+
+  .breeding-value-checkbox {
+    padding: 0.5rem 0.9375rem;
+  }
+}
+
+.test-visibility {
+  display: none;
+}

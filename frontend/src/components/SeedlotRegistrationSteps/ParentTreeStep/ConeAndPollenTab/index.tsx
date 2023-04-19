@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
 import React, { useState } from 'react';
-import { hashObject } from 'react-hash-string';
 import {
   FlexGrid,
   Row,
@@ -8,12 +7,13 @@ import {
   InlineNotification,
   TextInput,
   Button,
+  Checkbox,
+  OverflowMenu,
+  OverflowMenuItem,
   DataTable,
   TableContainer,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarMenu,
-  TableToolbarAction,
   Table,
   TableHead,
   TableHeader,
@@ -22,6 +22,7 @@ import {
   TableCell,
   Pagination
 } from '@carbon/react';
+import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../Subtitle';
 import { pageTexts } from '../constants';
@@ -31,7 +32,9 @@ import paginationOnChange from '../../../../utils/PaginationUtils';
 import './styles.scss';
 
 type TableHeaders = {
-  title: string;
+  key: string;
+  header: string;
+  isObrigatory: boolean;
 }
 
 type TableRows = {
@@ -46,16 +49,29 @@ interface ParentTreeDataTableProps {
 const ConeAndPollenTab = () => {
   const parentTreeHeaders:Array<TableHeaders> = [
     {
-      title: 'Clone number'
+      key: '1',
+      header: 'Clone number',
+      isObrigatory: true
     },
     {
-      title: 'Cone count'
+      key: '2',
+      header: 'Cone count',
+      isObrigatory: true
     },
     {
-      title: 'Pollen count'
+      key: '3',
+      header: 'Pollen count',
+      isObrigatory: true
     },
     {
-      title: 'SMP success (%)'
+      key: '4',
+      header: 'SMP success (%)',
+      isObrigatory: true
+    },
+    {
+      key: '5',
+      header: 'Test 1',
+      isObrigatory: false
     }
   ];
   const parentTrees:Array<TableRows> = [
@@ -97,6 +113,15 @@ const ConeAndPollenTab = () => {
   const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
   const [currentPageSize, setCurrentPageSize] = useState<number>(40);
 
+  const [testColumn, setTestColumn] = useState<boolean>(false);
+
+  const testVisibility = (obrigatory: boolean) => {
+    if (!obrigatory) {
+      return testColumn ? '' : 'test-visibility';
+    }
+    return '';
+  };
+
   return (
     <FlexGrid className="cone-pollen-tab">
       <Row className="cone-pollen-title-row">
@@ -109,7 +134,6 @@ const ConeAndPollenTab = () => {
         <InlineNotification
           lowContrast
           kind="info"
-          actionButtonLabel={pageTexts.coneAndPollen.notification.actionButtonLabel}
           aria-label={pageTexts.coneAndPollen.notification.actionButtonLabel}
           subtitle={pageTexts.coneAndPollen.notification.subtitle}
           title={pageTexts.coneAndPollen.notification.title}
@@ -130,39 +154,85 @@ const ConeAndPollenTab = () => {
             >
               <TableToolbar>
                 <TableToolbarContent>
-                  <TableToolbarMenu>
-                    <TableToolbarAction onClick={() => alert('Alert 1')}>
-                      Action 1
-                    </TableToolbarAction>
-                    <TableToolbarAction onClick={() => alert('Alert 2')}>
-                      Action 2
-                    </TableToolbarAction>
-                    <TableToolbarAction onClick={() => alert('Alert 3')}>
-                      Action 3
-                    </TableToolbarAction>
-                  </TableToolbarMenu>
+                  <OverflowMenu
+                    ariaLabel="Show/Hide columns"
+                    renderIcon={View}
+                    menuOptionsClass="parent-tree-view-options"
+                    iconDescription="Show/Hide columns"
+                    flipped
+                  >
+                    <p className="view-options-separator">
+                      Show breeding values
+                    </p>
+                    <Checkbox
+                      id="test1"
+                      name="test1"
+                      className="breeding-value-checkbox"
+                      labelText="Test 1"
+                      defaultChecked={testColumn}
+                      value={testColumn}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        const { checked } = event.target;
+                        setTestColumn(checked);
+                        console.log(testColumn);
+                      }}
+                    />
+                    <Checkbox
+                      id="test2"
+                      name="test2"
+                      className="breeding-value-checkbox"
+                      labelText="Test 2"
+                    />
+                    <Checkbox
+                      id="test3"
+                      name="test3"
+                      className="breeding-value-checkbox"
+                      labelText="Test 3"
+                    />
+                  </OverflowMenu>
+                  <OverflowMenu
+                    ariaLabel="More options"
+                    renderIcon={Settings}
+                    menuOptionsClass="parent-tree-table-options"
+                    iconDescription="More options"
+                  >
+                    <OverflowMenuItem
+                      itemText="Download table template"
+                    />
+                    <OverflowMenuItem
+                      itemText="Export table as PDF file"
+                    />
+                    <OverflowMenuItem
+                      itemText="Clean table data"
+                    />
+                  </OverflowMenu>
                   <Button
                     onClick={() => alert('Alert 3')}
-                    size="small"
+                    size="sm"
                     kind="primary"
+                    renderIcon={Upload}
+                    iconDescription="Upload file"
                   >
-                    Add new
+                    Upload from file
                   </Button>
                 </TableToolbarContent>
               </TableToolbar>
               <Table useZebraStyles>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header, i) => (
-                      <TableHeader key={hashObject(i)}>
-                        {header.title}
+                    {headers.map((header) => (
+                      <TableHeader
+                        key={header.key}
+                        className={testVisibility(header.isObrigatory)}
+                      >
+                        {header.header}
                       </TableHeader>
                     ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row, i) => (
-                    <TableRow key={hashObject(i)}>
+                    <TableRow key={(row.id + i).toString()}>
                       <TableCell>{row.id}</TableCell>
                       <TableCell>
                         <input type="number" className="table-input" placeholder="Add value" />
@@ -171,6 +241,9 @@ const ConeAndPollenTab = () => {
                         <input type="number" className="table-input" placeholder="Add value" />
                       </TableCell>
                       <TableCell>
+                        <input type="number" className="table-input" placeholder="Add value" />
+                      </TableCell>
+                      <TableCell className={testColumn ? '' : 'test-visibility'}>
                         <input type="number" className="table-input" placeholder="Add value" />
                       </TableCell>
                     </TableRow>
