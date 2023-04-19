@@ -22,8 +22,6 @@ jobs:
     env:
       DOMAIN: apps.silver.devops.gov.bc.ca
       PREFIX: ${{ github.event.repository.name }}-${{ github.event.number }}
-    needs:
-      - deploy
     continue-on-error: true
     runs-on: ubuntu-22.04
     timeout-minutes: 10
