@@ -12,7 +12,7 @@ import TitleAccordion from '../TitleAccordion';
 import EmptySection from '../EmptySection';
 
 import { AllStepData } from '../../views/Seedlot/SeedlotRegistrationForm/definitions';
-import inputText from './constants';
+import formReviewText from './constants';
 
 import './styles.scss';
 import OrchardStep from '../SeedlotRegistrationSteps/OrchardStep';
@@ -135,9 +135,9 @@ const FormReview = () => {
     <div className="form-review">
       <div className="form-review-title-section">
         <p className="form-review-title">
-          {inputText.reviewForm.title}
+          {formReviewText.reviewForm.title}
         </p>
-        <Subtitle text={inputText.reviewForm.subtitle} />
+        <Subtitle text={formReviewText.reviewForm.subtitle} />
       </div>
       <div>
         {
@@ -147,8 +147,8 @@ const FormReview = () => {
               <AccordionItem
                 title={(
                   <TitleAccordion
-                    title="Collection"
-                    description="Review collection information"
+                    title={formReviewText.collection.title}
+                    description={formReviewText.collection.description}
                   />
                     )}
               >
@@ -167,15 +167,15 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    {inputText.editButton.labelText}
+                    {formReviewText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
               <AccordionItem
                 title={(
                   <TitleAccordion
-                    title="Ownership"
-                    description="Review ownership information"
+                    title={formReviewText.ownership.title}
+                    description={formReviewText.ownership.description}
                   />
                     )}
               >
@@ -194,15 +194,15 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    {inputText.editButton.labelText}
+                    {formReviewText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
               <AccordionItem
                 title={(
                   <TitleAccordion
-                    title="Interim storage"
-                    description="Review interim storage information"
+                    title={formReviewText.interim.title}
+                    description={formReviewText.interim.description}
                   />
                     )}
               >
@@ -221,15 +221,15 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    {inputText.editButton.labelText}
+                    {formReviewText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
               <AccordionItem
                 title={(
                   <TitleAccordion
-                    title="Orchard"
-                    description="Review orchard information"
+                    title={formReviewText.orchard.title}
+                    description={formReviewText.orchard.description}
                   />
                     )}
               >
@@ -245,23 +245,23 @@ const FormReview = () => {
                     className="btn-edit-step"
                     renderIcon={Edit}
                   >
-                    {inputText.editButton.labelText}
+                    {formReviewText.editButton.labelText}
                   </Button>
                 </div>
               </AccordionItem>
               <AccordionItem
                 title={(
                   <TitleAccordion
-                    title="Parent tree and SMP"
-                    description="Review parent tree and SPM information"
+                    title={formReviewText.parentTree.title}
+                    description={formReviewText.parentTree.description}
                   />
                     )}
               />
               <AccordionItem
                 title={(
                   <TitleAccordion
-                    title="Extraction and storage"
-                    description="Review extraction and storage information"
+                    title={formReviewText.extraction.title}
+                    description={formReviewText.extraction.description}
                   />
                     )}
               />
