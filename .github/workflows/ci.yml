@@ -32,7 +32,10 @@ jobs:
       - name: Find yarn lock file
         run: find . -type f -name yarn.lock
 
-      - name: List files
+      - name: List frontend files
+        run: ls -l frontend
+
+      - name: List yarn.lock file in frontend
         run: ls -l frontend/yarn.lock
           
       - name: Setup Node
