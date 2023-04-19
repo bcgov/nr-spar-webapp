@@ -26,12 +26,18 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
+      - name: Print location - PWD
+        run: pwd
+
+      - name: List files
+        run: ls -l frontend/yarn.lock
+          
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: '**/yarn.lock'
+          cache-dependency-path: 'frontend/yarn.lock'
       - name: Install dependencies
         run: yarn --prefer-offline --cwd frontend
 
