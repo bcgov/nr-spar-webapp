@@ -70,7 +70,7 @@ const dropDownItem: DropDownObj = {
   description: ''
 };
 
-export const getDropDownList = (dataList: Array<any>) => {
+export const getDropDownList = (dataList: any) => {
   const resultList = [];
   const len = dataList.length;
   for (let i = 0; i < len; i += 1) {

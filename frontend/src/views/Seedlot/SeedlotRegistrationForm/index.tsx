@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
   Checkbox,
   FlexGrid,
@@ -13,9 +14,8 @@ import {
 import { ArrowRight } from '@carbon/icons-react';
 import ReactDOM from 'react-dom';
 
-import api from '../../../api-service/api';
-import ApiConfig from '../../../api-service/ApiConfig';
-import DropDownObj from '../../../types/DropDownObject';
+import getFundingSources from '../../../api-service/fundingSorucesAPI';
+import getPaymentMethods from '../../../api-service/paymentMethodsAPI';
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
@@ -80,46 +80,16 @@ const SeedlotRegistrationForm = () => {
   const seedlotNumber = useParams().seedlot;
 
   const [formStep, setFormStep] = useState<number>(0);
-  const [fundingSources, setFundingSources] = useState<Array<DropDownObj>>([]);
-  const [paymentMethods, setPaymentMethods] = useState<Array<DropDownObj>>([]);
 
-  const getFundingSources = () => {
-    const url = ApiConfig.fundingSource;
-    api.get(url)
-      .then((res) => {
-        if (res.data) {
-          const newFundingSources = getDropDownList(res.data);
-          setFundingSources(newFundingSources);
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(`Failed to retrieve funding sources: ${err}`);
-      });
-  };
+  const fundingSourcesQuery = useQuery({
+    queryKey: ['funding-sources'],
+    queryFn: getFundingSources
+  });
 
-  const getPaymentMethods = () => {
-    const url = ApiConfig.paymentMethod;
-    api.get(url)
-      .then((res) => {
-        if (res.data) {
-          const newPaymentMethods = getDropDownList(res.data);
-          setPaymentMethods(newPaymentMethods);
-        }
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(`Failed to retrieve Payment methods: ${err}`);
-      });
-  };
-
-  useEffect(() => {
-    getFundingSources();
-  }, []);
-
-  useEffect(() => {
-    getPaymentMethods();
-  }, []);
+  const paymentMethodsQuery = useQuery({
+    queryKey: ['payment-methods'],
+    queryFn: getPaymentMethods
+  });
 
   // Initialize all step's state here
   const [allStepData, setAllStepData] = useState<AllStepData>({
@@ -169,8 +139,16 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
-            fundingSources={fundingSources}
-            paymentMethods={paymentMethods}
+            fundingSources={
+              fundingSourcesQuery.isSuccess
+                ? getDropDownList(fundingSourcesQuery.data)
+                : []
+            }
+            paymentMethods={
+              paymentMethodsQuery.isSuccess
+                ? getDropDownList(paymentMethodsQuery.data)
+                : []
+            }
             setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
           />
         );
