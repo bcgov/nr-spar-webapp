@@ -162,13 +162,7 @@ export const skipForInvalidLength = (name: string, value: string): boolean => {
   return false;
 };
 
-const isInputEmpty = (value: string | number | DropDownObj | null) => {
-  // null can be the value even with the type check
-  if (value === '' || value === null) {
-    return true;
-  }
-  return false;
-};
+const isInputEmpty = (value: string | number | DropDownObj | null) => !value;
 
 export const isInputInvalid = (name: string, value: string): SingleInvalidObj => {
   let isInvalid = false;
