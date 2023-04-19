@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SeedlotTable from '../../components/SeedlotTable';
-import MySeedlotsItems from '../../mock-api/fixtures/MySeedlotsItems';
+import MySeedlotsItems from '../../mock-server/fixtures/MySeedlotsItems';
 import '@testing-library/jest-dom';
 import formatDate from '../../utils/DateUtils'
 
