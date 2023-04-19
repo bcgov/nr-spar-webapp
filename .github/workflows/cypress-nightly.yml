@@ -30,14 +30,14 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots-chrome
-          path: cypress/screenshots
+          path: frontend/cypress/screenshots
       
       - name: Upload videos
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: cypress-videos-chrome
-          path: cypress/videos
+          path: frontend/cypress/videos
   
   e2e-firefox:
     runs-on: ubuntu-20.04
@@ -60,14 +60,14 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots-firefox
-          path: cypress/screenshots
+          path: frontend/cypress/screenshots
       
       - name: Upload videos
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: cypress-videos-firefox
-          path: cypress/videos
+          path: frontend/cypress/videos
 
   e2e-edge:
     runs-on: windows-latest
@@ -89,11 +89,11 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots-edge
-          path: cypress/screenshots
+          path: frontend/cypress/screenshots
       
       - name: Upload videos
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: cypress-videos-edge
-          path: cypress/videos
+          path: frontend/cypress/videos
