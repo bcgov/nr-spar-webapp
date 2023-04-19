@@ -9,12 +9,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  skipme:
+    name: Skip
+    steps:
+      - name: Step to Skip
+        run: |
+          echo "Skipped"
+
   pr-greeting:
     name: PR Greeting
     env:
       DOMAIN: apps.silver.devops.gov.bc.ca
       PREFIX: ${{ github.event.repository.name }}-${{ github.event.number }}
     runs-on: ubuntu-22.04
+    needs:
+      - skipme
     permissions:
       pull-requests: write
     steps:

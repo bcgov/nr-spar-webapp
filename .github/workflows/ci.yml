@@ -22,7 +22,7 @@ jobs:
     env:
       DOMAIN: apps.silver.devops.gov.bc.ca
       PREFIX: ${{ github.event.repository.name }}-${{ github.event.number }}
-    continue-on-error: true
+    continue-on-error: false
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
@@ -31,9 +31,7 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: yarn.lock
-
-      - name: Install dependencies
+          cache-dependency-path: frontend/yarn.lock
         run: yarn --prefer-offline --cwd frontend
 
       - name: Cypress run
@@ -60,6 +58,8 @@ jobs:
     name: Lint and Unit Tests
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-22.04
+    needs:
+      - e2e-smoke
     steps:
       - uses: bcgov-nr/action-test-and-analyse@v0.0.1
         with:
@@ -86,6 +86,8 @@ jobs:
     name: Trivy Security Scan
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-22.04
+    needs:
+      - e2e-smoke
     steps:
       - uses: actions/checkout@v3
 
