@@ -80,7 +80,7 @@ const SingleOwnerInfo = ({
             placeholder={inputText.owner.placeholder}
             titleText={inputText.owner.titleText}
             helperText={inputText.owner.helperText}
-            onChange={!readOnly ? ((e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)) : null}
+            onChange={!readOnly ? ((e: ComboBoxEvent) => handleInputChange('ownerAgency', e.selectedItem)) : () => {}}
             // We need to check if validationProp is here since deleting a Single Owner Form
             //    might delete the valid prop first and throwing an error
             invalid={validationProp ? validationProp.owner.isInvalid : false}
