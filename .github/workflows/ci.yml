@@ -29,6 +29,9 @@ jobs:
       - name: Print location - PWD
         run: pwd
 
+      - name: Find yarn lock file
+        run: find . -type f -name yarn.lock
+
       - name: List files
         run: ls -l frontend/yarn.lock
           
