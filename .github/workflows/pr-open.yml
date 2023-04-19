@@ -175,6 +175,7 @@ jobs:
 
       - name: Upload videos
         uses: actions/upload-artifact@v3
+        if: failure()
         with:
           name: cypress-videos
           path: frontend/cypress/videos

@@ -41,9 +41,9 @@ describe('Login page test', () => {
 
   it.skip('log in with BCeID and validate if after timeout the user is disconnected', () => {
     cy.login();
-    // wait for 6 minutes 360000
+    // wait for 6 minutes
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(360000);
+    cy.wait(6 * 60 * 1000);
     cy.getByDataTest('landing-title').should('have.text', loginPageData.title);
     cy.reload();
   });
