@@ -47,8 +47,6 @@ jobs:
     name: Trivy Security Scan
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-22.04
-    needs:
-      - e2e-smoke
     steps:
       - uses: actions/checkout@v3
 
