@@ -26,11 +26,15 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v3
       - name: Print location - PWD
         run: pwd
 
       - name: Find yarn lock file
         run: find . -type f -name yarn.lock
+
+      - name: List current dir files
+        run: ls -l
 
       - name: List frontend files
         run: ls -l frontend
