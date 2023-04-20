@@ -40,6 +40,11 @@
 
 
   .cone-pollen-table-row {
+
+    .#{vars.$bcgov-prefix}--data-table tr th {
+      background-color: var(--bcgov-layer-accent-01);
+    }
+
     .#{vars.$bcgov-prefix}--data-table-container {
       width: 100%;
     }
