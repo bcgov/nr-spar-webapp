@@ -12,7 +12,7 @@ import makeServer from './mock-server/server';
 
 const isDevEnv = env.REACT_APP_NRSPARWEBAPP_VERSION === 'dev' || env.REACT_APP_NRSPARWEBAPP_VERSION === 'test';
 
-if (env.REACT_APP_NRSPARWEBAPP_VERSION === 'dev') {
+if (isDevEnv) {
   makeServer('development');
 }
 
