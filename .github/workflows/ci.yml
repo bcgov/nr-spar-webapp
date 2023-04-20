@@ -64,3 +64,99 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
+  
+  e2e-chrome:
+    runs-on: ubuntu-20.04
+    name: E2E on Google Chrome
+    env:
+      CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+      CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          working-directory: ./frontend
+          path: ./frontend/yarn.lock
+        env:
+          CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+      
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots-chrome
+          path: frontend/cypress/screenshots
+      
+      - name: Upload videos
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos-chrome
+          path: frontend/cypress/videos
+  
+  e2e-firefox:
+    runs-on: ubuntu-20.04
+    name: E2E on Firefox
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          browser: firefox
+          working-directory: ./frontend
+          path: ./frontend/yarn.lock
+        env:
+          CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+      
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots-firefox
+          path: frontend/cypress/screenshots
+      
+      - name: Upload videos
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos-firefox
+          path: frontend/cypress/videos
+
+  e2e-edge:
+    runs-on: windows-latest
+    name: E2E on Microsoft Edge
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          browser: edge
+          working-directory: ./frontend
+          path: ./frontend/yarn.lock
+        env:
+          CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+      
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots-edge
+          path: frontend/cypress/screenshots
+      
+      - name: Upload videos
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos-edge
+          path: frontend/cypress/videos
