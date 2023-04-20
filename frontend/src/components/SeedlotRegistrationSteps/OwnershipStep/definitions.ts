@@ -18,7 +18,7 @@ export type SingleOwnerForm = {
     reservedPerc: string,
     surplusPerc: string,
     fundingSource: DropDownObj,
-    methodOfPayment: DropDownObj
+    methodOfPayment: DropDownObj,
 }
 
 export type SingleInvalidObj = {

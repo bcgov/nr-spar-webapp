@@ -33,12 +33,16 @@ type NumStepperVal = {
   value: number,
   direction: string
 }
+
 interface OrchardStepProps {
   state: SeedlotOrchard
   setStepData: Function
+  readOnly?: boolean
 }
 
-const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
+const OrchardStep = ({
+  state, setStepData, readOnly
+}: OrchardStepProps) => {
   const { seedlot } = useParams();
   const [seedlotApplicantData, setSeedlotApplicantData] = useState<SeedlotRegistration>();
   const [isPLISpecies, setIsPLISpecies] = useState<boolean>();
@@ -270,6 +274,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               invalidText={invalidOrchardText}
               onBlur={(event: React.ChangeEvent<HTMLInputElement>) => validateOrchardId(event, 'orchardName')}
               onChange={() => state.orchardName && clearOrchardName('orchardName')}
+              readOnly={readOnly}
             />
           </Column>
           <Column sm={4} md={2} lg={3}>
@@ -279,7 +284,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               labelText="Orchard name"
               placeholder="Orchard name"
               value={state.orchardName}
-              readOnly
+              readOnly={readOnly}
             />
           </Column>
         </Row>
@@ -303,6 +308,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               invalidText={invalidAddOrchardText}
               onBlur={(event: React.ChangeEvent<HTMLInputElement>) => validateOrchardId(event, 'additionalName')}
               onChange={() => state.additionalName && clearOrchardName('additionalName')}
+              readOnly={readOnly}
             />
           </Column>
           <Column sm={4} md={2} lg={3}>
@@ -312,32 +318,34 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               labelText="Orchard name (optional)"
               placeholder="Orchard name"
               value={state.additionalName}
-              readOnly
+              readOnly={readOnly}
             />
           </Column>
         </Row>
-        <Row className="seedlot-orchard-add-orchard">
-          <Column sm={4} md={4} lg={10}>
-            <Button
-              size="md"
-              className={additionalOrchard ? 'seedlot-orchard-hidden' : ''}
-              kind="tertiary"
-              renderIcon={Add}
-              onClick={() => setAdditionalOrchard(true)}
-            >
-              Add orchard
-            </Button>
-            <Button
-              size="md"
-              className={additionalOrchard ? '' : 'seedlot-orchard-hidden'}
-              kind="danger--tertiary"
-              renderIcon={TrashCan}
-              onClick={() => deleteAdditionalOrchard()}
-            >
-              Delete additional orchard
-            </Button>
-          </Column>
-        </Row>
+        {(!readOnly) && (
+          <Row className="seedlot-orchard-add-orchard">
+            <Column sm={4} md={4} lg={10}>
+              <Button
+                size="md"
+                className={additionalOrchard ? 'seedlot-orchard-hidden' : ''}
+                kind="tertiary"
+                renderIcon={Add}
+                onClick={() => setAdditionalOrchard(true)}
+              >
+                Add orchard
+              </Button>
+              <Button
+                size="md"
+                className={additionalOrchard ? '' : 'seedlot-orchard-hidden'}
+                kind="danger--tertiary"
+                renderIcon={TrashCan}
+                onClick={() => deleteAdditionalOrchard()}
+              >
+                Delete additional orchard
+              </Button>
+            </Column>
+          </Row>
+        )}
         <Row className="seedlot-orchard-title-row">
           <Column lg={8}>
             <h2>Gamete information</h2>
@@ -371,6 +379,8 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               invalid={invalidFemGametic}
               invalidText="Please select an option"
               onChange={(e: ComboBoxEvent) => femaleGameticHandler(e)}
+              readOnly={readOnly}
+              selectedItem={state.femaleGametic}
             />
           </Column>
         </Row>
@@ -454,8 +464,9 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               id="seedlot-produced"
               name="controlledCross"
               labelText="No, the seedlot was not produced through controlled crosses"
-              defaultChecked
+              defaultChecked={state.controlledCross}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
+              readOnly={readOnly}
             />
           </Column>
         </Row>
@@ -468,8 +479,9 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               id="bio-processes"
               name="biotechProcess"
               labelText="No, biotechnological processes have not been used to produce this seedlot"
-              defaultChecked
+              defaultChecked={state.biotechProcess}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
+              readOnly={readOnly}
             />
           </Column>
         </Row>
@@ -488,8 +500,9 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               id="pollen-contamination"
               name="noPollenContamination"
               labelText="No, there was no pollen contamination present in the seed orchard"
-              defaultChecked
+              defaultChecked={state.noPollenContamination}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => checkboxesHandler(event)}
+              readOnly={readOnly}
             />
           </Column>
         </Row>
@@ -528,6 +541,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
                   }
                 }
                 onBlur={() => validateBreedingPercentage()}
+                readOnly={readOnly}
               />
             </Column>
           </Row>
@@ -540,8 +554,8 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
                 id="pollen-methodology"
                 name="pollenMethodology"
                 labelText="Regional pollen monitoring"
-                defaultChecked
-                readOnly
+                defaultChecked={state.pollenMethodology}
+                readOnly={readOnly}
               />
             </Column>
           </Row>

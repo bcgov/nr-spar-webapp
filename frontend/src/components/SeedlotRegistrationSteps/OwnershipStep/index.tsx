@@ -41,6 +41,7 @@ interface OwnershipStepProps {
   agencyOptions: Array<string>,
   state: Array<SingleOwnerForm>,
   setStepData: Function,
+  readOnly?: boolean,
   fundingSources: Array<DropDownObj>,
   paymentMethods: Array<DropDownObj>
 }
@@ -55,6 +56,7 @@ const OwnershipStep = (
     defaultCode,
     defaultAgency,
     agencyOptions,
+    readOnly,
     fundingSources,
     paymentMethods
   }: OwnershipStepProps
@@ -270,6 +272,7 @@ const OwnershipStep = (
 
   return (
     <div>
+      {(!readOnly) && (
       <div className="ownership-header">
         <div className="ownership-step-title-box">
           <h3>
@@ -281,6 +284,7 @@ const OwnershipStep = (
           </p>
         </div>
       </div>
+      )}
 
       <div className="ownership-form-container">
         <Accordion className="steps-accordion">
@@ -328,6 +332,7 @@ const OwnershipStep = (
                   }
                   addAnOwner={addAnOwner}
                   deleteAnOwner={(id: number) => deleteAnOwner(id)}
+                  readOnly={readOnly}
                 />
               </AccordionItem>
             ))
