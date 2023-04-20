@@ -160,7 +160,7 @@ jobs:
         run: yarn --prefer-offline --cwd frontend
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5.0.9
+        uses: cypress-io/github-action@v5.6.1
         with:
           install: false
           working-directory: frontend
