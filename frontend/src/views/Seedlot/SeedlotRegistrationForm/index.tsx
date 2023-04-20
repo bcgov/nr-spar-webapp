@@ -31,10 +31,10 @@ import {
   initCollectionState,
   initInterimState,
   initOrchardState,
-  getDropDownList,
   initOwnershipState,
   initExtractionStorageState
 } from './utils';
+import { getDropDownList } from '../../../utils/DropDownUtils';
 import './styles.scss';
 import { CollectionForm } from '../../../components/SeedlotRegistrationSteps/CollectionStep/utils';
 import ExtractionStorage from '../../../types/SeedlotTypes/ExtractionStorage';

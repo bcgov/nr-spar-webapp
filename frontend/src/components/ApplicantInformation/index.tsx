@@ -47,7 +47,11 @@ const ApplicantInformation = () => {
       number: '0',
       email: ''
     },
-    species: '',
+    species: {
+      label: '',
+      code: '',
+      description: ''
+    },
     source: 'tested',
     registered: true,
     collectedBC: true
@@ -143,7 +147,7 @@ const ApplicantInformation = () => {
       numberInputRef.current?.focus();
     } else if (invalidEmail) {
       emailInputRef.current?.focus();
-    } else if (!responseBody.species) {
+    } else if (!responseBody.species.label) {
       setInvalidSpecies(true);
       speciesInputRef.current?.focus();
     } else {

@@ -35,7 +35,7 @@ const ApiConfig = {
   /**
    * ORACLE API
    */
-  vegetationCode: `${oracleServerHost}/api/vegetation-codes`,
+  vegetationCode: `${oracleServerHost}/api/vegetation-codes?page=0&perPage=500`,
 
   fundingSource: `${oracleServerHost}/api/funding-sources`
 };

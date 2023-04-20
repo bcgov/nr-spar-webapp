@@ -41,7 +41,7 @@ interface OrchardStepProps {
 const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
   const { seedlot } = useParams();
   const [seedlotApplicantData, setSeedlotApplicantData] = useState<SeedlotRegistration>();
-  const [lodgepoleSpecies, setLodgepoleSpecies] = useState<boolean>();
+  const [isPLISpecies, setIsPLISpecies] = useState<boolean>();
 
   const getSeedlotData = () => {
     if (seedlot) {
@@ -50,7 +50,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
         .then((response) => {
           if (response.data.seedlotApplicantInfo) {
             setSeedlotApplicantData(response.data.seedlotApplicantInfo);
-            setLodgepoleSpecies(response.data.seedlotApplicantInfo.species === 'PLI - Lodgepole pine');
+            setIsPLISpecies(response.data.seedlotApplicantInfo.species.code === 'PLI');
           }
         })
         .catch((error) => {
@@ -349,7 +349,8 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
             <Dropdown
               id="seedlot-species-dropdown"
               titleText="Seedlot species"
-              label={seedlotApplicantData?.species || 'Seedlot species'}
+              label="Seedlot species"
+              selectedItem={seedlotApplicantData?.species}
               readOnly
               items={[seedlotApplicantData?.species]}
             />
@@ -361,7 +362,7 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
               id="female-gametic-combobox"
               name="femaleGametic"
               ref={(el: HTMLInputElement) => addRefs(el, 'femaleGametic')}
-              items={lodgepoleSpecies ? FemaleGameticOptions : FemaleGameticOptions.slice(0, -2)}
+              items={isPLISpecies ? FemaleGameticOptions : FemaleGameticOptions.slice(0, -2)}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
@@ -375,41 +376,73 @@ const OrchardStep = ({ state, setStepData }: OrchardStepProps) => {
         </Row>
         <Row className="seedlot-orchard-field">
           <Column sm={4} md={8} lg={16}>
-            <RadioButtonGroup
-              legendText="Male gametic contribution methodology"
-              name="male-gametic-radiogroup"
-              orientation="vertical"
-              className={invalidMalGametic ? 'male-gametic-invalid' : ''}
-              onChange={(e: string) => maleGameticHandler(e)}
-            >
-              <RadioButton
-                id="m1-radio"
-                labelText="M1 - Portion of ramets in orchard"
-                value="M1"
-              />
-              <RadioButton
-                id="m2-radio"
-                labelText="M2 - Pollen volume estimate by partial survey"
-                value="M2"
-              />
-              <RadioButton
-                id="m3-radio"
-                labelText="M3 - Pollen volume estimate by 100% survey"
-                value="M3"
-              />
-              <RadioButton
-                id="m4-radio"
-                className={lodgepoleSpecies ? '' : 'seedlot-orchard-hidden'}
-                labelText="M4 - Ramet proportion by clone"
-                value="M4"
-              />
-              <RadioButton
-                id="m5-radio"
-                className={lodgepoleSpecies ? '' : 'seedlot-orchard-hidden'}
-                labelText="M5 - Ramet proportion by age and expected production"
-                value="M5"
-              />
-            </RadioButtonGroup>
+            {
+              // Dynamic rendering of radio buttons does not work with carbon radio button groups
+              // So we are left with these gross duplicated code
+              isPLISpecies
+                ? (
+                  <RadioButtonGroup
+                    legendText="Male gametic contribution methodology"
+                    name="male-gametic-radiogroup"
+                    orientation="vertical"
+                    className={invalidMalGametic ? 'male-gametic-invalid' : ''}
+                    onChange={(e: string) => maleGameticHandler(e)}
+                    valueSelected={state.maleGametic}
+                  >
+                    <RadioButton
+                      id="m1-radio"
+                      labelText="M1 - Portion of ramets in orchard"
+                      value="M1"
+                    />
+                    <RadioButton
+                      id="m2-radio"
+                      labelText="M2 - Pollen volume estimate by partial survey"
+                      value="M2"
+                    />
+                    <RadioButton
+                      id="m3-radio"
+                      labelText="M3 - Pollen volume estimate by 100% survey"
+                      value="M3"
+                    />
+                    <RadioButton
+                      id="m4-radio"
+                      labelText="M4 - Ramet proportion by clone"
+                      value="M4"
+                    />
+                    <RadioButton
+                      id="m5-radio"
+                      labelText="M5 - Ramet proportion by age and expected production"
+                      value="M5"
+                    />
+                  </RadioButtonGroup>
+                )
+                : (
+                  <RadioButtonGroup
+                    legendText="Male gametic contribution methodology"
+                    name="male-gametic-radiogroup"
+                    orientation="vertical"
+                    className={invalidMalGametic ? 'male-gametic-invalid' : ''}
+                    onChange={(e: string) => maleGameticHandler(e)}
+                    valueSelected={state.maleGametic}
+                  >
+                    <RadioButton
+                      id="m1-radio"
+                      labelText="M1 - Portion of ramets in orchard"
+                      value="M1"
+                    />
+                    <RadioButton
+                      id="m2-radio"
+                      labelText="M2 - Pollen volume estimate by partial survey"
+                      value="M2"
+                    />
+                    <RadioButton
+                      id="m3-radio"
+                      labelText="M3 - Pollen volume estimate by 100% survey"
+                      value="M3"
+                    />
+                  </RadioButtonGroup>
+                )
+            }
           </Column>
         </Row>
         <Row className="seedlot-orchard-field">

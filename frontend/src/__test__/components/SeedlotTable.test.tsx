@@ -42,7 +42,7 @@ describe('Seedlot Table component', () => {
     const cells = screen.getAllByRole('cell');
     expect(cells[0].textContent).toEqual('12456');
     expect(cells[1].textContent).toEqual('A class');
-    expect(cells[2].textContent).toEqual('SX - Spruce hibrid');
+    expect(cells[2].textContent).toEqual('SX - Spruce Hybrid');
     expect(cells[3].textContent).toEqual('Collection');
     expect(cells[4].textContent).toEqual('Incomplete');
     expect(cells[5]).toBeInTheDocument();
