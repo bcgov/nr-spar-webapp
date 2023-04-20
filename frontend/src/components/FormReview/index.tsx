@@ -19,6 +19,7 @@ import OrchardStep from '../SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../SeedlotRegistrationSteps/OwnershipStep';
 import CollectionStep from '../SeedlotRegistrationSteps/CollectionStep';
+import ExtractionAndStorage from '../SeedlotRegistrationSteps/ExtractionAndStorageStep';
 
 // this is for testing only
 // TODO: remove this once the PR is approved
@@ -103,7 +104,7 @@ const ownershipMock = {
   applicantAgency: true
 };
 
-const collectorMock = {
+const collectionMock = {
   collectorAgency: 'Strong Seeds Orchard - SSO',
   locationCode: '32',
   startDate: '2023/01/04',
@@ -123,12 +124,24 @@ const collectorMock = {
   comments: 'Example of additional comments about the seedlot'
 };
 
+const extractionMock = {
+  extractoryAgency: 'Yellow point lodge LTD.',
+  extractoryLocationCode: '00',
+  extractionStartDate: '2023/01/20',
+  extractionEndDate: '2023/03/18',
+  seedStorageAgency: 'Yellow point lodge LTD.',
+  seedStorageLocationCode: '00',
+  seedStorageStartDate: '2023/01/20',
+  seedStorageEndDate: '2023/03/18'
+};
+
 const FormReview = () => {
   const [allStepData] = useState<AllStepData>({
     interimStep: interimStorageMock,
     ownershipStep: [ownershipMock],
     orchardStep: orchardMock,
-    collectionStep: collectorMock
+    collectionStep: collectionMock,
+    extractionStorageStep: extractionMock
   });
 
   return (
@@ -264,7 +277,26 @@ const FormReview = () => {
                     description={formReviewText.extraction.description}
                   />
                     )}
-              />
+              >
+                <div className="form-item">
+                  <ExtractionAndStorage
+                    state={allStepData.extractionStorageStep}
+                    defaultAgency={defaultAgency}
+                    defaultCode={defaultCode}
+                    agencyOptions={agencyOptions}
+                    setStepData={() => {}}
+                    readOnly
+                  />
+                  <Button
+                    kind="tertiary"
+                    size="md"
+                    className="btn-edit-step"
+                    renderIcon={Edit}
+                  >
+                    {formReviewText.editButton.labelText}
+                  </Button>
+                </div>
+              </AccordionItem>
             </Accordion>
           )
           : (
