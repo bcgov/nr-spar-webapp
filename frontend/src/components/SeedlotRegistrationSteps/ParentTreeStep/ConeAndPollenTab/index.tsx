@@ -117,11 +117,6 @@ const ConeAndPollenTab = () => {
       key: '4',
       header: 'SMP success (%)',
       isObrigatory: true
-    },
-    {
-      key: '5',
-      header: 'Test 1',
-      isObrigatory: false
     }
   ];
   const parentTrees:Array<TableRows> = [
@@ -162,15 +157,6 @@ const ConeAndPollenTab = () => {
 
   const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
   const [currentPageSize, setCurrentPageSize] = useState<number>(40);
-
-  const [testColumn] = useState<boolean>(false);
-
-  const testVisibility = (obrigatory: boolean) => {
-    if (!obrigatory) {
-      return testColumn ? '' : 'test-visibility';
-    }
-    return '';
-  };
 
   return (
     <FlexGrid className="cone-pollen-tab">
@@ -262,10 +248,18 @@ const ConeAndPollenTab = () => {
                     {headers.map((header) => (
                       <TableHeader
                         key={header.key}
-                        className={testVisibility(header.isObrigatory)}
                       >
                         {header.header}
                       </TableHeader>
+                    ))}
+                    {geneticTraits.map((trait) => (filterControl[trait.code]
+                      && (
+                        <TableHeader
+                          key={`header-trait-${trait.code}`}
+                        >
+                          {trait.filterLabel}
+                        </TableHeader>
+                      )
                     ))}
                   </TableRow>
                 </TableHead>
@@ -282,9 +276,15 @@ const ConeAndPollenTab = () => {
                       <TableCell>
                         <input type="number" className="table-input" placeholder="Add value" />
                       </TableCell>
-                      <TableCell className={testColumn ? '' : 'test-visibility'}>
-                        <input type="number" className="table-input" placeholder="Add value" />
-                      </TableCell>
+                      {geneticTraits.map((trait) => (filterControl[trait.code]
+                        && (
+                          <TableCell
+                            key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
+                          >
+                            <input type="number" className="table-input" placeholder="Add value" />
+                          </TableCell>
+                        )
+                      ))}
                     </TableRow>
                   ))}
                 </TableBody>
