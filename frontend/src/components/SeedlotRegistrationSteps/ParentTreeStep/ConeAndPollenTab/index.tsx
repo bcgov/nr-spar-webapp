@@ -32,10 +32,10 @@ import api from '../../../../api-service/api';
 import ApiConfig from '../../../../api-service/ApiConfig';
 
 import { pageTexts } from '../constants';
-import { GeneticTraitsType } from '../definitions';
+import { ControlFiltersType, GeneticTraitsType } from '../definitions';
+import getGeneticWorths from '../utils';
 
 import './styles.scss';
-import getGeneticWorths from '../utils';
 
 type TableHeaders = {
   key: string;
@@ -78,8 +78,24 @@ const ConeAndPollenTab = () => {
   }, []);
 
   const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(seedlotSpecie);
+  const [filterControl, setFilterControl] = useState<ControlFiltersType>(() => {
+    const returnObj = {};
+    geneticTraits.forEach((trait) => {
+      (returnObj as ControlFiltersType)[trait.code] = false;
+    });
+    return returnObj;
+  });
 
-  console.log(geneticTraits);
+  const handleFilters = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    geneticTrait: string
+  ) => {
+    const { checked } = event.target;
+    setFilterControl({
+      ...filterControl,
+      [geneticTrait]: checked
+    });
+  };
 
   const parentTreeHeaders:Array<TableHeaders> = [
     {
@@ -147,7 +163,7 @@ const ConeAndPollenTab = () => {
   const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
   const [currentPageSize, setCurrentPageSize] = useState<number>(40);
 
-  const [testColumn, setTestColumn] = useState<boolean>(false);
+  const [testColumn] = useState<boolean>(false);
 
   const testVisibility = (obrigatory: boolean) => {
     if (!obrigatory) {
@@ -189,7 +205,7 @@ const ConeAndPollenTab = () => {
               <TableToolbar>
                 <TableToolbarContent>
                   <OverflowMenu
-                    ariaLabel="Show/Hide columns"
+                    aria-label="Show/Hide columns"
                     renderIcon={View}
                     menuOptionsClass="parent-tree-view-options"
                     iconDescription="Show/Hide columns"
@@ -198,34 +214,22 @@ const ConeAndPollenTab = () => {
                     <p className="view-options-separator">
                       Show breeding values
                     </p>
-                    <Checkbox
-                      id="test1"
-                      name="test1"
-                      className="breeding-value-checkbox"
-                      labelText="Test 1"
-                      defaultChecked={testColumn}
-                      value={testColumn}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                        const { checked } = event.target;
-                        setTestColumn(checked);
-                        console.log(testColumn);
-                      }}
-                    />
-                    <Checkbox
-                      id="test2"
-                      name="test2"
-                      className="breeding-value-checkbox"
-                      labelText="Test 2"
-                    />
-                    <Checkbox
-                      id="test3"
-                      name="test3"
-                      className="breeding-value-checkbox"
-                      labelText="Test 3"
-                    />
+                    {geneticTraits.map((trait) => (
+                      <Checkbox
+                        id={`checkbox-trait-${trait.code}`}
+                        name={`checkbox-trait-${trait.code}`}
+                        className="breeding-value-checkbox"
+                        labelText={trait.filterLabel}
+                        defaultChecked={filterControl[trait.code]}
+                        value={filterControl[trait.code]}
+                        onChange={
+                          (e: React.ChangeEvent<HTMLInputElement>) => handleFilters(e, trait.code)
+                        }
+                      />
+                    ))}
                   </OverflowMenu>
                   <OverflowMenu
-                    ariaLabel="More options"
+                    aria-label="More options"
                     renderIcon={Settings}
                     menuOptionsClass="parent-tree-table-options"
                     iconDescription="More options"
@@ -381,34 +385,15 @@ const ConeAndPollenTab = () => {
         </Column>
       </Row>
       <Row className="cone-pollen-traits-row">
-        <Column sm={2} md={4} lg={4}>
-          <TextInput
-            id="populationSize"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.populationSize}
-            readOnly
-          />
-        </Column>
-        <Column sm={2} md={4} lg={4}>
-          <TextInput
-            id="testedParentTree"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.testedParentTree}
-            readOnly
-          />
-        </Column>
-        <Column sm={2} md={4} lg={4}>
-          <TextInput
-            id="coancestry"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.coancestry}
-            readOnly
-          />
-        </Column>
-        <Column sm={2} md={4} lg={4}>
-          <TextInput
-            id="smpParents"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.smpParents}
-            readOnly
-          />
-        </Column>
+        {geneticTraits.map((trait) => (
+          <Column sm={2} md={4} lg={4}>
+            <TextInput
+              id={`input-trait-${trait.code}`}
+              labelText={trait.description}
+              readOnly
+            />
+          </Column>
+        ))}
       </Row>
     </FlexGrid>
   );

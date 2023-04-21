@@ -40,51 +40,63 @@ export const pageTexts = {
 
 export const geneticTraits = {
   ad: {
+    code: 'ad',
     description: 'Genetic worth AD',
-    code: 'ad'
+    filterLabel: 'Deer browse (AD)'
   },
   dfs: {
+    code: 'dfs',
     description: 'Genetic worth DFS',
-    code: 'dfs'
+    filterLabel: 'Dothistroma needle blight (DFS)'
   },
   dfu: {
+    code: 'dfu',
     description: 'Genetic worth DFU',
-    code: 'dfu'
+    filterLabel: 'Cedar leaf blight (DFU)'
   },
   dfw: {
+    code: 'dfw',
     description: 'Genetic worth DFW',
-    code: 'dfw'
+    filterLabel: 'Swiss needle cast (DFW)'
   },
   dsb: {
+    code: 'dsb',
     description: 'Genetic worth DSB',
-    code: 'dsb'
+    filterLabel: 'White pine blister rust (DSB)'
   },
   dsc: {
+    code: 'dsc',
     description: 'Genetic worth DSC',
-    code: 'dsc'
+    filterLabel: 'Comandra blister rust (DSC)'
   },
   dsg: {
+    code: 'dsg',
     description: 'Genetic worth DSG',
-    code: 'dsg'
+    filterLabel: 'Western gall rust (DSG)'
   },
   gvo: {
+    code: 'gvo',
     description: 'Genetic worth GVO',
-    code: 'gvo'
+    filterLabel: 'Volume growth (GVO)'
   },
   iws: {
+    code: 'iws',
     description: 'Genetic worth IWS',
-    code: 'iws'
+    filterLabel: 'White pine terminal weevil (IWS)'
   },
   wdu: {
+    code: 'wdu',
     description: 'Genetic worth WDU',
-    code: 'wdu'
+    filterLabel: 'Durability (WDU)'
   },
   wwd: {
+    code: 'wwd',
     description: 'Genetic worth WWD',
-    code: 'wwd'
+    filterLabel: 'Wood density (WWD)'
   },
   wve: {
+    code: 'wve',
     description: 'Genetic worth WVE',
-    code: 'wve'
+    filterLabel: 'Wood velocity measures (WVE)'
   }
 };
