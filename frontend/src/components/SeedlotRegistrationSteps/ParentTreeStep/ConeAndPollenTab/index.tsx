@@ -33,7 +33,7 @@ import ApiConfig from '../../../../api-service/ApiConfig';
 
 import { pageTexts } from '../constants';
 import { ControlFiltersType, GeneticTraitsType } from '../definitions';
-import { getGeneticWorths, generateKey } from '../utils';
+import getGeneticWorths from '../utils';
 
 import './styles.scss';
 
@@ -216,7 +216,7 @@ const ConeAndPollenTab = () => {
                     </p>
                     {geneticTraits.map((trait) => (
                       <Checkbox
-                        key={generateKey(`checkbox-${trait.code}`)}
+                        key={`checkbox-trait-${trait.code}`}
                         id={`checkbox-trait-${trait.code}`}
                         name={`checkbox-trait-${trait.code}`}
                         className="breeding-value-checkbox"
@@ -387,7 +387,7 @@ const ConeAndPollenTab = () => {
       </Row>
       <Row className="cone-pollen-traits-row">
         {geneticTraits.map((trait) => (
-          <Column key={generateKey(`input-${trait.code}`)} sm={2} md={4} lg={4}>
+          <Column key={`column-trait-${trait.code}`} sm={2} md={4} lg={4}>
             <TextInput
               id={`input-trait-${trait.code}`}
               labelText={trait.description}
