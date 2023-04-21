@@ -1,7 +1,7 @@
 import { geneticTraits } from './constants';
 import { GeneticTraitsType } from './definitions';
 
-const getGeneticWorths = (seedlotSpecies: string):Array<GeneticTraitsType> => {
+export const getGeneticWorths = (seedlotSpecies: string):Array<GeneticTraitsType> => {
   const genenticTraitsForSpecies:Array<GeneticTraitsType> = [];
   switch (seedlotSpecies) {
     case 'CW':
@@ -49,4 +49,4 @@ const getGeneticWorths = (seedlotSpecies: string):Array<GeneticTraitsType> => {
   return genenticTraitsForSpecies;
 };
 
-export default getGeneticWorths;
+export const generateKey = (prefix: string) => `${prefix}-${new Date().getTime()}`;
