@@ -33,36 +33,58 @@ export const pageTexts = {
         testedParentTree: 'Tested parent tree contribution (%)',
         coancestry: 'Coancestry (Sum PiPj * Cij)',
         smpParents: 'Number of SMP parents from outside'
-      },
-      specificFieldsLabels: {
-        ad: 'Genetic worth AD',
-        dfs: 'Genetic worth DFS',
-        dfu: 'Genetic worth DFU',
-        dfw: 'Genetic worth DFW',
-        dsb: 'Genetic worth DSB',
-        dsc: 'Genetic worth DSC',
-        gvo: 'Genetic worth GVO',
-        wdu: 'Genetic worth WDU',
-        wwd: 'Genetic worth WWD',
-        dsg: 'Genetic worth DSG',
-        iws: 'Genetic worth IWS',
-        wve: 'Genetic worth WVE'
       }
     }
   }
 };
 
-export const geneticTraits = [
-  'ad',
-  'dfs',
-  'dfu',
-  'dfw',
-  'dsb',
-  'dsc',
-  'gvo',
-  'wdu',
-  'wwd',
-  'dsg',
-  'iws',
-  'wve'
-];
+export const geneticTraits = {
+  ad: {
+    description: 'Genetic worth AD',
+    code: 'ad'
+  },
+  dfs: {
+    description: 'Genetic worth DFS',
+    code: 'dfs'
+  },
+  dfu: {
+    description: 'Genetic worth DFU',
+    code: 'dfu'
+  },
+  dfw: {
+    description: 'Genetic worth DFW',
+    code: 'dfw'
+  },
+  dsb: {
+    description: 'Genetic worth DSB',
+    code: 'dsb'
+  },
+  dsc: {
+    description: 'Genetic worth DSC',
+    code: 'dsc'
+  },
+  dsg: {
+    description: 'Genetic worth DSG',
+    code: 'dsg'
+  },
+  gvo: {
+    description: 'Genetic worth GVO',
+    code: 'gvo'
+  },
+  iws: {
+    description: 'Genetic worth IWS',
+    code: 'iws'
+  },
+  wdu: {
+    description: 'Genetic worth WDU',
+    code: 'wdu'
+  },
+  wwd: {
+    description: 'Genetic worth WWD',
+    code: 'wwd'
+  },
+  wve: {
+    description: 'Genetic worth WVE',
+    code: 'wve'
+  }
+};

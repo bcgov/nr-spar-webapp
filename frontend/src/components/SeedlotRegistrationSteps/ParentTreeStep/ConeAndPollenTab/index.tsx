@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   FlexGrid,
   Row,
@@ -25,11 +26,16 @@ import {
 import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../Subtitle';
-import { pageTexts } from '../constants';
-
 import paginationOnChange from '../../../../utils/PaginationUtils';
 
+import api from '../../../../api-service/api';
+import ApiConfig from '../../../../api-service/ApiConfig';
+
+import { pageTexts } from '../constants';
+import { GeneticTraitsType } from '../definitions';
+
 import './styles.scss';
+import getGeneticWorths from '../utils';
 
 type TableHeaders = {
   key: string;
@@ -47,6 +53,34 @@ interface ParentTreeDataTableProps {
 }
 
 const ConeAndPollenTab = () => {
+  const { seedlot } = useParams();
+
+  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('');
+
+  const getSeedlotData = () => {
+    if (seedlot) {
+      const url = `${ApiConfig.seedlot}/${seedlot}`;
+      api.get(url)
+        .then((response) => {
+          if (response.data.seedlotApplicantInfo) {
+            setSeedlotSpecie(response.data.seedlotApplicantInfo.species.code);
+          }
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(`Error: ${error}`);
+        });
+    }
+  };
+
+  useEffect(() => {
+    getSeedlotData();
+  }, []);
+
+  const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(seedlotSpecie);
+
+  console.log(geneticTraits);
+
   const parentTreeHeaders:Array<TableHeaders> = [
     {
       key: '1',
