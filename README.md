@@ -1,5 +1,6 @@
 [![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/nr-spar-webapp)
 ![Cypress nightly](https://github.com/bcgov/nr-spar-webapp/actions/workflows/cypress-nightly.yml/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bcgov_nr-spar-webapp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bcgov_nr-spar-webapp)
 
 # Natural Resources Front-End Starting Progressive Web Application
 
@@ -56,8 +57,15 @@ Be aware of the required environment variables:
 - REACT_APP_KC_REALM
 - REACT_APP_KC_CLIENT_ID
 - REACT_APP_ENABLE_MOCK_SERVER
+- REACT_APP_ORACLE_SERVER_URL
 
 To run the unit tests all you need is `yarn test`. For end-to-end test you need to run `yarn cypress run` to run on console or `yarn cypress open` to use the Cypress IDE.
+
+> Note that to run locally you'll need those environment variables: CYPRESS_USERNAME and CYPRESS_PASSWORD
+
+> Note that to run on github you'll need those secret variables: CYPRESS_USERNAME and CYPRESS_PASSWORD
+
+For more details about end-to-end tests check out our [confluence page](https://apps.nrs.gov.bc.ca/int/confluence/display/FSADT2/Test+strategy)
 
 Before writing your first line of code, please take a moment and check out
 our [CONTRIBUTING](CONTRIBUTING.md) guide.

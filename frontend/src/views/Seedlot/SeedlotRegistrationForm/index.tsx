@@ -1,34 +1,48 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
+  Checkbox,
   FlexGrid,
   Row,
   Breadcrumb,
   BreadcrumbItem,
-  Button
+  Button,
+  Modal,
+  ToastNotification
 } from '@carbon/react';
-import { ArrowRight, CheckmarkOutline } from '@carbon/icons-react';
+import { ArrowRight } from '@carbon/icons-react';
+import ReactDOM from 'react-dom';
 
+import getFundingSources from '../../../api-service/fundingSorucesAPI';
+import getPaymentMethods from '../../../api-service/paymentMethodsAPI';
 import PageTitle from '../../../components/PageTitle';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../../../components/SeedlotRegistrationSteps/InterimStep';
 import OwnershipStep from '../../../components/SeedlotRegistrationSteps/OwnershipStep';
 import ParentTreeStep from '../../../components/SeedlotRegistrationSteps/ParentTreeStep';
+import CollectionStep from '../../../components/SeedlotRegistrationSteps/CollectionStep';
 import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimStep/definitions';
+import ExtractionAndStorage from '../../../components/SeedlotRegistrationSteps/ExtractionAndStorageStep';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
 import { AllStepData } from './definitions';
 import {
+  initCollectionState,
   initInterimState,
   initOrchardState,
-  initOwnershipState
+  initOwnershipState,
+  initExtractionStorageState
 } from './utils';
+import { getDropDownList } from '../../../utils/DropDownUtils';
 import './styles.scss';
+import { CollectionForm } from '../../../components/SeedlotRegistrationSteps/CollectionStep/utils';
+import ExtractionStorage from '../../../types/SeedlotTypes/ExtractionStorage';
+import inputText from './constants';
 
 const defaultCode = '16';
 const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
-const defaultPayment = 'ITC - Invoice to client address';
 const agencyOptions = [
   '0032 - Strong Seeds Orchard - SSO',
   '0035 - Weak Seeds Orchard - WSO',
@@ -37,17 +51,54 @@ const agencyOptions = [
   '0043 - Bad Seeds Orchard - BSO'
 ];
 
+interface Declaration {
+  renderLauncher: any;
+  children: any;
+}
+
+const ModalStateManager = (
+  {
+    renderLauncher: LauncherContent,
+    children: ModalContent
+  }: Declaration
+) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      {!ModalContent || typeof document === 'undefined'
+        ? null
+        : ReactDOM.createPortal(
+          <ModalContent open={open} setOpen={setOpen} />,
+          document.body
+        )}
+      {LauncherContent && <LauncherContent open={open} setOpen={setOpen} />}
+    </>
+  );
+};
+
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
   const seedlotNumber = useParams().seedlot;
 
   const [formStep, setFormStep] = useState<number>(0);
 
+  const fundingSourcesQuery = useQuery({
+    queryKey: ['funding-sources'],
+    queryFn: getFundingSources
+  });
+
+  const paymentMethodsQuery = useQuery({
+    queryKey: ['payment-methods'],
+    queryFn: getPaymentMethods
+  });
+
   // Initialize all step's state here
   const [allStepData, setAllStepData] = useState<AllStepData>({
+    collectionStep: initCollectionState(defaultAgency, defaultCode),
     interimStep: initInterimState(defaultAgency, defaultCode),
-    ownershipStep: [initOwnershipState(defaultAgency, defaultCode, defaultPayment)],
-    orchardStep: initOrchardState()
+    ownershipStep: [initOwnershipState(defaultAgency, defaultCode)],
+    orchardStep: initOrchardState(),
+    extractionStorageStep: initExtractionStorageState(defaultAgency, defaultCode)
   });
 
   // Can't find a good way to specify the type of stepData
@@ -72,7 +123,15 @@ const SeedlotRegistrationForm = () => {
     switch (formStep) {
       // Collection
       case 0:
-        return null;
+        return (
+          <CollectionStep
+            state={allStepData.collectionStep}
+            defaultAgency={defaultAgency}
+            defaultCode={defaultCode}
+            agencyOptions={agencyOptions}
+            setStepData={(data: CollectionForm) => setStepData('collectionStep', data)}
+          />
+        );
       // Ownership
       case 1:
         return (
@@ -81,6 +140,16 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
+            fundingSources={
+              fundingSourcesQuery.isSuccess
+                ? getDropDownList(fundingSourcesQuery.data)
+                : []
+            }
+            paymentMethods={
+              paymentMethodsQuery.isSuccess
+                ? getDropDownList(paymentMethodsQuery.data)
+                : []
+            }
             setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
           />
         );
@@ -110,7 +179,15 @@ const SeedlotRegistrationForm = () => {
         );
       // Extraction and Storage
       case 5:
-        return null;
+        return (
+          <ExtractionAndStorage
+            state={allStepData.extractionStorageStep}
+            defaultAgency={defaultAgency}
+            defaultCode={defaultCode}
+            agencyOptions={agencyOptions}
+            setStepData={(data: ExtractionStorage) => setStepData('extractionStorageStep', data)}
+          />
+        );
       default:
         return null;
     }
@@ -186,14 +263,38 @@ const SeedlotRegistrationForm = () => {
                 </Button>
               )
               : (
-                <Button
-                  kind="primary"
-                  size="lg"
-                  className="back-next-btn"
-                  renderIcon={CheckmarkOutline}
+                <ModalStateManager
+                  renderLauncher={({ setOpen }: any) => (
+                    <Button onClick={() => setOpen(true)}>{inputText.modal.buttonText}</Button>
+                  )}
                 >
-                  Submit registration
-                </Button>
+                  {({ open, setOpen }: any) => (
+                    <Modal
+                      size="sm"
+                      className="seedlot-registration-modal"
+                      modalLabel={inputText.modal.modalLabel}
+                      modalHeading={inputText.modal.modalHeading}
+                      primaryButtonText={inputText.modal.primaryButtonText}
+                      secondaryButtonText={inputText.modal.secondaryButtonText}
+                      open={open}
+                      onRequestClose={() => setOpen(false)}
+                    >
+                      <p>{inputText.modal.helperText}</p>
+                      <Checkbox
+                        id="declaration-modal-checkbox"
+                        name="declaration-modal"
+                        labelText={inputText.modal.checkboxLabelText}
+                      />
+                      <ToastNotification
+                        lowContrast
+                        kind="info"
+                        title={inputText.modal.notification.title}
+                        subtitle={inputText.modal.notification.subtitle}
+                        caption={inputText.modal.notification.link}
+                      />
+                    </Modal>
+                  )}
+                </ModalStateManager>
               )
           }
         </div>

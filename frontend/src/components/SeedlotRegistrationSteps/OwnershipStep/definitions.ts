@@ -1,5 +1,7 @@
 import React from 'react';
 
+import DropDownObj from '../../../types/DropDownObject';
+
 export type AccordionItemHeadClick = {
   isOpen: boolean,
   event: React.PointerEvent
@@ -15,8 +17,8 @@ export type SingleOwnerForm = {
   ownerPortion: string,
   reservedPerc: string,
   surplusPerc: string,
-  fundingSource: string,
-  methodOfPayment: string
+  fundingSource: DropDownObj,
+  methodOfPayment: DropDownObj,
 }
 
 export type SingleInvalidObj = {

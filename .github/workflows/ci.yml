@@ -30,16 +30,16 @@ jobs:
             yarn --cwd frontend build
             yarn --cwd frontend test -u --coverage
           dir: frontend
-          sonar_args: >
+          sonar_args: |
             -Dsonar.organization=bcgov-sonarcloud
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.cobertura.reportPaths=coverage/cobertura-coverage.xml
             -Dsonar.project.monorepo.enabled=false
             -Dsonar.projectKey=bcgov_nr-spar-webapp
             -Dsonar.sources=src/
-            -Dsonar.exclusions=src/**/__test__/**/*
-            -Dsonar.tests=src/
-            -Dsonar.test.inclusions=src/**/__test__/**/*
+            -Dsonar.exclusions=src/__test__/**,**/node_modules/**,**/build/**,**/cypress/**
+            -Dsonar.tests=src/__test__
+            -Dsonar.test.inclusions=src/__test__/**/*
           sonar_project_token: ${{ secrets.SONAR_TOKEN }}
 
   # https://github.com/marketplace/actions/aqua-security-trivy
@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@0.9.1
+        uses: aquasecurity/trivy-action@0.10.0
         with:
           format: "sarif"
           output: "trivy-results.sarif"
