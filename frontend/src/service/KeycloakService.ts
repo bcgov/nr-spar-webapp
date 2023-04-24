@@ -4,7 +4,8 @@ import KeycloakUser from '../types/KeycloakUser';
 const initKeycloak = () => keycloak.init({
   onLoad: 'check-sso',
   silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
-  pkceMethod: 'S256'
+  pkceMethod: 'S256',
+  checkLoginIframe: false
 });
 
 const { login } = keycloak;
