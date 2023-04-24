@@ -5,7 +5,7 @@ import DropDownObj from '../types/DropDownObject';
 import VegCode from '../types/VegetationCodeType';
 
 // Remove VegCodes with these codes
-const filterCodes: Array<string> = [
+const codesToFilter: Array<string> = [
   'AMELALN',
   'ARCTUVA',
   'CEANSAN',
@@ -32,7 +32,7 @@ const getVegCodes = () => {
     let vegCodeOptions: Array<DropDownObj> = [];
     if (res.data) {
       const filteredData = res.data
-        .filter((vegCode: VegCode) => filterCodes.indexOf(vegCode.code) === -1);
+        .filter((vegCode: VegCode) => codesToFilter.indexOf(vegCode.code) === -1);
       vegCodeOptions = getDropDownList(filteredData);
     }
     return vegCodeOptions;
