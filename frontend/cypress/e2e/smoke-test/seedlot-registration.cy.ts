@@ -1,3 +1,6 @@
+import { GenericSelectors, SeedlotRegistrationSelectors } from "../../utils/selectors";
+import { NavigationLabels, SeedlotActivities } from "../../utils/labels";
+
 describe('Seedlot registration flow', () => {
   let data: {
     applicantAgency: { name: string; number: string; email: string; invalidEmail: string;};
@@ -36,7 +39,7 @@ describe('Seedlot registration flow', () => {
   before(() => {
     cy.visit('/');
     cy.wait(2 * 1000);
-
+    
     // Clear cookies and local storage
     cy.clearCookies({ log: true });
     cy.clearLocalStorage({ log: true });
@@ -49,15 +52,13 @@ describe('Seedlot registration flow', () => {
   it('should register a Class A Seedlot', () => {
     // SPAR log in
     cy.login();
-    cy.wait(2 * 1000);
-    cy.contains('Main activities');
+    cy.url().should('include', '/dashboard').and('not.include', '?page=')
+    cy.isPageTitle(NavigationLabels.Dashboard);
     // Select the “Seedlots” section from the left-hand panel
-    cy.get('nav')
-      .contains('Seedlots')
-      .click();
+    cy.navigateTo(NavigationLabels.Seedlots);
     // Click on the register seedlot an A class seedlot card
-    cy.get('.std-card-title')
-      .contains('Register an A class seedlot')
+    cy.get(SeedlotRegistrationSelectors.SeedlotActivitiesCardTitle)
+      .contains(SeedlotActivities.RegisterAClass)
       .click();
     // Clicking the heart icon to enable it
     cy.get('.title-favourite button').click();
