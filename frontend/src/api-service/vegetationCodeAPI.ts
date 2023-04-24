@@ -33,7 +33,7 @@ const getVegCodes = () => {
     if (res.data) {
       const filteredData = res.data
         .filter((vegCode: VegCode) => codesToFilter.indexOf(vegCode.code) === -1);
-      vegCodeOptions = getDropDownList(filteredData);
+      vegCodeOptions = getDropDownList(filteredData, true, true);
     }
     return vegCodeOptions;
   });
