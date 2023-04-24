@@ -6,20 +6,25 @@ const dropDownItem: DropDownObj = {
   description: ''
 };
 
+const capFirstChar = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
 export const sortAlphabetically = (a: DropDownObj, b: DropDownObj) => (
   a.label.toLocaleLowerCase() < b.label.toLocaleLowerCase()
     ? -1
     : 1
 );
 
-export const getDropDownList = (dataList: any) => {
+export const getDropDownList = (dataList: any, toCapFirstChar: boolean = true) => {
   const resultList: Array<DropDownObj> = [];
 
   dataList.forEach((data: any) => {
     const newItem = { ...dropDownItem };
     newItem.code = data.code;
     newItem.description = data.description;
-    newItem.label = `${data.code} - ${data.description}`;
+    if (toCapFirstChar) {
+      newItem.description = capFirstChar(newItem.description);
+    }
+    newItem.label = `${newItem.code} - ${newItem.description}`;
     resultList.push(newItem);
   });
 
