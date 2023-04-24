@@ -6,9 +6,13 @@ import {
   Row,
   Column,
   InlineNotification,
+  ToastNotification,
   TextInput,
   Button,
   Checkbox,
+  Modal,
+  FileUploaderDropContainer,
+  // FileUploaderItem,
   OverflowMenu,
   OverflowMenuItem,
   DataTable,
@@ -26,13 +30,19 @@ import {
 import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../Subtitle';
+import ModalStateManager from '../../../ModalStateManager';
 import paginationOnChange from '../../../../utils/PaginationUtils';
 
 import api from '../../../../api-service/api';
 import ApiConfig from '../../../../api-service/ApiConfig';
 
 import { pageTexts } from '../constants';
-import { ControlFiltersType, GeneticTraitsType } from '../definitions';
+import {
+  ControlFiltersType,
+  GeneticTraitsType,
+  ModalRenderControllerType,
+  ModalRenderType
+} from '../definitions';
 import getGeneticWorths from '../utils';
 
 import './styles.scss';
@@ -54,9 +64,9 @@ interface ParentTreeDataTableProps {
 
 const ConeAndPollenTab = () => {
   const { seedlot } = useParams();
+  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('PLI');
 
-  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('');
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getSeedlotData = () => {
     if (seedlot) {
       const url = `${ApiConfig.seedlot}/${seedlot}`;
@@ -231,15 +241,61 @@ const ConeAndPollenTab = () => {
                       itemText="Clean table data"
                     />
                   </OverflowMenu>
-                  <Button
-                    onClick={() => alert('Alert 3')}
-                    size="sm"
-                    kind="primary"
-                    renderIcon={Upload}
-                    iconDescription="Upload file"
+                  <ModalStateManager
+                    renderLauncher={({ setOpen }: ModalRenderControllerType) => (
+                      <Button
+                        onClick={() => setOpen(true)}
+                        size="sm"
+                        kind="primary"
+                        renderIcon={Upload}
+                        iconDescription="Upload file"
+                      >
+                        Upload from file
+                      </Button>
+                    )}
                   >
-                    Upload from file
-                  </Button>
+                    {({ open, setOpen }: ModalRenderType) => (
+                      <Modal
+                        className="upload-file-modal"
+                        modalLabel={pageTexts.coneAndPollen.modal.label}
+                        modalHeading={pageTexts.coneAndPollen.modal.title}
+                        primaryButtonText={pageTexts.coneAndPollen.modal.buttons.confirm}
+                        secondaryButtonText={pageTexts.coneAndPollen.modal.buttons.cancel}
+                        open={open}
+                        onRequestClose={() => setOpen(false)}
+                        onRequestSubmit={() => setOpen(false)}
+                        size="sm"
+                      >
+                        <p>{pageTexts.coneAndPollen.modal.description}</p>
+                        <FileUploaderDropContainer
+                          className="upload-file-component"
+                          labelText={pageTexts.coneAndPollen.modal.uploadFile}
+                          // onClick={
+                          //   () => {
+                          //     // eslint-disable-next-line no-debugger
+                          //     debugger;
+                          //   }
+                          // }
+                          onAddFiles={
+                            (e: React.ChangeEvent<HTMLInputElement>, { addedFiles }: any) => {
+                              // eslint-disable-next-line no-debugger
+                              debugger;
+                              e.stopPropagation();
+                              console.log(addedFiles);
+                              console.log(e);
+                            }
+                          }
+                        />
+                        <ToastNotification
+                          className="upload-notification"
+                          lowContrast
+                          kind="info"
+                          title={pageTexts.coneAndPollen.modal.notification.title}
+                          subtitle={pageTexts.coneAndPollen.modal.notification.description}
+                        />
+                      </Modal>
+                    )}
+                  </ModalStateManager>
                 </TableToolbarContent>
               </TableToolbar>
               <Table useZebraStyles>
@@ -252,7 +308,8 @@ const ConeAndPollenTab = () => {
                         {header.header}
                       </TableHeader>
                     ))}
-                    {geneticTraits.map((trait) => (filterControl[trait.code]
+                    {geneticTraits.map((trait) => (
+                      filterControl[trait.code]
                       && (
                         <TableHeader
                           key={`header-trait-${trait.code}`}
@@ -276,7 +333,8 @@ const ConeAndPollenTab = () => {
                       <TableCell>
                         <input type="number" className="table-input" placeholder="Add value" />
                       </TableCell>
-                      {geneticTraits.map((trait) => (filterControl[trait.code]
+                      {geneticTraits.map((trait) => (
+                        filterControl[trait.code]
                         && (
                           <TableCell
                             key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}

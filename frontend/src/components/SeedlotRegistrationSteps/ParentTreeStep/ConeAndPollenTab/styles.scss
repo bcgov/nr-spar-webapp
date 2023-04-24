@@ -39,7 +39,6 @@
   }
 
   .cone-pollen-table-row {
-
     .#{vars.$bcgov-prefix}--data-table tr th {
       background-color: var(--bcgov-layer-accent-01);
     }
@@ -81,7 +80,7 @@
 }
 
 // This needs to be out because the overflow menu
-//  is appended to a parent element of cone-pollen-tab
+// is appended to a parent element of cone-pollen-tab
 .parent-tree-table-options {
   width: 12.9375rem;
 
@@ -104,5 +103,19 @@
 
   .breeding-value-checkbox {
     padding: 0.5rem 0.9375rem;
+  }
+}
+
+// The modal is also created outside of the tab context
+.upload-file-modal {
+  p {
+    @include type.type-style('body-compact-01');
+    color: var(--bcgov-text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .upload-file-component,
+  .upload-notification {
+    max-width: 100%;
   }
 }
