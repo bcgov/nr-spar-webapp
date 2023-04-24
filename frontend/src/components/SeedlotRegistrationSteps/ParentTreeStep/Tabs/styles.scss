@@ -1,26 +1,26 @@
 @use '@carbon/type';
 @use '../../../../theme/variables.scss' as vars;
 
-.cone-pollen-tab {
+.parent-tree-tabs {
   h2 {
     @include type.type-style('heading-03');
     margin-bottom: 0.5rem;
   }
 
-  .cone-pollen-title-row {
+  .title-row {
     margin-bottom: 2.5rem;
   }
 
-  .cone-pollen-summary-row,
-  .cone-pollen-traits-row {
+  .summary-row,
+  .traits-row {
     margin-bottom: 3rem;
   }
 
-  .cone-pollen-genetic-row {
+  .genetic-row {
     margin-bottom: 2rem;
   }
 
-  .cone-pollen-notification-row {
+  .notification-row {
     padding-left: 1rem;
     margin-bottom: 2rem;
   }
@@ -38,7 +38,7 @@
     font-weight: 700;
   }
 
-  .cone-pollen-table-row {
+  .parent-tree-table-row {
     .#{vars.$bcgov-prefix}--data-table tr th {
       background-color: var(--bcgov-layer-accent-01);
     }
@@ -80,7 +80,7 @@
 }
 
 // This needs to be out because the overflow menu
-// is appended to a parent element of cone-pollen-tab
+// is appended to a parent element of parent-tree-tabs
 .parent-tree-table-options {
   width: 12.9375rem;
 
@@ -114,8 +114,11 @@
     margin-bottom: 1rem;
   }
 
-  .upload-file-component,
-  .upload-notification {
+  .upload-file-component {
     max-width: 100%;
+  }
+
+  .upload-notification {
+    width: 100%;
   }
 }

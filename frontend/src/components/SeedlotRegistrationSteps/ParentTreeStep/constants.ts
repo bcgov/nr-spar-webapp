@@ -6,24 +6,10 @@ export const pageTexts = {
     smpTab: 'SMP success on parent',
     mixTab: 'Calculation of SMP mix'
   },
-  coneAndPollen: {
-    subtitle: 'Enter the cone and pollen count manually or upload a spreadsheet file with the template for the cone and pollen count table. Remember to keep your orchard updated, you can go to orchard\'s management page to edit the listed parent trees in your orchard.',
-    tableSubtitle: 'Enter the estimative of cone and pollen count for the orchard\'s seedlot (*required)',
+  sharedTabTexts: {
     notification: {
       title: 'Upload spreadsheet to table',
-      subtitle: 'You can import one spreadsheet file for the cone and pollen count table with the data you want to use. For further guidance on how to organize the data, do use the SPAR\'s spreadsheet template.',
-      templateLink: 'Download cone and pollen count template',
       actionButtonLabel: 'Close notification'
-    },
-    summary: {
-      title: 'Summary',
-      subtitle: 'Check the parent tree contribution summary',
-      fieldLabels: {
-        totalParentTrees: 'Total number of parent trees',
-        totalConeCount: 'Total number of cone count',
-        totalPollenCount: 'Total number of pollen count',
-        averageSMP: 'Average number of SMP success %'
-      }
     },
     geneticWorth: {
       title: 'Genetic worth and diversity',
@@ -49,7 +35,47 @@ export const pageTexts = {
         confirm: 'Import file and continue'
       }
     }
+
+  },
+  coneAndPollen: {
+    subtitle: 'Enter the cone and pollen count manually or upload a spreadsheet file with the template for the cone and pollen count table. Remember to keep your orchard updated, you can go to orchard\'s management page to edit the listed parent trees in your orchard.',
+    tableSubtitle: 'Enter the estimative of cone and pollen count for the orchard\'s seedlot (*required)',
+    notification: {
+      subtitle: 'You can import one spreadsheet file for the cone and pollen count table with the data you want to use. For further guidance on how to organize the data, do use the SPAR\'s spreadsheet template.',
+      templateLink: 'Download cone and pollen count template'
+    },
+    summary: {
+      title: 'Summary',
+      subtitle: 'Check the parent tree contribution summary',
+      fieldLabels: {
+        totalParentTrees: 'Total number of parent trees',
+        totalConeCount: 'Total number of cone count',
+        totalPollenCount: 'Total number of pollen count',
+        averageSMP: 'Average number of SMP success %'
+      }
+    }
+  },
+  smpSuccess: {
+    subtitle: 'Enter the SMP success on parent manually or upload a spreadsheet file with the template for the cone and pollen count table. Remember to keep your orchard updated, you can go to orchard\'s management page to edit the listed parent trees in your orchard.',
+    tableSubtitle: 'Enter the estimative of SMP success for the orchard\'s seedlot',
+    notification: {
+      subtitle: 'You can import one spreadsheet file for the SMP success on parent table with the data you want to use. For further guidance on how to organize the data, do use the SPAR\'s spreadsheet template.',
+      templateLink: 'Download SMP success on parent template'
+    },
+    bulkCheckboxLabel: 'Enter the same SMP success on parent or Non-orchard pollen contaminant to all parent trees',
+    bulkSuccessInputLabel: 'SMP Success on parent (%)',
+    bulkNonOrchardInputLabel: 'Non-orchard pollen contaminant (%)',
+    summary: {
+      title: 'Summary',
+      subtitle: 'Check the SMP success on parent summary',
+      fieldLabels: {
+        totalParentTrees: 'Total number of parent trees',
+        averageSMPSuccess: 'Average number of SMP success %',
+        averageNonOrchard: 'Average number of non-orchard pollen contam. (%)'
+      }
+    }
   }
+
 };
 
 export const geneticTraits = {

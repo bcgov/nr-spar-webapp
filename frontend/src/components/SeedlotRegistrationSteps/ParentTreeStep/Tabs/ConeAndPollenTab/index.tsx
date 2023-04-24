@@ -29,23 +29,23 @@ import {
 } from '@carbon/react';
 import { Upload, View, Settings } from '@carbon/icons-react';
 
-import Subtitle from '../../../Subtitle';
-import ModalStateManager from '../../../ModalStateManager';
-import paginationOnChange from '../../../../utils/PaginationUtils';
+import Subtitle from '../../../../Subtitle';
+import ModalStateManager from '../../../../ModalStateManager';
+import paginationOnChange from '../../../../../utils/PaginationUtils';
 
-import api from '../../../../api-service/api';
-import ApiConfig from '../../../../api-service/ApiConfig';
+import api from '../../../../../api-service/api';
+import ApiConfig from '../../../../../api-service/ApiConfig';
 
-import { pageTexts } from '../constants';
+import { pageTexts } from '../../constants';
 import {
   ControlFiltersType,
   GeneticTraitsType,
   ModalRenderControllerType,
   ModalRenderType
-} from '../definitions';
-import getGeneticWorths from '../utils';
+} from '../../definitions';
+import getGeneticWorths from '../../utils';
 
-import './styles.scss';
+import '../styles.scss';
 
 type TableHeaders = {
   key: string;
@@ -169,23 +169,23 @@ const ConeAndPollenTab = () => {
   const [currentPageSize, setCurrentPageSize] = useState<number>(40);
 
   return (
-    <FlexGrid className="cone-pollen-tab">
-      <Row className="cone-pollen-title-row">
+    <FlexGrid className="parent-tree-tabs">
+      <Row className="title-row">
         <Column sm={4} md={5} lg={9}>
           <h2>{pageTexts.tabTitles.coneTab}</h2>
           <Subtitle text={pageTexts.coneAndPollen.subtitle} />
         </Column>
       </Row>
-      <Row className="cone-pollen-notification-row">
+      <Row className="notification-row">
         <InlineNotification
           lowContrast
           kind="info"
-          aria-label={pageTexts.coneAndPollen.notification.actionButtonLabel}
+          aria-label={pageTexts.sharedTabTexts.notification.actionButtonLabel}
           subtitle={pageTexts.coneAndPollen.notification.subtitle}
-          title={pageTexts.coneAndPollen.notification.title}
+          title={pageTexts.sharedTabTexts.notification.title}
         />
       </Row>
-      <Row className="cone-pollen-table-row">
+      <Row className="parent-tree-table-row">
         <DataTable
           rows={parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize)}
           headers={parentTreeHeaders}
@@ -257,19 +257,19 @@ const ConeAndPollenTab = () => {
                     {({ open, setOpen }: ModalRenderType) => (
                       <Modal
                         className="upload-file-modal"
-                        modalLabel={pageTexts.coneAndPollen.modal.label}
-                        modalHeading={pageTexts.coneAndPollen.modal.title}
-                        primaryButtonText={pageTexts.coneAndPollen.modal.buttons.confirm}
-                        secondaryButtonText={pageTexts.coneAndPollen.modal.buttons.cancel}
+                        modalLabel={pageTexts.sharedTabTexts.modal.label}
+                        modalHeading={pageTexts.sharedTabTexts.modal.title}
+                        primaryButtonText={pageTexts.sharedTabTexts.modal.buttons.confirm}
+                        secondaryButtonText={pageTexts.sharedTabTexts.modal.buttons.cancel}
                         open={open}
                         onRequestClose={() => setOpen(false)}
                         onRequestSubmit={() => setOpen(false)}
                         size="sm"
                       >
-                        <p>{pageTexts.coneAndPollen.modal.description}</p>
+                        <p>{pageTexts.sharedTabTexts.modal.description}</p>
                         <FileUploaderDropContainer
                           className="upload-file-component"
-                          labelText={pageTexts.coneAndPollen.modal.uploadFile}
+                          labelText={pageTexts.sharedTabTexts.modal.uploadFile}
                           // onClick={
                           //   () => {
                           //     // eslint-disable-next-line no-debugger
@@ -290,8 +290,8 @@ const ConeAndPollenTab = () => {
                           className="upload-notification"
                           lowContrast
                           kind="info"
-                          title={pageTexts.coneAndPollen.modal.notification.title}
-                          subtitle={pageTexts.coneAndPollen.modal.notification.description}
+                          title={pageTexts.sharedTabTexts.modal.notification.title}
+                          subtitle={pageTexts.sharedTabTexts.modal.notification.description}
                         />
                       </Modal>
                     )}
@@ -371,16 +371,16 @@ const ConeAndPollenTab = () => {
           }}
         />
       </Row>
-      <Row className="cone-pollen-title-row">
+      <Row className="title-row">
         <Column sm={4} md={5} lg={9}>
           <h2>{pageTexts.coneAndPollen.summary.title}</h2>
           <Subtitle text={pageTexts.coneAndPollen.summary.subtitle} />
         </Column>
       </Row>
-      <Row className="cone-pollen-summary-row">
+      <Row className="summary-row">
         <Column sm={2} md={4} lg={4}>
           <TextInput
-            id="totalParentTrees"
+            id="totalParentTreesConeAndPollen"
             labelText={pageTexts.coneAndPollen.summary.fieldLabels.totalParentTrees}
             readOnly
           />
@@ -407,43 +407,43 @@ const ConeAndPollenTab = () => {
           />
         </Column>
       </Row>
-      <Row className="cone-pollen-title-row">
+      <Row className="title-row">
         <Column sm={4} md={5} lg={9}>
-          <h2>{pageTexts.coneAndPollen.geneticWorth.title}</h2>
-          <Subtitle text={pageTexts.coneAndPollen.geneticWorth.subtitle} />
+          <h2>{pageTexts.sharedTabTexts.geneticWorth.title}</h2>
+          <Subtitle text={pageTexts.sharedTabTexts.geneticWorth.subtitle} />
         </Column>
       </Row>
-      <Row className="cone-pollen-genetic-row">
+      <Row className="genetic-row">
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="populationSize"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.populationSize}
+            labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.populationSize}
             readOnly
           />
         </Column>
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="testedParentTree"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.testedParentTree}
+            labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.testedParentTree}
             readOnly
           />
         </Column>
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="coancestry"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.coancestry}
+            labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.coancestry}
             readOnly
           />
         </Column>
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="smpParents"
-            labelText={pageTexts.coneAndPollen.geneticWorth.defaultFieldsLabels.smpParents}
+            labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.smpParents}
             readOnly
           />
         </Column>
       </Row>
-      <Row className="cone-pollen-traits-row">
+      <Row className="traits-row">
         {geneticTraits.map((trait) => (
           <Column key={`column-trait-${trait.code}`} sm={2} md={4} lg={4}>
             <TextInput
