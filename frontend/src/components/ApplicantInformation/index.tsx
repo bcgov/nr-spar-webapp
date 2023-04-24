@@ -7,7 +7,6 @@ import {
   Column,
   TextInput,
   NumberInput,
-  Dropdown,
   RadioButtonGroup,
   RadioButton,
   Checkbox,
@@ -228,18 +227,22 @@ const ApplicantInformation = () => {
             <Subtitle text="Enter the initial information about this seedlot" />
           </Column>
         </Row>
-        <Row className="seedlot-species-dropdown">
+        <Row className="seedlot-species-combobox">
           <Column sm={4} md={4} lg={10}>
-            <Dropdown
-              id="seedlot-species-dropdown"
+            <ComboBox
+              className="applicant-info-combobox"
+              id="applicant-info-combobox-species"
               ref={speciesInputRef}
+              items={vegCodeQuery.isSuccess ? vegCodeQuery.data : []}
+              selectedItem={responseBody.species}
+              shouldFilterItem={
+                ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
+              }
+              placeholder="Enter or choose an species for the seedlot"
               titleText="Seedlot species"
-              helperText="Type or search for the seedlot species using the drop-down list"
-              label="Enter or choose an species for the seedlot"
+              onChange={(e: ComboBoxEvent) => inputChangeHandlerSpecies(e)}
               invalid={invalidSpecies}
               invalidText="Please select a species"
-              items={vegCodeQuery.isSuccess ? vegCodeQuery.data : []}
-              onChange={(e: any) => inputChangeHandlerSpecies(e)}
             />
           </Column>
         </Row>
