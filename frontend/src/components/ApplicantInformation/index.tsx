@@ -21,15 +21,12 @@ import Subtitle from '../Subtitle';
 import SeedlotRegistration from '../../types/SeedlotRegistration';
 
 import { FilterObj, filterInput } from '../../utils/filterUtils';
+import ComboBoxEvent from '../../types/ComboBoxEvent';
 import api from '../../api-service/api';
 import ApiConfig from '../../api-service/ApiConfig';
 import getVegCodes from '../../api-service/vegetationCodeAPI';
 
 import './styles.scss';
-
-interface ComboBoxEvent {
-  selectedItem: string;
-}
 
 const ApplicantInformation = () => {
   const mockAgencyOptions: Array<string> = [
