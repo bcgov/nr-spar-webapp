@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useParams } from 'react-router-dom';
 import {
   FlexGrid,
@@ -30,7 +31,6 @@ import {
 import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../../Subtitle';
-import ModalStateManager from '../../../../ModalStateManager';
 import paginationOnChange from '../../../../../utils/PaginationUtils';
 
 import api from '../../../../../api-service/api';
@@ -39,9 +39,7 @@ import ApiConfig from '../../../../../api-service/ApiConfig';
 import { pageTexts } from '../../constants';
 import {
   ControlFiltersType,
-  GeneticTraitsType,
-  ModalRenderControllerType,
-  ModalRenderType
+  GeneticTraitsType
 } from '../../definitions';
 import getGeneticWorths from '../../utils';
 
@@ -65,6 +63,7 @@ interface ParentTreeDataTableProps {
 const ConeAndPollenTab = () => {
   const { seedlot } = useParams();
   const [seedlotSpecie, setSeedlotSpecie] = useState<string>('PLI');
+  const [open, setOpen] = useState<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getSeedlotData = () => {
@@ -241,61 +240,57 @@ const ConeAndPollenTab = () => {
                       itemText="Clean table data"
                     />
                   </OverflowMenu>
-                  <ModalStateManager
-                    renderLauncher={({ setOpen }: ModalRenderControllerType) => (
-                      <Button
-                        onClick={() => setOpen(true)}
-                        size="sm"
-                        kind="primary"
-                        renderIcon={Upload}
-                        iconDescription="Upload file"
-                      >
-                        Upload from file
-                      </Button>
-                    )}
+                  <Button
+                    onClick={() => setOpen(true)}
+                    size="sm"
+                    kind="primary"
+                    renderIcon={Upload}
+                    iconDescription="Upload file"
                   >
-                    {({ open, setOpen }: ModalRenderType) => (
-                      <Modal
-                        className="upload-file-modal"
-                        modalLabel={pageTexts.sharedTabTexts.modal.label}
-                        modalHeading={pageTexts.sharedTabTexts.modal.title}
-                        primaryButtonText={pageTexts.sharedTabTexts.modal.buttons.confirm}
-                        secondaryButtonText={pageTexts.sharedTabTexts.modal.buttons.cancel}
-                        open={open}
-                        onRequestClose={() => setOpen(false)}
-                        onRequestSubmit={() => setOpen(false)}
-                        size="sm"
-                      >
-                        <p>{pageTexts.sharedTabTexts.modal.description}</p>
-                        <FileUploaderDropContainer
-                          className="upload-file-component"
-                          labelText={pageTexts.sharedTabTexts.modal.uploadFile}
-                          // onClick={
-                          //   () => {
-                          //     // eslint-disable-next-line no-debugger
-                          //     debugger;
-                          //   }
-                          // }
-                          onAddFiles={
-                            (e: React.ChangeEvent<HTMLInputElement>, { addedFiles }: any) => {
-                              // eslint-disable-next-line no-debugger
-                              debugger;
-                              e.stopPropagation();
-                              console.log(addedFiles);
-                              console.log(e);
-                            }
+                    Upload from file
+                  </Button>
+                  {open && ReactDOM.createPortal(
+                    <Modal
+                      className="upload-file-modal"
+                      modalLabel={pageTexts.sharedTabTexts.modal.label}
+                      modalHeading={pageTexts.sharedTabTexts.modal.title}
+                      primaryButtonText={pageTexts.sharedTabTexts.modal.buttons.confirm}
+                      secondaryButtonText={pageTexts.sharedTabTexts.modal.buttons.cancel}
+                      open={open}
+                      onRequestClose={() => setOpen(false)}
+                      onRequestSubmit={() => setOpen(false)}
+                      size="sm"
+                    >
+                      <p>{pageTexts.sharedTabTexts.modal.description}</p>
+                      <FileUploaderDropContainer
+                        className="upload-file-component"
+                        labelText={pageTexts.sharedTabTexts.modal.uploadFile}
+                        // onClick={
+                        //   () => {
+                        //     // eslint-disable-next-line no-debugger
+                        //     debugger;
+                        //   }
+                        // }
+                        onAddFiles={
+                          (e: React.ChangeEvent<HTMLInputElement>, { addedFiles }: any) => {
+                            // eslint-disable-next-line no-debugger
+                            debugger;
+                            e.stopPropagation();
+                            console.log(addedFiles);
+                            console.log(e);
                           }
-                        />
-                        <ToastNotification
-                          className="upload-notification"
-                          lowContrast
-                          kind="info"
-                          title={pageTexts.sharedTabTexts.modal.notification.title}
-                          subtitle={pageTexts.sharedTabTexts.modal.notification.description}
-                        />
-                      </Modal>
-                    )}
-                  </ModalStateManager>
+                        }
+                      />
+                      <ToastNotification
+                        className="upload-notification"
+                        lowContrast
+                        kind="info"
+                        title={pageTexts.sharedTabTexts.modal.notification.title}
+                        subtitle={pageTexts.sharedTabTexts.modal.notification.description}
+                      />
+                    </Modal>,
+                    document.body
+                  )}
                 </TableToolbarContent>
               </TableToolbar>
               <Table useZebraStyles>

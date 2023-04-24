@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
   Checkbox,
@@ -12,7 +13,6 @@ import {
   ToastNotification
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/icons-react';
-import ReactDOM from 'react-dom';
 
 import getFundingSources from '../../../api-service/fundingSorucesAPI';
 import getPaymentMethods from '../../../api-service/paymentMethodsAPI';
@@ -51,36 +51,12 @@ const agencyOptions = [
   '0043 - Bad Seeds Orchard - BSO'
 ];
 
-interface Declaration {
-  renderLauncher: any;
-  children: any;
-}
-
-const ModalStateManager = (
-  {
-    renderLauncher: LauncherContent,
-    children: ModalContent
-  }: Declaration
-) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      {!ModalContent || typeof document === 'undefined'
-        ? null
-        : ReactDOM.createPortal(
-          <ModalContent open={open} setOpen={setOpen} />,
-          document.body
-        )}
-      {LauncherContent && <LauncherContent open={open} setOpen={setOpen} />}
-    </>
-  );
-};
-
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
   const seedlotNumber = useParams().seedlot;
 
   const [formStep, setFormStep] = useState<number>(0);
+  const [open, setOpen] = useState<boolean>(false);
 
   const fundingSourcesQuery = useQuery({
     queryKey: ['funding-sources'],
@@ -263,12 +239,9 @@ const SeedlotRegistrationForm = () => {
                 </Button>
               )
               : (
-                <ModalStateManager
-                  renderLauncher={({ setOpen }: any) => (
-                    <Button onClick={() => setOpen(true)}>{inputText.modal.buttonText}</Button>
-                  )}
-                >
-                  {({ open, setOpen }: any) => (
+                <>
+                  <Button onClick={() => setOpen(true)}>{inputText.modal.buttonText}</Button>
+                  {open && ReactDOM.createPortal(
                     <Modal
                       size="sm"
                       className="seedlot-registration-modal"
@@ -292,9 +265,10 @@ const SeedlotRegistrationForm = () => {
                         subtitle={inputText.modal.notification.subtitle}
                         caption={inputText.modal.notification.link}
                       />
-                    </Modal>
+                    </Modal>,
+                    document.body
                   )}
-                </ModalStateManager>
+                </>
               )
           }
         </div>

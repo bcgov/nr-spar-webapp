@@ -7,12 +7,3 @@ export type GeneticTraitsType = {
 export type ControlFiltersType = {
   [key: string]: boolean;
 };
-
-export type ModalRenderControllerType = {
-  setOpen: Function;
-};
-
-export type ModalRenderType = {
-  open: boolean;
-  setOpen: Function;
-};
