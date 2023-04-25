@@ -21,7 +21,8 @@ module.exports = {
     '<rootDir>/src/components/SilentCheckSso/',
     '<rootDir>/src/contexts/',
     '<rootDir>/src/routes/',
-    '<rootDir>/src/service/'
+    '<rootDir>/src/service/',
+    '<rootDir>/src/api-service/'
   ]
 };
 
