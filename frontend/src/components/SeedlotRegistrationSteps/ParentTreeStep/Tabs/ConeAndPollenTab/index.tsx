@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { useParams } from 'react-router-dom';
 import {
@@ -27,29 +27,31 @@ import {
 import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../../Subtitle';
+import UploadFileModal from '../../UploadFileModal';
+
 import paginationOnChange from '../../../../../utils/PaginationUtils';
 
 import api from '../../../../../api-service/api';
 import ApiConfig from '../../../../../api-service/ApiConfig';
 
-import { pageTexts } from '../../constants';
+import { ConeAndPollenType } from '../../../../../types/SeedlotTypes/ParentTree';
+
+import { coneAndPollenFixedHeaders, pageTexts } from '../../constants';
+
 import {
   ControlFiltersType,
-  GeneticTraitsType
+  GeneticTraitsType,
+  ParentTreesIdType,
+  TableHeaders,
+  TableRows
 } from '../../definitions';
-import getGeneticWorths from '../../utils';
+
+import { createEmptyConeAndPollen, getGeneticWorths } from '../../utils';
 
 import '../styles.scss';
-import UploadFileModal from '../../UploadFileModal';
 
-type TableHeaders = {
-  key: string;
-  header: string;
-  isObrigatory: boolean;
-}
-
-type TableRows = {
-  id: string;
+interface ConeAndPollenTabProps {
+  parentTrees: Array<ParentTreesIdType>;
 }
 
 interface ParentTreeDataTableProps {
@@ -57,9 +59,9 @@ interface ParentTreeDataTableProps {
   headers: Array<TableHeaders>;
 }
 
-const ConeAndPollenTab = () => {
+const ConeAndPollenTab = ({ parentTrees }: ConeAndPollenTabProps) => {
   const { seedlot } = useParams();
-  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('PLI');
+  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('');
   const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
   const [currentPageSize, setCurrentPageSize] = useState<number>(40);
   const [open, setOpen] = useState<boolean>(false);
@@ -80,11 +82,58 @@ const ConeAndPollenTab = () => {
     }
   };
 
-  useEffect(() => {
-    getSeedlotData();
-  }, []);
-
   const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(seedlotSpecie);
+  const coneAndPollenData: ConeAndPollenType = createEmptyConeAndPollen(parentTrees);
+
+  const refControl = useRef<any>({});
+  const addRefs = (element: HTMLInputElement, name: string) => {
+    if (element !== null) {
+      refControl.current = {
+        ...refControl.current,
+        [name]: element
+      };
+    }
+  };
+
+  const fillTableAndResults = (coneAndPollen: ConeAndPollenType) => {
+    coneAndPollen.coneAndPollenEntries.forEach((element, index) => {
+      // We have a possible cenario with 2 orchards with the same parent tree ID
+      // so we need combine the parent tree ID with the mapping index to have an
+      // unique identifier
+      const indexParentIdCombination = `${(element.cloneNumber.toString() + index.toString())}`;
+
+      const inputCone = `inputCone-${indexParentIdCombination}`;
+      const inputPollen = `inputPollen-${indexParentIdCombination}`;
+      const inputSMP = `inputSMP-${indexParentIdCombination}`;
+
+      refControl.current[inputCone].value = element.coneCount;
+      refControl.current[inputPollen].value = element.pollenCount;
+      refControl.current[inputSMP].value = element.smpSuccess;
+
+      geneticTraits.forEach((genTrait) => {
+        const genTraitInputRef = `inputTrait-${genTrait.code}-${indexParentIdCombination}`;
+        refControl.current[genTraitInputRef].value = element[genTrait.code];
+      });
+    });
+
+    geneticTraits.forEach((genTrait) => {
+      const genTraitInputRef = `inputTraitResult-${genTrait.code}`;
+      const totalGenTraitKey = `${genTrait.code}Total`;
+      refControl.current[genTraitInputRef].value = coneAndPollen.genTraitTotal[totalGenTraitKey];
+    });
+
+    // Other inputs are manual...
+    // eslint-disable-next-line max-len
+    refControl.current.totalParentTreesConeAndPollen.value = coneAndPollen.totalParentTreesConeAndPollen;
+    refControl.current.totalConeCount.value = coneAndPollen.totalConeCount;
+    refControl.current.totalPollenCount.value = coneAndPollen.totalPollenCount;
+    refControl.current.averageSMP.value = coneAndPollen.averageSMP;
+    refControl.current.populationSize.value = coneAndPollen.populationSize;
+    refControl.current.testedParentTree.value = coneAndPollen.testedParentTree;
+    refControl.current.coancestry.value = coneAndPollen.coancestry;
+    refControl.current.smpParents.value = coneAndPollen.smpParents;
+  };
+
   const [filterControl, setFilterControl] = useState<ControlFiltersType>(() => {
     const returnObj = {};
     geneticTraits.forEach((trait) => {
@@ -104,63 +153,10 @@ const ConeAndPollenTab = () => {
     });
   };
 
-  const parentTreeHeaders:Array<TableHeaders> = [
-    {
-      key: '1',
-      header: 'Clone number',
-      isObrigatory: true
-    },
-    {
-      key: '2',
-      header: 'Cone count',
-      isObrigatory: true
-    },
-    {
-      key: '3',
-      header: 'Pollen count',
-      isObrigatory: true
-    },
-    {
-      key: '4',
-      header: 'SMP success (%)',
-      isObrigatory: true
-    }
-  ];
-  const parentTrees:Array<TableRows> = [
-    {
-      id: '1'
-    },
-    {
-      id: '2'
-    },
-    {
-      id: '3'
-    },
-    {
-      id: '4'
-    },
-    {
-      id: '5'
-    },
-    {
-      id: '6'
-    },
-    {
-      id: '7'
-    },
-    {
-      id: '8'
-    },
-    {
-      id: '9'
-    },
-    {
-      id: '10'
-    },
-    {
-      id: '11'
-    }
-  ];
+  useEffect(() => {
+    getSeedlotData();
+    fillTableAndResults(coneAndPollenData);
+  }, []);
 
   return (
     <FlexGrid className="parent-tree-tabs">
@@ -182,7 +178,7 @@ const ConeAndPollenTab = () => {
       <Row className="parent-tree-table-row">
         <DataTable
           rows={parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize)}
-          headers={parentTreeHeaders}
+          headers={coneAndPollenFixedHeaders}
         >
           {({
             rows,
@@ -277,24 +273,46 @@ const ConeAndPollenTab = () => {
                     <TableRow key={(row.id + i).toString()}>
                       <TableCell>{row.id}</TableCell>
                       <TableCell>
-                        <input type="number" className="table-input" placeholder="Add value" />
+                        <input
+                          ref={(el: HTMLInputElement) => addRefs(el, `inputCone-${(row.id + i).toString()}`)}
+                          type="number"
+                          className="table-input"
+                          placeholder="Add value"
+                        />
                       </TableCell>
                       <TableCell>
-                        <input type="number" className="table-input" placeholder="Add value" />
+                        <input
+                          ref={(el: HTMLInputElement) => addRefs(el, `inputPollen-${(row.id + i).toString()}`)}
+                          type="number"
+                          className="table-input"
+                          placeholder="Add value"
+                        />
                       </TableCell>
                       <TableCell>
-                        <input type="number" className="table-input" placeholder="Add value" />
+                        <input
+                          ref={(el: HTMLInputElement) => addRefs(el, `inputSMP-${(row.id + i).toString()}`)}
+                          type="number"
+                          className="table-input"
+                          placeholder="Add value"
+                        />
                       </TableCell>
-                      {geneticTraits.map((trait) => (
-                        filterControl[trait.code]
-                        && (
+                      {
+                        // This is not dinamically rendered because we need the reference
+                        // of the inputs to set the values on them
+                        geneticTraits.map((trait) => (
                           <TableCell
                             key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
+                            className={filterControl[trait.code] ? '' : 'parent-tree-hide'}
                           >
-                            <input type="number" className="table-input" placeholder="Add value" />
+                            <input
+                              ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id + i).toString()}`)}
+                              type="number"
+                              className="table-input"
+                              placeholder="Add value"
+                            />
                           </TableCell>
-                        )
-                      ))}
+                        ))
+                      }
                     </TableRow>
                   ))}
                 </TableBody>
@@ -333,6 +351,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="totalParentTreesConeAndPollen"
+            ref={(el: HTMLInputElement) => addRefs(el, 'totalParentTreesConeAndPollen')}
             labelText={pageTexts.coneAndPollen.summary.fieldLabels.totalParentTrees}
             readOnly
           />
@@ -340,6 +359,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="totalConeCount"
+            ref={(el: HTMLInputElement) => addRefs(el, 'totalConeCount')}
             labelText={pageTexts.coneAndPollen.summary.fieldLabels.totalConeCount}
             readOnly
           />
@@ -347,6 +367,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="totalPollenCount"
+            ref={(el: HTMLInputElement) => addRefs(el, 'totalPollenCount')}
             labelText={pageTexts.coneAndPollen.summary.fieldLabels.totalPollenCount}
             readOnly
           />
@@ -354,6 +375,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="averageSMP"
+            ref={(el: HTMLInputElement) => addRefs(el, 'averageSMP')}
             labelText={pageTexts.coneAndPollen.summary.fieldLabels.averageSMP}
             readOnly
           />
@@ -369,6 +391,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="populationSize"
+            ref={(el: HTMLInputElement) => addRefs(el, 'populationSize')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.populationSize}
             readOnly
           />
@@ -376,6 +399,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="testedParentTree"
+            ref={(el: HTMLInputElement) => addRefs(el, 'testedParentTree')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.testedParentTree}
             readOnly
           />
@@ -383,6 +407,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="coancestry"
+            ref={(el: HTMLInputElement) => addRefs(el, 'coancestry')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.coancestry}
             readOnly
           />
@@ -390,6 +415,7 @@ const ConeAndPollenTab = () => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="smpParents"
+            ref={(el: HTMLInputElement) => addRefs(el, 'smpParents')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.smpParents}
             readOnly
           />
@@ -399,7 +425,8 @@ const ConeAndPollenTab = () => {
         {geneticTraits.map((trait) => (
           <Column key={`column-trait-${trait.code}`} sm={2} md={4} lg={4}>
             <TextInput
-              id={`input-trait-${trait.code}`}
+              id={`input-trait-result-${trait.code}`}
+              ref={(el: HTMLInputElement) => addRefs(el, `inputTraitResult-${trait.code}`)}
               labelText={trait.description}
               readOnly
             />

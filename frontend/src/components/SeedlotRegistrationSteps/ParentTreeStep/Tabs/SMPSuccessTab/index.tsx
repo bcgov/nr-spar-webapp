@@ -38,14 +38,13 @@ import {
   ControlFiltersType,
   GeneticTraitsType
 } from '../../definitions';
-import getGeneticWorths from '../../utils';
+import { getGeneticWorths } from '../../utils';
 
 import '../styles.scss';
 
 type TableHeaders = {
   key: string;
   header: string;
-  isObrigatory: boolean;
 }
 
 type TableRows = {
@@ -62,7 +61,6 @@ const SMPSuccessTab = () => {
   const [seedlotSpecie, setSeedlotSpecie] = useState<string>('PLI');
   const [open, setOpen] = useState<boolean>(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getSeedlotData = () => {
     if (seedlot) {
       const url = `${ApiConfig.seedlot}/${seedlot}`;
@@ -106,18 +104,15 @@ const SMPSuccessTab = () => {
   const parentTreeHeaders:Array<TableHeaders> = [
     {
       key: '1',
-      header: 'Clone number',
-      isObrigatory: true
+      header: 'Clone number'
     },
     {
       key: '2',
-      header: 'SMP success on parent (%)',
-      isObrigatory: true
+      header: 'SMP success on parent (%)'
     },
     {
       key: '3',
-      header: 'Non-orchard pollen contam. (%)',
-      isObrigatory: true
+      header: 'Non-orchard pollen contam. (%)'
     }
   ];
   const parentTrees:Array<TableRows> = [

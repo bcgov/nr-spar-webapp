@@ -151,7 +151,7 @@ const SeedlotRegistrationForm = () => {
       // Parent Tree and SMP
       case 4:
         return (
-          <ParentTreeStep />
+          <ParentTreeStep orchardID={102} />
         );
       // Extraction and Storage
       case 5:

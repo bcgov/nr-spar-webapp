@@ -1,3 +1,5 @@
+import { TableHeaders } from './definitions';
+
 export const MAX_ROWS = 500;
 
 export const pageTexts = {
@@ -143,3 +145,22 @@ export const geneticTraits = {
     filterLabel: 'Wood velocity measures (WVE)'
   }
 };
+
+export const coneAndPollenFixedHeaders:Array<TableHeaders> = [
+  {
+    key: '1',
+    header: 'Clone number'
+  },
+  {
+    key: '2',
+    header: 'Cone count'
+  },
+  {
+    key: '3',
+    header: 'Pollen count'
+  },
+  {
+    key: '4',
+    header: 'SMP success (%)'
+  }
+];
