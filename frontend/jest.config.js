@@ -20,7 +20,8 @@ module.exports = {
     '<rootDir>/src/components/Logout/',
     '<rootDir>/src/components/SilentCheckSso/',
     '<rootDir>/src/contexts/',
-    '<rootDir>/src/routes/'
+    '<rootDir>/src/routes/',
+    '<rootDir>/src/service/'
   ]
 };
 
