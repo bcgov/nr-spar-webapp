@@ -26,6 +26,9 @@ export const pageTexts = {
       label: 'Seedlot registration',
       description: 'Select the spreadsheet file for the cone and pollen count table with the data you want to import. The supported file format is .csv.',
       uploadFile: 'Click to upload or drag and drop the file here',
+      uploadedFileErrorType: 'File size exceeds limit',
+      uploadedFileErrorMessage: '500kb max file size. Select a new file and try again.',
+      uploadedFileIconDesc: 'Delete file',
       notification: {
         title: 'Note:',
         description: 'When uploading a file all previously filled data within the table will be replaced'

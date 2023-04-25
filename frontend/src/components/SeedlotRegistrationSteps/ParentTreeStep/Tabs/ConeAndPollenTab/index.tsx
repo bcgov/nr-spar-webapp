@@ -7,13 +7,9 @@ import {
   Row,
   Column,
   InlineNotification,
-  ToastNotification,
   TextInput,
   Button,
   Checkbox,
-  Modal,
-  FileUploaderDropContainer,
-  // FileUploaderItem,
   OverflowMenu,
   OverflowMenuItem,
   DataTable,
@@ -44,6 +40,7 @@ import {
 import getGeneticWorths from '../../utils';
 
 import '../styles.scss';
+import UploadFileModal from '../../UploadFileModal';
 
 type TableHeaders = {
   key: string;
@@ -63,9 +60,10 @@ interface ParentTreeDataTableProps {
 const ConeAndPollenTab = () => {
   const { seedlot } = useParams();
   const [seedlotSpecie, setSeedlotSpecie] = useState<string>('PLI');
+  const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
+  const [currentPageSize, setCurrentPageSize] = useState<number>(40);
   const [open, setOpen] = useState<boolean>(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getSeedlotData = () => {
     if (seedlot) {
       const url = `${ApiConfig.seedlot}/${seedlot}`;
@@ -164,9 +162,6 @@ const ConeAndPollenTab = () => {
     }
   ];
 
-  const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
-  const [currentPageSize, setCurrentPageSize] = useState<number>(40);
-
   return (
     <FlexGrid className="parent-tree-tabs">
       <Row className="title-row">
@@ -250,45 +245,7 @@ const ConeAndPollenTab = () => {
                     Upload from file
                   </Button>
                   {open && ReactDOM.createPortal(
-                    <Modal
-                      className="upload-file-modal"
-                      modalLabel={pageTexts.sharedTabTexts.modal.label}
-                      modalHeading={pageTexts.sharedTabTexts.modal.title}
-                      primaryButtonText={pageTexts.sharedTabTexts.modal.buttons.confirm}
-                      secondaryButtonText={pageTexts.sharedTabTexts.modal.buttons.cancel}
-                      open={open}
-                      onRequestClose={() => setOpen(false)}
-                      onRequestSubmit={() => setOpen(false)}
-                      size="sm"
-                    >
-                      <p>{pageTexts.sharedTabTexts.modal.description}</p>
-                      <FileUploaderDropContainer
-                        className="upload-file-component"
-                        labelText={pageTexts.sharedTabTexts.modal.uploadFile}
-                        // onClick={
-                        //   () => {
-                        //     // eslint-disable-next-line no-debugger
-                        //     debugger;
-                        //   }
-                        // }
-                        onAddFiles={
-                          (e: React.ChangeEvent<HTMLInputElement>, { addedFiles }: any) => {
-                            // eslint-disable-next-line no-debugger
-                            debugger;
-                            e.stopPropagation();
-                            console.log(addedFiles);
-                            console.log(e);
-                          }
-                        }
-                      />
-                      <ToastNotification
-                        className="upload-notification"
-                        lowContrast
-                        kind="info"
-                        title={pageTexts.sharedTabTexts.modal.notification.title}
-                        subtitle={pageTexts.sharedTabTexts.modal.notification.description}
-                      />
-                    </Modal>,
+                    <UploadFileModal open={open} setOpen={setOpen} />,
                     document.body
                   )}
                 </TableToolbarContent>

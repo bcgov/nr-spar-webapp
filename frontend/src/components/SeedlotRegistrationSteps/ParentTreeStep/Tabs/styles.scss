@@ -39,6 +39,8 @@
   }
 
   .parent-tree-table-row {
+    margin-left: 0;
+
     .#{vars.$bcgov-prefix}--data-table tr th {
       background-color: var(--bcgov-layer-accent-01);
     }
@@ -51,7 +53,7 @@
       border: 0;
       background: transparent;
       width: 100%;
-      height: 47px;
+      height: 2.9375rem;
     }
 
     .table-input:focus-visible {
@@ -103,22 +105,5 @@
 
   .breeding-value-checkbox {
     padding: 0.5rem 0.9375rem;
-  }
-}
-
-// The modal is also created outside of the tab context
-.upload-file-modal {
-  p {
-    @include type.type-style('body-compact-01');
-    color: var(--bcgov-text-secondary);
-    margin-bottom: 1rem;
-  }
-
-  .upload-file-component {
-    max-width: 100%;
-  }
-
-  .upload-notification {
-    width: 100%;
   }
 }

@@ -7,13 +7,9 @@ import {
   Row,
   Column,
   InlineNotification,
-  ToastNotification,
   TextInput,
   Button,
   Checkbox,
-  Modal,
-  FileUploaderDropContainer,
-  // FileUploaderItem,
   OverflowMenu,
   OverflowMenuItem,
   DataTable,
@@ -31,6 +27,7 @@ import {
 import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../../Subtitle';
+import UploadFileModal from '../../UploadFileModal';
 import paginationOnChange from '../../../../../utils/PaginationUtils';
 
 import api from '../../../../../api-service/api';
@@ -245,45 +242,7 @@ const SMPSuccessTab = () => {
                     Upload from file
                   </Button>
                   {open && ReactDOM.createPortal(
-                    <Modal
-                      className="upload-file-modal"
-                      modalLabel={pageTexts.sharedTabTexts.modal.label}
-                      modalHeading={pageTexts.sharedTabTexts.modal.title}
-                      primaryButtonText={pageTexts.sharedTabTexts.modal.buttons.confirm}
-                      secondaryButtonText={pageTexts.sharedTabTexts.modal.buttons.cancel}
-                      open={open}
-                      onRequestClose={() => setOpen(false)}
-                      onRequestSubmit={() => setOpen(false)}
-                      size="sm"
-                    >
-                      <p>{pageTexts.sharedTabTexts.modal.description}</p>
-                      <FileUploaderDropContainer
-                        className="upload-file-component"
-                        labelText={pageTexts.sharedTabTexts.modal.uploadFile}
-                        // onClick={
-                        //   () => {
-                        //     // eslint-disable-next-line no-debugger
-                        //     debugger;
-                        //   }
-                        // }
-                        onAddFiles={
-                          (e: React.ChangeEvent<HTMLInputElement>, { addedFiles }: any) => {
-                            // eslint-disable-next-line no-debugger
-                            debugger;
-                            e.stopPropagation();
-                            console.log(addedFiles);
-                            console.log(e);
-                          }
-                        }
-                      />
-                      <ToastNotification
-                        className="upload-notification"
-                        lowContrast
-                        kind="info"
-                        title={pageTexts.sharedTabTexts.modal.notification.title}
-                        subtitle={pageTexts.sharedTabTexts.modal.notification.description}
-                      />
-                    </Modal>,
+                    <UploadFileModal open={open} setOpen={setOpen} />,
                     document.body
                   )}
                 </TableToolbarContent>
