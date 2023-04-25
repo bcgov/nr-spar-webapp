@@ -54,8 +54,16 @@ export const ownerTemplate: SingleOwnerForm = {
   ownerPortion: '0.00',
   reservedPerc: '100.00',
   surplusPerc: '0.00',
-  fundingSource: '',
-  methodOfPayment: ''
+  fundingSource: {
+    label: '',
+    code: '',
+    description: ''
+  },
+  methodOfPayment: {
+    label: 'ITC - Invoice to Client Address',
+    code: 'ITC',
+    description: 'Invoice to Client Address'
+  }
 };
 
 export const validTemplate: ValidationProp = {
