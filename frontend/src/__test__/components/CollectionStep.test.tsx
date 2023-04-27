@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -24,9 +23,15 @@ describe('Collection Step test', () => {
 
   it('should have the correct labels', () => {
     const content = {
-      title: 'Collector agency'
+      title: 'Collector agency',
+      subtitle: 'Enter the collector agency information',
+      titleInformation: 'Collection information',
+      subtitleInformation: 'Enter the collection information about this seedlot'
     }
     expect(screen.getByText(content.title)).toBeInTheDocument();
+    expect(screen.getByText(content.subtitle)).toBeInTheDocument();
+    expect(screen.getByText(content.titleInformation)).toBeInTheDocument();
+    expect(screen.getByText(content.subtitleInformation)).toBeInTheDocument();
   });
 
   it('should call the checkbox click function', async () => {
