@@ -204,7 +204,7 @@ const CollectionStep = (
               titleText={fieldsConfig.collector.titleText}
               helperText={fieldsConfig.collector.helperText}
               // DEMO
-              invalidText={invalidateObj.collectorAgency.invalidText}
+              invalidText={invalidateObj ? invalidateObj.collectorAgency.invalidText : ''}
               items={agencyOptions}
               readOnly={isChecked || readOnly}
               selectedItem={state.collectorAgency}
@@ -215,7 +215,7 @@ const CollectionStep = (
                 );
               }}
               // DEMO
-              invalid={invalidateObj.collectorAgency.isInvalid}
+              invalid={invalidateObj ? invalidateObj.collectorAgency.isInvalid : false}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }

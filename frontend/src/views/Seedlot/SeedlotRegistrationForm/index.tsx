@@ -2,21 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
-  Checkbox,
   FlexGrid,
   Row,
   Breadcrumb,
   BreadcrumbItem,
-  Button,
-  Modal,
-  ToastNotification
+  Button
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/icons-react';
 
 import getFundingSources from '../../../api-service/fundingSorucesAPI';
 import getPaymentMethods from '../../../api-service/paymentMethodsAPI';
 import PageTitle from '../../../components/PageTitle';
-import ModalStateManager from '../../../components/ModalStateManager';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../../../components/SeedlotRegistrationSteps/InterimStep';
@@ -36,10 +32,10 @@ import {
   initInvalidationObj
 } from './utils';
 import { getDropDownList } from '../../../utils/DropDownUtils';
-import './styles.scss';
 import { CollectionForm } from '../../../components/SeedlotRegistrationSteps/CollectionStep/utils';
 import ExtractionStorage from '../../../types/SeedlotTypes/ExtractionStorage';
-import inputText from './constants';
+import SubmitModal from '../../../components/SeedlotRegistrationSteps/SubmitModal';
+import './styles.scss';
 
 const defaultCode = '16';
 const defaultAgency = '0032 - Strong Seeds Orchard - SSO';
@@ -246,38 +242,7 @@ const SeedlotRegistrationForm = () => {
                 </Button>
               )
               : (
-                <ModalStateManager
-                  renderLauncher={({ setOpen }: any) => (
-                    <Button onClick={() => setOpen(true)}>{inputText.modal.buttonText}</Button>
-                  )}
-                >
-                  {({ open, setOpen }: any) => (
-                    <Modal
-                      size="sm"
-                      className="seedlot-registration-modal"
-                      modalLabel={inputText.modal.modalLabel}
-                      modalHeading={inputText.modal.modalHeading}
-                      primaryButtonText={inputText.modal.primaryButtonText}
-                      secondaryButtonText={inputText.modal.secondaryButtonText}
-                      open={open}
-                      onRequestClose={() => setOpen(false)}
-                    >
-                      <p>{inputText.modal.helperText}</p>
-                      <Checkbox
-                        id="declaration-modal-checkbox"
-                        name="declaration-modal"
-                        labelText={inputText.modal.checkboxLabelText}
-                      />
-                      <ToastNotification
-                        lowContrast
-                        kind="info"
-                        title={inputText.modal.notification.title}
-                        subtitle={inputText.modal.notification.subtitle}
-                        caption={inputText.modal.notification.link}
-                      />
-                    </Modal>
-                  )}
-                </ModalStateManager>
+                <SubmitModal />
               )
           }
         </div>

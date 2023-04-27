@@ -273,7 +273,7 @@ const ExtractionAndStorage = (
               ref={storageNameInputRef}
               name="seed-storage-agency"
               helperText={inputText.storage.helperText}
-              onChange={(e: ComboBoxEvent) => { handleFormInput('seedStorageAgency', e.selectedItem); }}
+              onChange={(e: ComboBoxEvent) => handleFormInput('seedStorageAgency', e.selectedItem)}
               selectedItem={state.seedStorageAgency}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })

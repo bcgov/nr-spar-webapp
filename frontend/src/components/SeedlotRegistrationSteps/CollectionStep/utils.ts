@@ -26,7 +26,7 @@ export interface CollectionStepProps {
   defaultCode: string,
   agencyOptions: Array<string>,
   readOnly?: boolean,
-  invalidateObj:FormInvalidationObj
+  invalidateObj?:FormInvalidationObj
 }
 
 export type FormValidation = {
