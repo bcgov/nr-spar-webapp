@@ -1,4 +1,5 @@
 import { ownerTemplate } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/constants';
+import { FormInvalidationObj } from './definitions';
 
 export const initCollectionState = (
   defaultAgency: string,
@@ -78,3 +79,19 @@ export const initExtractionStorageState = (
     seedStorageEndDate: ''
   }
 );
+
+export const initInvalidationObj = (stepObj: object) => {
+  const returnObj: FormInvalidationObj = {};
+  const inputKeys = Object.keys(stepObj);
+
+  inputKeys.forEach((key: string) => {
+    Object.assign(returnObj, {
+      [key]: {
+        isInvalid: false,
+        invalidText: ''
+      }
+    });
+  });
+
+  return returnObj;
+};

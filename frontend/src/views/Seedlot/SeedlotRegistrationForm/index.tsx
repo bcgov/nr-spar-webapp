@@ -26,13 +26,14 @@ import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimSte
 import ExtractionAndStorage from '../../../components/SeedlotRegistrationSteps/ExtractionAndStorageStep';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
-import { AllStepData } from './definitions';
+import { AllStepData, AllStepInvalidationObj } from './definitions';
 import {
   initCollectionState,
   initInterimState,
   initOrchardState,
   initOwnershipState,
-  initExtractionStorageState
+  initExtractionStorageState,
+  initInvalidationObj
 } from './utils';
 import { getDropDownList } from '../../../utils/DropDownUtils';
 import './styles.scss';
@@ -100,6 +101,15 @@ const SeedlotRegistrationForm = () => {
     extractionStorageStep: initExtractionStorageState(defaultAgency, defaultCode)
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [allInvalidationObj, setAllInvalidationObj] = useState<AllStepInvalidationObj>({
+    collectionStep: initInvalidationObj(allStepData.collectionStep),
+    interimStep: initInvalidationObj(allStepData.interimStep),
+    ownershipStep: initInvalidationObj(allStepData.orchardStep),
+    orchardStep: initInvalidationObj(allStepData.orchardStep),
+    extractionStorageStep: initInvalidationObj(allStepData.extractionStorageStep)
+  });
+
   // Can't find a good way to specify the type of stepData
   const setStepData = (stepName: keyof AllStepData, stepData: any) => {
     const newData = { ...allStepData };
@@ -128,6 +138,7 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
+            invalidateObj={allInvalidationObj.collectionStep}
             setStepData={(data: CollectionForm) => setStepData('collectionStep', data)}
           />
         );

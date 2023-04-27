@@ -11,3 +11,20 @@ export type AllStepData = {
   orchardStep: SeedlotOrchard,
   extractionStorageStep: ExtractionStorage
 }
+
+type SingleInvalidObj = {
+  isInvalid: boolean,
+  invalidText: string,
+}
+
+export type FormInvalidationObj = {
+  [key: string]: SingleInvalidObj
+}
+
+export type AllStepInvalidationObj = {
+  collectionStep: FormInvalidationObj,
+  interimStep: FormInvalidationObj,
+  ownershipStep: FormInvalidationObj,
+  orchardStep: FormInvalidationObj,
+  extractionStorageStep: FormInvalidationObj
+}
