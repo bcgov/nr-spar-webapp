@@ -12,11 +12,11 @@ import {
   ToastNotification
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/icons-react';
-import ReactDOM from 'react-dom';
 
 import getFundingSources from '../../../api-service/fundingSorucesAPI';
 import getPaymentMethods from '../../../api-service/paymentMethodsAPI';
 import PageTitle from '../../../components/PageTitle';
+import ModalStateManager from '../../../components/ModalStateManager';
 import SeedlotRegistrationProgress from '../../../components/SeedlotRegistrationProgress';
 import OrchardStep from '../../../components/SeedlotRegistrationSteps/OrchardStep';
 import InterimStorage from '../../../components/SeedlotRegistrationSteps/InterimStep';
@@ -50,31 +50,6 @@ const agencyOptions = [
   '0041 - Great Seeds Orchard - GSO',
   '0043 - Bad Seeds Orchard - BSO'
 ];
-
-interface Declaration {
-  renderLauncher: any;
-  children: any;
-}
-
-const ModalStateManager = (
-  {
-    renderLauncher: LauncherContent,
-    children: ModalContent
-  }: Declaration
-) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      {!ModalContent || typeof document === 'undefined'
-        ? null
-        : ReactDOM.createPortal(
-          <ModalContent open={open} setOpen={setOpen} />,
-          document.body
-        )}
-      {LauncherContent && <LauncherContent open={open} setOpen={setOpen} />}
-    </>
-  );
-};
 
 const SeedlotRegistrationForm = () => {
   const navigate = useNavigate();
