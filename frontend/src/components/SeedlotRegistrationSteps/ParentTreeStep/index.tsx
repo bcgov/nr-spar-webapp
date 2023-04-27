@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Tabs,
   TabList,
@@ -10,54 +11,42 @@ import {
 import ConeAndPollenTab from './Tabs/ConeAndPollenTab';
 import SMPSuccessTab from './Tabs/SMPSuccessTab';
 
-import { pageTexts } from './constants';
-import { ParentTreesIdType } from './definitions';
+import ApiConfig from '../../../api-service/ApiConfig';
+import api from '../../../api-service/api';
+
+import { pageTexts, getTestParentTrees } from './constants';
 
 import './styles.scss';
 
 interface ParentTreeStepProps {
-  orchardID: number;
+  orchardID: string[];
 }
 
 const ParentTreeStep = ({ orchardID }: ParentTreeStepProps) => {
-  // Use orchard id to get parent trees ids
-  console.log(orchardID);
-  // This needs to be an array of object to work properly on react table
-  const testParentTrees:Array<ParentTreesIdType> = [
-    {
-      id: '1'
-    },
-    {
-      id: '2'
-    },
-    {
-      id: '3'
-    },
-    {
-      id: '4'
-    },
-    {
-      id: '5'
-    },
-    {
-      id: '6'
-    },
-    {
-      id: '7'
-    },
-    {
-      id: '8'
-    },
-    {
-      id: '9'
-    },
-    {
-      id: '10'
-    },
-    {
-      id: '11'
+  const { seedlot } = useParams();
+  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('');
+
+  const testParentTrees = getTestParentTrees(orchardID);
+
+  const getSeedlotData = () => {
+    if (seedlot) {
+      const url = `${ApiConfig.seedlot}/${seedlot}`;
+      api.get(url)
+        .then((response) => {
+          if (response.data.seedlotApplicantInfo) {
+            setSeedlotSpecie(response.data.seedlotApplicantInfo.species.code);
+          }
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(`Error: ${error}`);
+        });
     }
-  ];
+  };
+
+  useEffect(() => {
+    getSeedlotData();
+  }, []);
 
   return (
     <div className="seedlot-parent-tree-step">
@@ -69,10 +58,14 @@ const ParentTreeStep = ({ orchardID }: ParentTreeStepProps) => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <ConeAndPollenTab parentTrees={testParentTrees} />
+            <ConeAndPollenTab
+              parentTrees={testParentTrees}
+              species={seedlotSpecie}
+              orchards={orchardID}
+            />
           </TabPanel>
           <TabPanel>
-            <SMPSuccessTab />
+            <SMPSuccessTab parentTrees={testParentTrees} species={seedlotSpecie} />
           </TabPanel>
           <TabPanel>Tab 3</TabPanel>
         </TabPanels>

@@ -13,9 +13,10 @@ import './styles.scss';
 interface UploadFileModalProps {
   open: boolean;
   setOpen: Function;
+  onSubmit: Function;
 }
 
-const UploadFileModal = ({ open, setOpen }: UploadFileModalProps) => {
+const UploadFileModal = ({ open, setOpen, onSubmit }: UploadFileModalProps) => {
   const [file, setFile] = useState<File>();
   const [fileName, setFileName] = useState<string>('');
   const [fileAdded, setFileAdded] = useState<boolean>(false);
@@ -43,7 +44,7 @@ const UploadFileModal = ({ open, setOpen }: UploadFileModalProps) => {
         resetUploadStatus();
       }}
       onRequestSubmit={() => {
-        console.log(file);
+        onSubmit(file);
         setOpen(false);
         resetUploadStatus();
       }}

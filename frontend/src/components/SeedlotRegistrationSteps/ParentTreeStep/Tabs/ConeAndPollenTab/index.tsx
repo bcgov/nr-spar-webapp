@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useParams } from 'react-router-dom';
 import {
   FlexGrid,
   Row,
@@ -12,7 +11,6 @@ import {
   Checkbox,
   OverflowMenu,
   OverflowMenuItem,
-  DataTable,
   TableContainer,
   TableToolbar,
   TableToolbarContent,
@@ -29,11 +27,6 @@ import { Upload, View, Settings } from '@carbon/icons-react';
 import Subtitle from '../../../../Subtitle';
 import UploadFileModal from '../../UploadFileModal';
 
-import paginationOnChange from '../../../../../utils/PaginationUtils';
-
-import api from '../../../../../api-service/api';
-import ApiConfig from '../../../../../api-service/ApiConfig';
-
 import { ConeAndPollenType } from '../../../../../types/SeedlotTypes/ParentTree';
 
 import { coneAndPollenFixedHeaders, pageTexts } from '../../constants';
@@ -41,49 +34,52 @@ import { coneAndPollenFixedHeaders, pageTexts } from '../../constants';
 import {
   ControlFiltersType,
   GeneticTraitsType,
-  ParentTreesIdType,
-  TableHeaders,
-  TableRows
+  ParentTreesIdType
 } from '../../definitions';
 
-import { createEmptyConeAndPollen, getGeneticWorths } from '../../utils';
+import {
+  createEmptyConeAndPollen,
+  createRandomConeAndPollen,
+  getGeneticWorths,
+  useIsMount
+} from '../../utils';
 
 import '../styles.scss';
 
 interface ConeAndPollenTabProps {
   parentTrees: Array<ParentTreesIdType>;
+  species: string;
+  orchards: string[];
 }
 
-interface ParentTreeDataTableProps {
-  rows: Array<TableRows>;
-  headers: Array<TableHeaders>;
-}
+const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabProps) => {
+  const isMount = useIsMount();
 
-const ConeAndPollenTab = ({ parentTrees }: ConeAndPollenTabProps) => {
-  const { seedlot } = useParams();
-  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('');
   const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
   const [currentPageSize, setCurrentPageSize] = useState<number>(40);
+
+  const [coneAndPollenData, setConeAndPollenData] = useState<ConeAndPollenType>(
+    createEmptyConeAndPollen(parentTrees)
+  );
+
   const [open, setOpen] = useState<boolean>(false);
 
-  const getSeedlotData = () => {
-    if (seedlot) {
-      const url = `${ApiConfig.seedlot}/${seedlot}`;
-      api.get(url)
-        .then((response) => {
-          if (response.data.seedlotApplicantInfo) {
-            setSeedlotSpecie(response.data.seedlotApplicantInfo.species.code);
-          }
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(`Error: ${error}`);
-        });
+  const paginationOnChange = async (pageSize: number, page: number) => {
+    if (pageSize !== currentPageSize) {
+      setCurrentPageSize(pageSize);
     }
+    setFirstRowIndex(pageSize * (page - 1));
   };
 
-  const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(seedlotSpecie);
-  const coneAndPollenData: ConeAndPollenType = createEmptyConeAndPollen(parentTrees);
+  const geneticTraits: Array<GeneticTraitsType> = getGeneticWorths(species);
+
+  const [filterControl, setFilterControl] = useState<ControlFiltersType>(() => {
+    const returnObj = {};
+    geneticTraits.forEach((trait) => {
+      (returnObj as ControlFiltersType)[trait.code] = false;
+    });
+    return returnObj;
+  });
 
   const refControl = useRef<any>({});
   const addRefs = (element: HTMLInputElement, name: string) => {
@@ -95,52 +91,62 @@ const ConeAndPollenTab = ({ parentTrees }: ConeAndPollenTabProps) => {
     }
   };
 
-  const fillTableAndResults = (coneAndPollen: ConeAndPollenType) => {
-    coneAndPollen.coneAndPollenEntries.forEach((element, index) => {
+  const fillTableAndResults = (coneAndPollen: ConeAndPollenType, tableOnly?: boolean) => {
+    coneAndPollen.coneAndPollenEntries.forEach((element) => {
       // We have a possible cenario with 2 orchards with the same parent tree ID
-      // so we need combine the parent tree ID with the mapping index to have an
-      // unique identifier
-      const indexParentIdCombination = `${(element.cloneNumber.toString() + index.toString())}`;
+      // so we need combine the parent tree ID with the orchard ID to get the
+      // unique value used on the inputs
+      orchards.forEach((orchard) => {
+        const indexParentIdCombination = `${(element.cloneNumber.toString())}-${orchard}`;
 
-      const inputCone = `inputCone-${indexParentIdCombination}`;
-      const inputPollen = `inputPollen-${indexParentIdCombination}`;
-      const inputSMP = `inputSMP-${indexParentIdCombination}`;
+        const inputCone = `inputCone-${indexParentIdCombination}`;
+        const inputPollen = `inputPollen-${indexParentIdCombination}`;
+        const inputSMP = `inputSMP-${indexParentIdCombination}`;
 
-      refControl.current[inputCone].value = element.coneCount;
-      refControl.current[inputPollen].value = element.pollenCount;
-      refControl.current[inputSMP].value = element.smpSuccess;
+        // Check if the current cloneNumber exists in that orchard before trying
+        // to change the input's value
+        if (
+          refControl.current[inputCone]
+          && refControl.current[inputPollen]
+          && refControl.current[inputSMP]
+        ) {
+          refControl.current[inputCone].value = element.coneCount;
+          refControl.current[inputPollen].value = element.pollenCount;
+          refControl.current[inputSMP].value = element.smpSuccess;
 
-      geneticTraits.forEach((genTrait) => {
-        const genTraitInputRef = `inputTrait-${genTrait.code}-${indexParentIdCombination}`;
-        refControl.current[genTraitInputRef].value = element[genTrait.code];
+          geneticTraits.forEach((genTrait) => {
+            const genTraitInputRef = `inputTrait-${genTrait.code}-${indexParentIdCombination}`;
+            refControl.current[genTraitInputRef].value = element[genTrait.code];
+          });
+        }
       });
     });
 
-    geneticTraits.forEach((genTrait) => {
-      const genTraitInputRef = `inputTraitResult-${genTrait.code}`;
-      const totalGenTraitKey = `${genTrait.code}Total`;
-      refControl.current[genTraitInputRef].value = coneAndPollen.genTraitTotal[totalGenTraitKey];
-    });
+    if (!tableOnly) {
+      geneticTraits.forEach((genTrait) => {
+        const genTraitInputRef = `inputTraitResult-${genTrait.code}`;
+        const totalGenTraitKey = `${genTrait.code}Total`;
+        refControl.current[genTraitInputRef].value = coneAndPollen.genTraitTotal[totalGenTraitKey];
+      });
 
-    // Other inputs are manual...
-    // eslint-disable-next-line max-len
-    refControl.current.totalParentTreesConeAndPollen.value = coneAndPollen.totalParentTreesConeAndPollen;
-    refControl.current.totalConeCount.value = coneAndPollen.totalConeCount;
-    refControl.current.totalPollenCount.value = coneAndPollen.totalPollenCount;
-    refControl.current.averageSMP.value = coneAndPollen.averageSMP;
-    refControl.current.populationSize.value = coneAndPollen.populationSize;
-    refControl.current.testedParentTree.value = coneAndPollen.testedParentTree;
-    refControl.current.coancestry.value = coneAndPollen.coancestry;
-    refControl.current.smpParents.value = coneAndPollen.smpParents;
+      // Other inputs are manual...
+      // eslint-disable-next-line max-len
+      refControl.current.totalParentTreesConeAndPollen.value = coneAndPollen.totalParentTreesConeAndPollen;
+      refControl.current.totalConeCount.value = coneAndPollen.totalConeCount;
+      refControl.current.totalPollenCount.value = coneAndPollen.totalPollenCount;
+      refControl.current.averageSMP.value = coneAndPollen.averageSMP;
+      refControl.current.populationSize.value = coneAndPollen.populationSize;
+      refControl.current.testedParentTree.value = coneAndPollen.testedParentTree;
+      refControl.current.coancestry.value = coneAndPollen.coancestry;
+      refControl.current.smpParents.value = coneAndPollen.smpParents;
+    }
   };
 
-  const [filterControl, setFilterControl] = useState<ControlFiltersType>(() => {
-    const returnObj = {};
-    geneticTraits.forEach((trait) => {
-      (returnObj as ControlFiltersType)[trait.code] = false;
-    });
-    return returnObj;
-  });
+  // These functions will be altered once the real API is connected
+  const testSubmit = () => {
+    setConeAndPollenData(createRandomConeAndPollen(parentTrees));
+    fillTableAndResults(coneAndPollenData);
+  };
 
   const handleFilters = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -154,9 +160,10 @@ const ConeAndPollenTab = ({ parentTrees }: ConeAndPollenTabProps) => {
   };
 
   useEffect(() => {
-    getSeedlotData();
-    fillTableAndResults(coneAndPollenData);
-  }, []);
+    if (!isMount) {
+      fillTableAndResults(coneAndPollenData);
+    }
+  }, [coneAndPollenData, currentPageSize]);
 
   return (
     <FlexGrid className="parent-tree-tabs">
@@ -176,150 +183,144 @@ const ConeAndPollenTab = ({ parentTrees }: ConeAndPollenTabProps) => {
         />
       </Row>
       <Row className="parent-tree-table-row">
-        <DataTable
-          rows={parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize)}
-          headers={coneAndPollenFixedHeaders}
+        <TableContainer
+          title={pageTexts.tabTitles.coneTab}
+          description={pageTexts.coneAndPollen.tableSubtitle}
         >
-          {({
-            rows,
-            headers
-          }: ParentTreeDataTableProps) => (
-            <TableContainer
-              title={pageTexts.tabTitles.coneTab}
-              description={pageTexts.coneAndPollen.tableSubtitle}
-            >
-              <TableToolbar>
-                <TableToolbarContent>
-                  <OverflowMenu
-                    aria-label="Show/Hide columns"
-                    renderIcon={View}
-                    menuOptionsClass="parent-tree-view-options"
-                    iconDescription="Show/Hide columns"
-                    flipped
+          <TableToolbar>
+            <TableToolbarContent>
+              <OverflowMenu
+                aria-label="Show/Hide columns"
+                renderIcon={View}
+                menuOptionsClass="parent-tree-view-options"
+                iconDescription="Show/Hide columns"
+                flipped
+              >
+                <p className="view-options-separator">
+                  Show breeding values
+                </p>
+                {geneticTraits.map((trait) => (
+                  <Checkbox
+                    key={`checkbox-trait-${trait.code}`}
+                    id={`checkbox-trait-${trait.code}`}
+                    name={`checkbox-trait-${trait.code}`}
+                    className="breeding-value-checkbox"
+                    labelText={trait.filterLabel}
+                    defaultChecked={filterControl[trait.code]}
+                    value={filterControl[trait.code]}
+                    onChange={
+                      (e: React.ChangeEvent<HTMLInputElement>) => handleFilters(e, trait.code)
+                    }
+                  />
+                ))}
+              </OverflowMenu>
+              <OverflowMenu
+                aria-label="More options"
+                renderIcon={Settings}
+                menuOptionsClass="parent-tree-table-options"
+                iconDescription="More options"
+              >
+                <OverflowMenuItem
+                  itemText="Download table template"
+                />
+                <OverflowMenuItem
+                  itemText="Export table as PDF file"
+                />
+                <OverflowMenuItem
+                  itemText="Clean table data"
+                />
+              </OverflowMenu>
+              <Button
+                onClick={() => setOpen(true)}
+                size="sm"
+                kind="primary"
+                renderIcon={Upload}
+                iconDescription="Upload file"
+              >
+                Upload from file
+              </Button>
+              {open && ReactDOM.createPortal(
+                <UploadFileModal open={open} setOpen={setOpen} onSubmit={testSubmit} />,
+                document.body
+              )}
+            </TableToolbarContent>
+          </TableToolbar>
+          <Table useZebraStyles>
+            <TableHead>
+              <TableRow>
+                {coneAndPollenFixedHeaders.map((header) => (
+                  <TableHeader
+                    key={header.key}
                   >
-                    <p className="view-options-separator">
-                      Show breeding values
-                    </p>
-                    {geneticTraits.map((trait) => (
-                      <Checkbox
-                        key={`checkbox-trait-${trait.code}`}
-                        id={`checkbox-trait-${trait.code}`}
-                        name={`checkbox-trait-${trait.code}`}
-                        className="breeding-value-checkbox"
-                        labelText={trait.filterLabel}
-                        defaultChecked={filterControl[trait.code]}
-                        value={filterControl[trait.code]}
-                        onChange={
-                          (e: React.ChangeEvent<HTMLInputElement>) => handleFilters(e, trait.code)
-                        }
+                    {header.header}
+                  </TableHeader>
+                ))}
+                {geneticTraits.map((trait) => (
+                  filterControl[trait.code]
+                  && (
+                    <TableHeader
+                      key={`header-trait-${trait.code}`}
+                    >
+                      {trait.filterLabel}
+                    </TableHeader>
+                  )
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {
+                parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize).map((row) => (
+                  <TableRow key={(row.id)}>
+                    <TableCell>
+                      {row.value}
+                    </TableCell>
+                    <TableCell>
+                      <input
+                        ref={(el: HTMLInputElement) => addRefs(el, `inputCone-${(row.id)}`)}
+                        type="number"
+                        className="table-input"
+                        placeholder="Add value"
                       />
-                    ))}
-                  </OverflowMenu>
-                  <OverflowMenu
-                    aria-label="More options"
-                    renderIcon={Settings}
-                    menuOptionsClass="parent-tree-table-options"
-                    iconDescription="More options"
-                  >
-                    <OverflowMenuItem
-                      itemText="Download table template"
-                    />
-                    <OverflowMenuItem
-                      itemText="Export table as PDF file"
-                    />
-                    <OverflowMenuItem
-                      itemText="Clean table data"
-                    />
-                  </OverflowMenu>
-                  <Button
-                    onClick={() => setOpen(true)}
-                    size="sm"
-                    kind="primary"
-                    renderIcon={Upload}
-                    iconDescription="Upload file"
-                  >
-                    Upload from file
-                  </Button>
-                  {open && ReactDOM.createPortal(
-                    <UploadFileModal open={open} setOpen={setOpen} />,
-                    document.body
-                  )}
-                </TableToolbarContent>
-              </TableToolbar>
-              <Table useZebraStyles>
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader
-                        key={header.key}
-                      >
-                        {header.header}
-                      </TableHeader>
-                    ))}
-                    {geneticTraits.map((trait) => (
-                      filterControl[trait.code]
-                      && (
-                        <TableHeader
-                          key={`header-trait-${trait.code}`}
+                    </TableCell>
+                    <TableCell>
+                      <input
+                        ref={(el: HTMLInputElement) => addRefs(el, `inputPollen-${(row.id)}`)}
+                        type="number"
+                        className="table-input"
+                        placeholder="Add value"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <input
+                        ref={(el: HTMLInputElement) => addRefs(el, `inputSMP-${(row.id)}`)}
+                        type="number"
+                        className="table-input"
+                        placeholder="Add value"
+                      />
+                    </TableCell>
+                    {
+                      // This is not dinamically rendered because we need the reference
+                      // of the inputs to set the values on them
+                      geneticTraits.map((trait) => (
+                        <TableCell
+                          key={`cell-trait-${trait.code}-${(row.id)}`}
+                          className={filterControl[trait.code] ? '' : 'parent-tree-hide'}
                         >
-                          {trait.filterLabel}
-                        </TableHeader>
-                      )
-                    ))}
+                          <input
+                            ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id)}`)}
+                            type="number"
+                            className="table-input"
+                            placeholder="Add value"
+                          />
+                        </TableCell>
+                      ))
+                    }
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, i) => (
-                    <TableRow key={(row.id + i).toString()}>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>
-                        <input
-                          ref={(el: HTMLInputElement) => addRefs(el, `inputCone-${(row.id + i).toString()}`)}
-                          type="number"
-                          className="table-input"
-                          placeholder="Add value"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <input
-                          ref={(el: HTMLInputElement) => addRefs(el, `inputPollen-${(row.id + i).toString()}`)}
-                          type="number"
-                          className="table-input"
-                          placeholder="Add value"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <input
-                          ref={(el: HTMLInputElement) => addRefs(el, `inputSMP-${(row.id + i).toString()}`)}
-                          type="number"
-                          className="table-input"
-                          placeholder="Add value"
-                        />
-                      </TableCell>
-                      {
-                        // This is not dinamically rendered because we need the reference
-                        // of the inputs to set the values on them
-                        geneticTraits.map((trait) => (
-                          <TableCell
-                            key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
-                            className={filterControl[trait.code] ? '' : 'parent-tree-hide'}
-                          >
-                            <input
-                              ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id + i).toString()}`)}
-                              type="number"
-                              className="table-input"
-                              placeholder="Add value"
-                            />
-                          </TableCell>
-                        ))
-                      }
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </DataTable>
+                ))
+                }
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Pagination
           className="table-pagination"
           backwardText="Previous page"
@@ -330,14 +331,12 @@ const ConeAndPollenTab = ({ parentTrees }: ConeAndPollenTabProps) => {
           pageSize={currentPageSize}
           pageSizes={[20, 40, 60, 80, 100]}
           totalItems={parentTrees.length}
-          onChange={({ page, pageSize }:{page: number, pageSize: number}) => {
-            paginationOnChange(
+          onChange={async ({ page, pageSize }: { page: number, pageSize: number }) => {
+            await paginationOnChange(
               pageSize,
-              currentPageSize,
-              page,
-              setFirstRowIndex,
-              setCurrentPageSize
+              page
             );
+            fillTableAndResults(coneAndPollenData, true);
           }}
         />
       </Row>

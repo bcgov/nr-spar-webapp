@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { ConeAndPollenEntriesType, ConeAndPollenType } from '../../../types/SeedlotTypes/ParentTree';
 import { geneticTraits } from './constants';
 import { GeneticTraitsType, ParentTreesIdType } from './definitions';
@@ -55,7 +56,7 @@ export const createEmptyConeAndPollen = (parentTrees: Array<ParentTreesIdType>) 
 
   parentTrees.forEach((element) => {
     const parentTreeEntry: ConeAndPollenEntriesType = {
-      cloneNumber: +element.id,
+      cloneNumber: +element.value,
       coneCount: 0,
       pollenCount: 0,
       smpSuccess: 0,
@@ -98,6 +99,72 @@ export const createEmptyConeAndPollen = (parentTrees: Array<ParentTreesIdType>) 
       wduTotal: 0,
       wwdTotal: 0,
       wveTotal: 0
+    }
+  };
+
+  return coneAndPollenEmptyData;
+};
+
+export const useIsMount = () => {
+  const isMountRef = useRef(true);
+  useEffect(() => {
+    isMountRef.current = false;
+  }, []);
+  return isMountRef.current;
+};
+
+// These functions will be removed once the real API is connected
+const getRandomFloat = () => parseFloat((Math.random() * (10 - 1) + 1).toFixed(4));
+export const createRandomConeAndPollen = (
+  parentTrees: Array<ParentTreesIdType>
+) => {
+  const parentTreeEntries: ConeAndPollenEntriesType[] = [];
+
+  parentTrees.forEach((element: ParentTreesIdType) => {
+    const parentTreeEntry: ConeAndPollenEntriesType = {
+      cloneNumber: +element.value,
+      coneCount: getRandomFloat(),
+      pollenCount: getRandomFloat(),
+      smpSuccess: getRandomFloat(),
+      ad: getRandomFloat(),
+      dfs: getRandomFloat(),
+      dfu: getRandomFloat(),
+      dfw: getRandomFloat(),
+      dsb: getRandomFloat(),
+      dsc: getRandomFloat(),
+      dsg: getRandomFloat(),
+      gvo: getRandomFloat(),
+      iws: getRandomFloat(),
+      wdu: getRandomFloat(),
+      wwd: getRandomFloat(),
+      wve: getRandomFloat()
+    };
+    parentTreeEntries.push(parentTreeEntry);
+  });
+
+  const coneAndPollenEmptyData: ConeAndPollenType = {
+    coneAndPollenEntries: parentTreeEntries,
+    totalParentTreesConeAndPollen: getRandomFloat(),
+    totalConeCount: getRandomFloat(),
+    totalPollenCount: getRandomFloat(),
+    averageSMP: getRandomFloat(),
+    populationSize: getRandomFloat(),
+    testedParentTree: getRandomFloat(),
+    coancestry: getRandomFloat(),
+    smpParents: getRandomFloat(),
+    genTraitTotal: {
+      adTotal: getRandomFloat(),
+      dfsTotal: getRandomFloat(),
+      dfuTotal: getRandomFloat(),
+      dfwTotal: getRandomFloat(),
+      dsbTotal: getRandomFloat(),
+      dscTotal: getRandomFloat(),
+      dsgTotal: getRandomFloat(),
+      gvoTotal: getRandomFloat(),
+      iwsTotal: getRandomFloat(),
+      wduTotal: getRandomFloat(),
+      wwdTotal: getRandomFloat(),
+      wveTotal: getRandomFloat()
     }
   };
 

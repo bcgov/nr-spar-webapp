@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import {
   FlexGrid,
@@ -30,13 +29,11 @@ import Subtitle from '../../../../Subtitle';
 import UploadFileModal from '../../UploadFileModal';
 import paginationOnChange from '../../../../../utils/PaginationUtils';
 
-import api from '../../../../../api-service/api';
-import ApiConfig from '../../../../../api-service/ApiConfig';
-
 import { pageTexts } from '../../constants';
 import {
   ControlFiltersType,
-  GeneticTraitsType
+  GeneticTraitsType,
+  ParentTreesIdType
 } from '../../definitions';
 import { getGeneticWorths } from '../../utils';
 
@@ -51,37 +48,20 @@ type TableRows = {
   id: string;
 }
 
+interface SMPSuccessTabProps {
+  parentTrees: Array<ParentTreesIdType>;
+  species: string;
+}
+
 interface ParentTreeDataTableProps {
   rows: Array<TableRows>;
   headers: Array<TableHeaders>;
 }
 
-const SMPSuccessTab = () => {
-  const { seedlot } = useParams();
-  const [seedlotSpecie, setSeedlotSpecie] = useState<string>('PLI');
+const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const getSeedlotData = () => {
-    if (seedlot) {
-      const url = `${ApiConfig.seedlot}/${seedlot}`;
-      api.get(url)
-        .then((response) => {
-          if (response.data.seedlotApplicantInfo) {
-            setSeedlotSpecie(response.data.seedlotApplicantInfo.species.code);
-          }
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(`Error: ${error}`);
-        });
-    }
-  };
-
-  useEffect(() => {
-    getSeedlotData();
-  }, []);
-
-  const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(seedlotSpecie);
+  const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(species);
   const [filterControl, setFilterControl] = useState<ControlFiltersType>(() => {
     const returnObj = {};
     geneticTraits.forEach((trait) => {
@@ -113,41 +93,6 @@ const SMPSuccessTab = () => {
     {
       key: '3',
       header: 'Non-orchard pollen contam. (%)'
-    }
-  ];
-  const parentTrees:Array<TableRows> = [
-    {
-      id: '1'
-    },
-    {
-      id: '2'
-    },
-    {
-      id: '3'
-    },
-    {
-      id: '4'
-    },
-    {
-      id: '5'
-    },
-    {
-      id: '6'
-    },
-    {
-      id: '7'
-    },
-    {
-      id: '8'
-    },
-    {
-      id: '9'
-    },
-    {
-      id: '10'
-    },
-    {
-      id: '11'
     }
   ];
 
@@ -237,7 +182,7 @@ const SMPSuccessTab = () => {
                     Upload from file
                   </Button>
                   {open && ReactDOM.createPortal(
-                    <UploadFileModal open={open} setOpen={setOpen} />,
+                    <UploadFileModal open={open} setOpen={setOpen} onSubmit={() => {}} />,
                     document.body
                   )}
                 </TableToolbarContent>

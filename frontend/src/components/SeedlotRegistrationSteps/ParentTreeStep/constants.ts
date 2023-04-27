@@ -1,4 +1,4 @@
-import { TableHeaders } from './definitions';
+import { TableHeaders, ParentTreesIdType } from './definitions';
 
 export const MAX_ROWS = 500;
 
@@ -164,3 +164,17 @@ export const coneAndPollenFixedHeaders:Array<TableHeaders> = [
     header: 'SMP success (%)'
   }
 ];
+
+// This function will be removed once we start using the real API
+export const getTestParentTrees = (orchardID: string[]): Array<ParentTreesIdType> => {
+  const returnObj:Array<ParentTreesIdType> = [];
+  orchardID.forEach((id) => {
+    for (let index = 1; index < 26; index += 1) {
+      returnObj.push({
+        id: `${index.toString()}-${id}`,
+        value: index.toString()
+      });
+    }
+  });
+  return returnObj;
+};

@@ -3,10 +3,6 @@ export type TableHeaders = {
   header: string;
 }
 
-export type TableRows = {
-  id: string;
-};
-
 export type GeneticTraitsType = {
   code: string;
   description: string;
@@ -19,4 +15,5 @@ export type ControlFiltersType = {
 
 export type ParentTreesIdType = {
   id: string;
+  value: string;
 };
