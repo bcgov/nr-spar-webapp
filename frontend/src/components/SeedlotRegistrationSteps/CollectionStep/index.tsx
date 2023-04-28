@@ -34,8 +34,8 @@ const CollectionStep = (
     defaultAgency,
     defaultCode,
     agencyOptions,
-    readOnly,
-    invalidateObj
+    readOnly
+    // invalidateObj
   }: CollectionStepProps
 ) => {
   const initialValidationObj: FormValidation = {
@@ -203,8 +203,7 @@ const CollectionStep = (
               placeholder={fieldsConfig.collector.placeholder}
               titleText={fieldsConfig.collector.titleText}
               helperText={fieldsConfig.collector.helperText}
-              // DEMO
-              invalidText={invalidateObj ? invalidateObj.collectorAgency.invalidText : ''}
+              invalidText={fieldsConfig.collector.invalidText}
               items={agencyOptions}
               readOnly={isChecked || readOnly}
               selectedItem={state.collectorAgency}
@@ -214,8 +213,7 @@ const CollectionStep = (
                   e.selectedItem
                 );
               }}
-              // DEMO
-              invalid={invalidateObj ? invalidateObj.collectorAgency.isInvalid : false}
+              invalid={validationObj.isNameInvalid}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }

@@ -109,7 +109,7 @@ const SeedlotRegistrationForm = () => {
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
-            invalidateObj={allInvalidationObj.collectionStep}
+            // invalidateObj={allInvalidationObj.collectionStep}
             setStepData={(data: CollectionForm) => setStepData('collectionStep', data)}
           />
         );
