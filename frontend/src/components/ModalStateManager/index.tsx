@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-interface Declaration {
+interface ModalStateManagerProps {
   renderLauncher: any;
   children: any;
 }
@@ -10,7 +10,7 @@ const ModalStateManager = (
   {
     renderLauncher: LauncherContent,
     children: ModalContent
-  }: Declaration
+  }: ModalStateManagerProps
 ) => {
   const [open, setOpen] = useState(false);
   return (
