@@ -236,7 +236,6 @@ const SeedlotRegistrationForm = () => {
                   className="back-next-btn"
                   onClick={() => setStep(1)}
                   renderIcon={ArrowRight}
-                  disabled={formStep === 5}
                 >
                   Next
                 </Button>
