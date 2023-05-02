@@ -63,7 +63,15 @@ export const getGeneticWorths = (seedlotSpecies: string):Array<GeneticTraitsType
   return genenticTraitsForSpecies;
 };
 
-// This function will be removed once the real API is connected
+export const useIsMount = () => {
+  const isMountRef = useRef(true);
+  useEffect(() => {
+    isMountRef.current = false;
+  }, []);
+  return isMountRef.current;
+};
+
+// These functions will be either removed or altered once the real API is connected
 const getRandomFloat = () => parseFloat((Math.random() * (10 - 1) + 1).toFixed(4));
 
 export const createEmptyConeAndPollen = (parentTrees: Array<ParentTreesType>) => {
@@ -74,18 +82,18 @@ export const createEmptyConeAndPollen = (parentTrees: Array<ParentTreesType>) =>
       coneCount: 0,
       pollenCount: 0,
       smpSuccess: 0,
-      ad: 0,
-      dfs: 0,
-      dfu: 0,
-      dfw: 0,
-      dsb: 0,
-      dsc: 0,
-      dsg: 0,
-      gvo: 0,
-      iws: 0,
-      wdu: 0,
-      wwd: 0,
-      wve: 0
+      ad: getRandomFloat(),
+      dfs: getRandomFloat(),
+      dfu: getRandomFloat(),
+      dfw: getRandomFloat(),
+      dsb: getRandomFloat(),
+      dsc: getRandomFloat(),
+      dsg: getRandomFloat(),
+      gvo: getRandomFloat(),
+      iws: getRandomFloat(),
+      wdu: getRandomFloat(),
+      wwd: getRandomFloat(),
+      wve: getRandomFloat()
     };
     parentTreeEntries.push(parentTreeEntry);
   });
@@ -126,18 +134,18 @@ export const createEmptySMPSuccess = (parentTrees: Array<ParentTreesType>) => {
       cloneNumber: +element.value,
       successOnParent: 0,
       nonOrchardPollenContam: 0,
-      ad: 0,
-      dfs: 0,
-      dfu: 0,
-      dfw: 0,
-      dsb: 0,
-      dsc: 0,
-      dsg: 0,
-      gvo: 0,
-      iws: 0,
-      wdu: 0,
-      wwd: 0,
-      wve: 0,
+      ad: getRandomFloat(),
+      dfs: getRandomFloat(),
+      dfu: getRandomFloat(),
+      dfw: getRandomFloat(),
+      dsb: getRandomFloat(),
+      dsc: getRandomFloat(),
+      dsg: getRandomFloat(),
+      gvo: getRandomFloat(),
+      iws: getRandomFloat(),
+      wdu: getRandomFloat(),
+      wwd: getRandomFloat(),
+      wve: getRandomFloat(),
       meanDegreesLat: getRandomFloat(),
       meanMinutesLat: getRandomFloat(),
       meanDegreesLong: getRandomFloat(),
@@ -175,15 +183,6 @@ export const createEmptySMPSuccess = (parentTrees: Array<ParentTreesType>) => {
   return smpSuccessEmptyData;
 };
 
-export const useIsMount = () => {
-  const isMountRef = useRef(true);
-  useEffect(() => {
-    isMountRef.current = false;
-  }, []);
-  return isMountRef.current;
-};
-
-// These functions will be removed once the real API is connected
 export const createRandomConeAndPollen = (
   parentTrees: Array<ParentTreesType>
 ) => {
@@ -258,7 +257,12 @@ export const createRandomSMPSuccess = (parentTrees: Array<ParentTreesType>) => {
       iws: getRandomFloat(),
       wdu: getRandomFloat(),
       wwd: getRandomFloat(),
-      wve: getRandomFloat()
+      wve: getRandomFloat(),
+      meanDegreesLat: getRandomFloat(),
+      meanMinutesLat: getRandomFloat(),
+      meanDegreesLong: getRandomFloat(),
+      meanMinutesLong: getRandomFloat(),
+      meanElevation: getRandomFloat()
     };
     parentTreeEntries.push(parentTreeEntry);
   });

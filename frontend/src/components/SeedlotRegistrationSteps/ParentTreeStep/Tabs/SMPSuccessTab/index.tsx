@@ -140,8 +140,13 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
     });
 
     if (!tableOnly) {
+      geneticTraits.forEach((genTrait) => {
+        const genTraitInputRef = `inputTraitResult-${genTrait.code}`;
+        const totalGenTraitKey = `${genTrait.code}Total`;
+        refControl.current[genTraitInputRef].value = smpSuccess.geneticWorth[totalGenTraitKey];
+      });
+
       // Other inputs are manual...
-      // eslint-disable-next-line max-len
       refControl.current.totalParentTreesSMPSuccess.value = smpSuccess.totalParentTreesSMPSuccess;
       refControl.current.averageSMPSuccess.value = smpSuccess.averageNumberSMPSuccess;
       refControl.current.averageNonOrchard.value = smpSuccess.averageNonOrchardPollenContam;
@@ -152,7 +157,7 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
     }
   };
 
-  // These functions will be altered once the real API is connected
+  // This function will be altered once the real API is connected
   const testSubmit = () => {
     setSMPSuccessData(createRandomSMPSuccess(parentTrees));
     fillTableAndResults(smpSuccessData);
@@ -370,12 +375,7 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                       <TableCell
                         key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
                       >
-                        <input
-                          ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id)}`)}
-                          type="number"
-                          className="table-input"
-                          placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
-                        />
+                        {smpSuccessData.smpSuccessEntries[i][trait.code]}
                       </TableCell>
                     )
                   ))}
@@ -385,12 +385,7 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                       <TableCell
                         key={`cell-${filter.code}-${(row.id + i).toString()}`}
                       >
-                        <input
-                          ref={(el: HTMLInputElement) => addRefs(el, `inputMean-${filter.code}-${(row.id)}`)}
-                          type="number"
-                          className="table-input"
-                          placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
-                        />
+                        {smpSuccessData.smpSuccessEntries[i][filter.code]}
                       </TableCell>
                     )
                   ))}

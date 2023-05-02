@@ -135,7 +135,6 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
       geneticTraits.forEach((genTrait) => {
         const genTraitInputRef = `inputTraitResult-${genTrait.code}`;
         const totalGenTraitKey = `${genTrait.code}Total`;
-        // eslint-disable-next-line max-len
         refControl.current[genTraitInputRef].value = coneAndPollen.geneticWorth[totalGenTraitKey];
       });
 
@@ -268,7 +267,7 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
             </TableHead>
             <TableBody>
               {
-                parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize).map((row) => (
+                parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize).map((row, i) => (
                   <TableRow key={(row.id)}>
                     <TableCell>
                       {row.value}
@@ -298,20 +297,15 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                       />
                     </TableCell>
                     {
-                      // This is not dinamically rendered because we need the reference
-                      // of the inputs to set the values on them
                       geneticTraits.map((trait) => (
-                        <TableCell
-                          key={`cell-trait-${trait.code}-${(row.id)}`}
-                          className={filterControl[trait.code] ? '' : 'parent-tree-hide'}
-                        >
-                          <input
-                            ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id)}`)}
-                            type="number"
-                            className="table-input"
-                            placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
-                          />
-                        </TableCell>
+                        filterControl[trait.code]
+                        && (
+                          <TableCell
+                            key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
+                          >
+                            {coneAndPollenData.coneAndPollenEntries[i][trait.code]}
+                          </TableCell>
+                        )
                       ))
                     }
                   </TableRow>
