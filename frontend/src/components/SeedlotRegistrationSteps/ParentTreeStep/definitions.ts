@@ -13,7 +13,7 @@ export type ControlFiltersType = {
   [key: string]: boolean;
 };
 
-export type ParentTreesIdType = {
+export type ParentTreesType = {
   id: string;
   value: string;
 };

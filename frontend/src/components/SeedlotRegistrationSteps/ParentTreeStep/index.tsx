@@ -65,7 +65,11 @@ const ParentTreeStep = ({ orchardID }: ParentTreeStepProps) => {
             />
           </TabPanel>
           <TabPanel>
-            <SMPSuccessTab parentTrees={testParentTrees} species={seedlotSpecie} />
+            <SMPSuccessTab
+              parentTrees={testParentTrees}
+              species={seedlotSpecie}
+              orchards={orchardID}
+            />
           </TabPanel>
           <TabPanel>Tab 3</TabPanel>
         </TabPanels>

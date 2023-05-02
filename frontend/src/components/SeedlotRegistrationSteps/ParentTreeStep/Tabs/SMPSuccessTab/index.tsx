@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unused-prop-types */
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import {
   FlexGrid,
@@ -11,7 +10,6 @@ import {
   Checkbox,
   OverflowMenu,
   OverflowMenuItem,
-  DataTable,
   TableContainer,
   TableToolbar,
   TableToolbarContent,
@@ -27,41 +25,52 @@ import { Upload, View, Settings } from '@carbon/icons-react';
 
 import Subtitle from '../../../../Subtitle';
 import UploadFileModal from '../../UploadFileModal';
-import paginationOnChange from '../../../../../utils/PaginationUtils';
 
-import { pageTexts } from '../../constants';
+import { SMPSuccessType } from '../../../../../types/SeedlotTypes/ParentTree';
+
+import { pageTexts, smpSuccessFixedHeaders } from '../../constants';
 import {
   ControlFiltersType,
   GeneticTraitsType,
-  ParentTreesIdType
+  ParentTreesType
 } from '../../definitions';
-import { getGeneticWorths } from '../../utils';
+import {
+  createEmptySMPSuccess,
+  createRandomSMPSuccess,
+  getGeneticWorths,
+  useIsMount
+} from '../../utils';
 
 import '../styles.scss';
 
-type TableHeaders = {
-  key: string;
-  header: string;
-}
-
-type TableRows = {
-  id: string;
-}
-
 interface SMPSuccessTabProps {
-  parentTrees: Array<ParentTreesIdType>;
+  parentTrees: Array<ParentTreesType>;
   species: string;
+  orchards: string[];
 }
 
-interface ParentTreeDataTableProps {
-  rows: Array<TableRows>;
-  headers: Array<TableHeaders>;
-}
+const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) => {
+  const isMount = useIsMount();
 
-const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
+  const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
+  const [currentPageSize, setCurrentPageSize] = useState<number>(40);
+
+  const [controlBulk, setControlBulk] = useState<boolean>(false);
+
+  const [smpSuccessData, setSMPSuccessData] = useState<SMPSuccessType>(
+    createEmptySMPSuccess(parentTrees)
+  );
+
   const [open, setOpen] = useState<boolean>(false);
+  const paginationOnChange = async (pageSize: number, page: number) => {
+    if (pageSize !== currentPageSize) {
+      setCurrentPageSize(pageSize);
+    }
+    setFirstRowIndex(pageSize * (page - 1));
+  };
 
   const geneticTraits:Array<GeneticTraitsType> = getGeneticWorths(species);
+
   const [filterControl, setFilterControl] = useState<ControlFiltersType>(() => {
     const returnObj = {};
     geneticTraits.forEach((trait) => {
@@ -81,23 +90,93 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
     });
   };
 
-  const parentTreeHeaders:Array<TableHeaders> = [
-    {
-      key: '1',
-      header: 'Clone number'
-    },
-    {
-      key: '2',
-      header: 'SMP success on parent (%)'
-    },
-    {
-      key: '3',
-      header: 'Non-orchard pollen contam. (%)'
+  const refControl = useRef<any>({});
+  const addRefs = (element: HTMLInputElement, name: string) => {
+    if (element !== null) {
+      refControl.current = {
+        ...refControl.current,
+        [name]: element
+      };
     }
-  ];
+  };
 
-  const [firstRowIndex, setFirstRowIndex] = useState<number>(0);
-  const [currentPageSize, setCurrentPageSize] = useState<number>(40);
+  const fillTableAndResults = (
+    smpSuccess: SMPSuccessType,
+    tableOnly?: boolean,
+    bulkField?: string
+  ) => {
+    smpSuccess.smpSuccessEntries.forEach((element) => {
+      // We have a possible cenario with 2 orchards with the same parent tree ID
+      // so we need combine the parent tree ID with the orchard ID to get the
+      // unique value used on the inputs
+      orchards.forEach((orchard) => {
+        const indexParentIdCombination = `${(element.cloneNumber.toString())}-${orchard}`;
+
+        if (!bulkField) {
+          const inputSuccess = `inputSuccess-${indexParentIdCombination}`;
+          const inputNonOrchard = `inputNonOrchard-${indexParentIdCombination}`;
+
+          // Check if the current cloneNumber exists in that orchard before trying
+          // to change the input's value
+          if (refControl.current[inputSuccess] && refControl.current[inputNonOrchard]) {
+            refControl.current[inputSuccess].value = element.successOnParent;
+            refControl.current[inputNonOrchard].value = element.nonOrchardPollenContam;
+          }
+        } else {
+          // Set the value only on the field that changed
+          const input = `${bulkField}-${indexParentIdCombination}`;
+          if (refControl.current[input]) {
+            if (bulkField === 'inputSuccess') {
+              refControl.current[input].value = element.successOnParent;
+            } else {
+              refControl.current[input].value = element.nonOrchardPollenContam;
+            }
+          }
+        }
+      });
+    });
+
+    if (!tableOnly) {
+      // Other inputs are manual...
+      // eslint-disable-next-line max-len
+      refControl.current.totalParentTreesSMPSuccess.value = smpSuccess.totalParentTreesSMPSuccess;
+      refControl.current.averageSMPSuccess.value = smpSuccess.averageNumberSMPSuccess;
+      refControl.current.averageNonOrchard.value = smpSuccess.averageNonOrchardPollenContam;
+      refControl.current.populationSize.value = smpSuccess.geneticWorth.populationSize;
+      refControl.current.testedParentTree.value = smpSuccess.geneticWorth.testedParentTree;
+      refControl.current.coancestry.value = smpSuccess.geneticWorth.coancestry;
+      refControl.current.smpParents.value = smpSuccess.geneticWorth.smpParents;
+    }
+  };
+
+  // These functions will be altered once the real API is connected
+  const testSubmit = () => {
+    setSMPSuccessData(createRandomSMPSuccess(parentTrees));
+    fillTableAndResults(smpSuccessData);
+  };
+
+  const handleBulkChange = (field: string, value: string) => {
+    const smpSuccessTemp: SMPSuccessType = smpSuccessData;
+
+    smpSuccessTemp.smpSuccessEntries.forEach((element) => {
+      if (field === 'inputSuccess') {
+        // eslint-disable-next-line no-param-reassign
+        element.successOnParent = +value;
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        element.nonOrchardPollenContam = +value;
+      }
+    });
+
+    setSMPSuccessData(smpSuccessTemp);
+    fillTableAndResults(smpSuccessData, true, field);
+  };
+
+  useEffect(() => {
+    if (!isMount) {
+      fillTableAndResults(smpSuccessData);
+    }
+  }, [smpSuccessData, currentPageSize]);
 
   return (
     <FlexGrid className="parent-tree-tabs">
@@ -116,143 +195,182 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
           title={pageTexts.sharedTabTexts.notification.title}
         />
       </Row>
+      <Row className={controlBulk ? 'bulk-control-row-active' : 'bulk-control-row'}>
+        <Checkbox
+          id="bulk-uptdate-table"
+          name="bulk-uptdate-table"
+          labelText={pageTexts.smpSuccess.bulkCheckboxLabel}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setControlBulk(e.target.checked)}
+        />
+      </Row>
+      {
+        controlBulk
+        && (
+          <Row className="bulk-update-row">
+            <Column sm={2} md={4} lg={4}>
+              <TextInput
+                name="bulk-update-smp-success"
+                id="bulk-update-smp-success"
+                type="number"
+                labelText={pageTexts.smpSuccess.bulkSuccessInputLabel}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleBulkChange('inputSuccess', e.target.value);
+                }}
+              />
+            </Column>
+            <Column sm={2} md={4} lg={4}>
+              <TextInput
+                name="bulk-update-non-orchard"
+                id="bulk-update-non-orchard"
+                type="number"
+                labelText={pageTexts.smpSuccess.bulkNonOrchardInputLabel}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleBulkChange('inputNonOrchard', e.target.value);
+                }}
+              />
+            </Column>
+          </Row>
+        )
+      }
       <Row className="parent-tree-table-row">
-        <DataTable
-          rows={parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize)}
-          headers={parentTreeHeaders}
+        <TableContainer
+          title={pageTexts.tabTitles.smpTab}
+          description={pageTexts.smpSuccess.tableSubtitle}
         >
-          {({
-            rows,
-            headers
-          }: ParentTreeDataTableProps) => (
-            <TableContainer
-              title={pageTexts.tabTitles.smpTab}
-              description={pageTexts.smpSuccess.tableSubtitle}
-            >
-              <TableToolbar>
-                <TableToolbarContent>
-                  <OverflowMenu
-                    aria-label="Show/Hide columns"
-                    renderIcon={View}
-                    menuOptionsClass="parent-tree-view-options"
-                    iconDescription="Show/Hide columns"
-                    flipped
+          <TableToolbar>
+            <TableToolbarContent>
+              <OverflowMenu
+                aria-label={pageTexts.sharedTabTexts.overflowMenus.columnsOverflow}
+                renderIcon={View}
+                menuOptionsClass="parent-tree-view-options"
+                iconDescription={pageTexts.sharedTabTexts.overflowMenus.columnsOverflow}
+                flipped
+              >
+                <p className="view-options-separator">
+                  {pageTexts.sharedTabTexts.overflowMenus.smpMixUsed}
+                </p>
+                {geneticTraits.map((trait) => (
+                  <Checkbox
+                    key={`checkbox-trait-${trait.code}`}
+                    id={`checkbox-trait-${trait.code}`}
+                    name={`checkbox-trait-${trait.code}`}
+                    className="breeding-value-checkbox"
+                    labelText={trait.filterLabel}
+                    defaultChecked={filterControl[trait.code]}
+                    value={filterControl[trait.code]}
+                    onChange={
+                      (e: React.ChangeEvent<HTMLInputElement>) => handleFilters(e, trait.code)
+                    }
+                  />
+                ))}
+              </OverflowMenu>
+              <OverflowMenu
+                aria-label={pageTexts.sharedTabTexts.overflowMenus.optionsOverflow}
+                renderIcon={Settings}
+                menuOptionsClass="parent-tree-table-options"
+                iconDescription={pageTexts.sharedTabTexts.overflowMenus.optionsOverflow}
+              >
+                <OverflowMenuItem
+                  itemText={pageTexts.sharedTabTexts.overflowMenus.downloadTable}
+                />
+                <OverflowMenuItem
+                  itemText={pageTexts.sharedTabTexts.overflowMenus.exportPdf}
+                />
+                <OverflowMenuItem
+                  itemText={pageTexts.sharedTabTexts.overflowMenus.cleanTable}
+                />
+              </OverflowMenu>
+              <Button
+                onClick={() => setOpen(true)}
+                size="sm"
+                kind="primary"
+                renderIcon={Upload}
+                iconDescription={pageTexts.sharedTabTexts.uploadButtonIconDesc}
+              >
+                {pageTexts.sharedTabTexts.uploadButtonLabel}
+              </Button>
+              {open && ReactDOM.createPortal(
+                <UploadFileModal open={open} setOpen={setOpen} onSubmit={testSubmit} />,
+                document.body
+              )}
+            </TableToolbarContent>
+          </TableToolbar>
+          <Table useZebraStyles>
+            <TableHead>
+              <TableRow>
+                {smpSuccessFixedHeaders.map((header) => (
+                  <TableHeader
+                    key={header.key}
                   >
-                    <p className="view-options-separator">
-                      Show breeding values
-                    </p>
-                    {geneticTraits.map((trait) => (
-                      <Checkbox
-                        key={`checkbox-trait-${trait.code}`}
-                        id={`checkbox-trait-${trait.code}`}
-                        name={`checkbox-trait-${trait.code}`}
-                        className="breeding-value-checkbox"
-                        labelText={trait.filterLabel}
-                        defaultChecked={filterControl[trait.code]}
-                        value={filterControl[trait.code]}
-                        onChange={
-                          (e: React.ChangeEvent<HTMLInputElement>) => handleFilters(e, trait.code)
-                        }
-                      />
-                    ))}
-                  </OverflowMenu>
-                  <OverflowMenu
-                    aria-label="More options"
-                    renderIcon={Settings}
-                    menuOptionsClass="parent-tree-table-options"
-                    iconDescription="More options"
-                  >
-                    <OverflowMenuItem
-                      itemText="Download table template"
+                    {header.header}
+                  </TableHeader>
+                ))}
+                {geneticTraits.map((trait) => (
+                  filterControl[trait.code]
+                  && (
+                    <TableHeader
+                      key={`header-trait-${trait.code}`}
+                    >
+                      {trait.filterLabel}
+                    </TableHeader>
+                  )
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {parentTrees.slice(firstRowIndex, firstRowIndex + currentPageSize).map((row, i) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.value}</TableCell>
+                  <TableCell>
+                    <input
+                      ref={(el: HTMLInputElement) => addRefs(el, `inputSuccess-${(row.id)}`)}
+                      type="number"
+                      className="table-input"
+                      placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
                     />
-                    <OverflowMenuItem
-                      itemText="Export table as PDF file"
+                  </TableCell>
+                  <TableCell>
+                    <input
+                      ref={(el: HTMLInputElement) => addRefs(el, `inputNonOrchard-${(row.id)}`)}
+                      type="number"
+                      className="table-input"
+                      placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
                     />
-                    <OverflowMenuItem
-                      itemText="Clean table data"
-                    />
-                  </OverflowMenu>
-                  <Button
-                    onClick={() => setOpen(true)}
-                    size="sm"
-                    kind="primary"
-                    renderIcon={Upload}
-                    iconDescription="Upload file"
-                  >
-                    Upload from file
-                  </Button>
-                  {open && ReactDOM.createPortal(
-                    <UploadFileModal open={open} setOpen={setOpen} onSubmit={() => {}} />,
-                    document.body
-                  )}
-                </TableToolbarContent>
-              </TableToolbar>
-              <Table useZebraStyles>
-                <TableHead>
-                  <TableRow>
-                    {headers.map((header) => (
-                      <TableHeader
-                        key={header.key}
+                  </TableCell>
+                  {geneticTraits.map((trait) => (
+                    filterControl[trait.code]
+                    && (
+                      <TableCell
+                        key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
                       >
-                        {header.header}
-                      </TableHeader>
-                    ))}
-                    {geneticTraits.map((trait) => (
-                      filterControl[trait.code]
-                      && (
-                        <TableHeader
-                          key={`header-trait-${trait.code}`}
-                        >
-                          {trait.filterLabel}
-                        </TableHeader>
-                      )
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, i) => (
-                    <TableRow key={(row.id + i).toString()}>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>
-                        <input type="number" className="table-input" placeholder="Add value" />
+                        <input
+                          ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id)}`)}
+                          type="number"
+                          className="table-input"
+                          placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                        />
                       </TableCell>
-                      <TableCell>
-                        <input type="number" className="table-input" placeholder="Add value" />
-                      </TableCell>
-                      {geneticTraits.map((trait) => (
-                        filterControl[trait.code]
-                        && (
-                          <TableCell
-                            key={`cell-trait-${trait.code}-${(row.id + i).toString()}`}
-                          >
-                            <input type="number" className="table-input" placeholder="Add value" />
-                          </TableCell>
-                        )
-                      ))}
-                    </TableRow>
+                    )
                   ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </DataTable>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Pagination
           className="table-pagination"
-          backwardText="Previous page"
-          forwardText="Next page"
+          backwardText={pageTexts.sharedTabTexts.pagination.previous}
+          forwardText={pageTexts.sharedTabTexts.pagination.next}
           itemsPerPageText=""
           page={1}
-          pageNumberText="Page Number"
+          pageNumberText={pageTexts.sharedTabTexts.pagination.pageNumber}
           pageSize={currentPageSize}
           pageSizes={[20, 40, 60, 80, 100]}
           totalItems={parentTrees.length}
           onChange={({ page, pageSize }:{page: number, pageSize: number}) => {
             paginationOnChange(
               pageSize,
-              currentPageSize,
-              page,
-              setFirstRowIndex,
-              setCurrentPageSize
+              page
             );
           }}
         />
@@ -267,6 +385,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="totalParentTreesSMPSuccess"
+            ref={(el: HTMLInputElement) => addRefs(el, 'totalParentTreesSMPSuccess')}
             labelText={pageTexts.smpSuccess.summary.fieldLabels.totalParentTrees}
             readOnly
           />
@@ -274,6 +393,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="averageSMPSuccess"
+            ref={(el: HTMLInputElement) => addRefs(el, 'averageSMPSuccess')}
             labelText={pageTexts.smpSuccess.summary.fieldLabels.averageSMPSuccess}
             readOnly
           />
@@ -281,6 +401,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="averageNonOrchard"
+            ref={(el: HTMLInputElement) => addRefs(el, 'averageNonOrchard')}
             labelText={pageTexts.smpSuccess.summary.fieldLabels.averageNonOrchard}
             readOnly
           />
@@ -296,6 +417,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="populationSize"
+            ref={(el: HTMLInputElement) => addRefs(el, 'populationSize')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.populationSize}
             readOnly
           />
@@ -303,6 +425,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="testedParentTree"
+            ref={(el: HTMLInputElement) => addRefs(el, 'testedParentTree')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.testedParentTree}
             readOnly
           />
@@ -310,6 +433,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="coancestry"
+            ref={(el: HTMLInputElement) => addRefs(el, 'coancestry')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.coancestry}
             readOnly
           />
@@ -317,6 +441,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
         <Column sm={2} md={4} lg={4}>
           <TextInput
             id="smpParents"
+            ref={(el: HTMLInputElement) => addRefs(el, 'smpParents')}
             labelText={pageTexts.sharedTabTexts.geneticWorth.defaultFieldsLabels.smpParents}
             readOnly
           />
@@ -327,6 +452,7 @@ const SMPSuccessTab = ({ parentTrees, species }: SMPSuccessTabProps) => {
           <Column key={`column-trait-${trait.code}`} sm={2} md={4} lg={4}>
             <TextInput
               id={`input-trait-${trait.code}`}
+              ref={(el: HTMLInputElement) => addRefs(el, `inputTraitResult-${trait.code}`)}
               labelText={trait.description}
               readOnly
             />

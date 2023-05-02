@@ -1,4 +1,4 @@
-import { TableHeaders, ParentTreesIdType } from './definitions';
+import { TableHeaders, ParentTreesType } from './definitions';
 
 export const MAX_ROWS = 500;
 
@@ -39,8 +39,24 @@ export const pageTexts = {
         cancel: 'Cancel',
         confirm: 'Import file and continue'
       }
+    },
+    overflowMenus: {
+      columnsOverflow: 'Show/Hide columns',
+      breedingValues: 'Show breeding values',
+      smpMixUsed: 'Show SMP mix used on parent',
+      optionsOverflow: 'More options',
+      downloadTable: 'Download table template',
+      exportPdf: 'Export table as PDF file',
+      cleanTable: 'Clean table data'
+    },
+    uploadButtonLabel: 'Upload from file',
+    uploadButtonIconDesc: 'Upload file',
+    tableInputPlaceholder: 'Add value',
+    pagination: {
+      previous: 'Previous page',
+      next: 'Next page',
+      pageNumber: 'Page Number'
     }
-
   },
   coneAndPollen: {
     subtitle: 'Enter the cone and pollen count manually or upload a spreadsheet file with the template for the cone and pollen count table. Remember to keep your orchard updated, you can go to orchard\'s management page to edit the listed parent trees in your orchard.',
@@ -78,6 +94,13 @@ export const pageTexts = {
         averageSMPSuccess: 'Average number of SMP success %',
         averageNonOrchard: 'Average number of non-orchard pollen contam. (%)'
       }
+    },
+    otherFilterOptions: {
+      meanDegreesLat: 'Mean degrees latitude',
+      meanMinutesLat: 'Mean minutes latitude',
+      meanDegreesLong: 'Mean degrees longitude',
+      meanMinutesLong: 'Mean minutes longitude',
+      meanElevation: 'Mean elevation'
     }
   }
 
@@ -165,9 +188,24 @@ export const coneAndPollenFixedHeaders:Array<TableHeaders> = [
   }
 ];
 
+export const smpSuccessFixedHeaders:Array<TableHeaders> = [
+  {
+    key: '1',
+    header: 'Clone number'
+  },
+  {
+    key: '2',
+    header: 'SMP success on parent (%)'
+  },
+  {
+    key: '3',
+    header: 'Non-orchard pollen contam. (%)'
+  }
+];
+
 // This function will be removed once we start using the real API
-export const getTestParentTrees = (orchardID: string[]): Array<ParentTreesIdType> => {
-  const returnObj:Array<ParentTreesIdType> = [];
+export const getTestParentTrees = (orchardID: string[]): Array<ParentTreesType> => {
+  const returnObj:Array<ParentTreesType> = [];
   orchardID.forEach((id) => {
     for (let index = 1; index < 26; index += 1) {
       returnObj.push({

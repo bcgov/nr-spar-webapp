@@ -16,13 +16,20 @@
     margin-bottom: 3rem;
   }
 
-  .genetic-row {
+  .genetic-row,
+  .bulk-update-row {
     margin-bottom: 2rem;
   }
 
-  .notification-row {
+  .bulk-control-row-active {
     padding-left: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .notification-row,
+  .bulk-control-row {
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .#{vars.$bcgov-prefix}--inline-notification {
@@ -36,6 +43,16 @@
 
   .#{vars.$bcgov-prefix}--inline-notification__title {
     font-weight: 700;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  /* Firefox specific rule*/
+  input[type=number] {
+    -moz-appearance: textfield;
   }
 
   .parent-tree-table-row {
@@ -62,16 +79,6 @@
 
     .table-input:focus-visible {
       outline-color: var(--bcgov-border-interactive);
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-    }
-
-    /* Firefox specific rule*/
-    input[type=number] {
-      -moz-appearance: textfield;
     }
 
     ::placeholder {

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
@@ -34,7 +33,7 @@ import { coneAndPollenFixedHeaders, pageTexts } from '../../constants';
 import {
   ControlFiltersType,
   GeneticTraitsType,
-  ParentTreesIdType
+  ParentTreesType
 } from '../../definitions';
 
 import {
@@ -47,7 +46,7 @@ import {
 import '../styles.scss';
 
 interface ConeAndPollenTabProps {
-  parentTrees: Array<ParentTreesIdType>;
+  parentTrees: Array<ParentTreesType>;
   species: string;
   orchards: string[];
 }
@@ -63,7 +62,6 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
   );
 
   const [open, setOpen] = useState<boolean>(false);
-
   const paginationOnChange = async (pageSize: number, page: number) => {
     if (pageSize !== currentPageSize) {
       setCurrentPageSize(pageSize);
@@ -80,6 +78,17 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
     });
     return returnObj;
   });
+
+  const handleFilters = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    geneticTrait: string
+  ) => {
+    const { checked } = event.target;
+    setFilterControl({
+      ...filterControl,
+      [geneticTrait]: checked
+    });
+  };
 
   const refControl = useRef<any>({});
   const addRefs = (element: HTMLInputElement, name: string) => {
@@ -126,7 +135,8 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
       geneticTraits.forEach((genTrait) => {
         const genTraitInputRef = `inputTraitResult-${genTrait.code}`;
         const totalGenTraitKey = `${genTrait.code}Total`;
-        refControl.current[genTraitInputRef].value = coneAndPollen.genTraitTotal[totalGenTraitKey];
+        // eslint-disable-next-line max-len
+        refControl.current[genTraitInputRef].value = coneAndPollen.geneticWorth[totalGenTraitKey];
       });
 
       // Other inputs are manual...
@@ -135,10 +145,10 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
       refControl.current.totalConeCount.value = coneAndPollen.totalConeCount;
       refControl.current.totalPollenCount.value = coneAndPollen.totalPollenCount;
       refControl.current.averageSMP.value = coneAndPollen.averageSMP;
-      refControl.current.populationSize.value = coneAndPollen.populationSize;
-      refControl.current.testedParentTree.value = coneAndPollen.testedParentTree;
-      refControl.current.coancestry.value = coneAndPollen.coancestry;
-      refControl.current.smpParents.value = coneAndPollen.smpParents;
+      refControl.current.populationSize.value = coneAndPollen.geneticWorth.populationSize;
+      refControl.current.testedParentTree.value = coneAndPollen.geneticWorth.testedParentTree;
+      refControl.current.coancestry.value = coneAndPollen.geneticWorth.coancestry;
+      refControl.current.smpParents.value = coneAndPollen.geneticWorth.smpParents;
     }
   };
 
@@ -146,17 +156,6 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
   const testSubmit = () => {
     setConeAndPollenData(createRandomConeAndPollen(parentTrees));
     fillTableAndResults(coneAndPollenData);
-  };
-
-  const handleFilters = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    geneticTrait: string
-  ) => {
-    const { checked } = event.target;
-    setFilterControl({
-      ...filterControl,
-      [geneticTrait]: checked
-    });
   };
 
   useEffect(() => {
@@ -190,14 +189,14 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
           <TableToolbar>
             <TableToolbarContent>
               <OverflowMenu
-                aria-label="Show/Hide columns"
+                aria-label={pageTexts.sharedTabTexts.overflowMenus.columnsOverflow}
                 renderIcon={View}
                 menuOptionsClass="parent-tree-view-options"
-                iconDescription="Show/Hide columns"
+                iconDescription={pageTexts.sharedTabTexts.overflowMenus.columnsOverflow}
                 flipped
               >
                 <p className="view-options-separator">
-                  Show breeding values
+                  {pageTexts.sharedTabTexts.overflowMenus.breedingValues}
                 </p>
                 {geneticTraits.map((trait) => (
                   <Checkbox
@@ -215,19 +214,19 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                 ))}
               </OverflowMenu>
               <OverflowMenu
-                aria-label="More options"
+                aria-label={pageTexts.sharedTabTexts.overflowMenus.optionsOverflow}
                 renderIcon={Settings}
                 menuOptionsClass="parent-tree-table-options"
-                iconDescription="More options"
+                iconDescription={pageTexts.sharedTabTexts.overflowMenus.optionsOverflow}
               >
                 <OverflowMenuItem
-                  itemText="Download table template"
+                  itemText={pageTexts.sharedTabTexts.overflowMenus.downloadTable}
                 />
                 <OverflowMenuItem
-                  itemText="Export table as PDF file"
+                  itemText={pageTexts.sharedTabTexts.overflowMenus.exportPdf}
                 />
                 <OverflowMenuItem
-                  itemText="Clean table data"
+                  itemText={pageTexts.sharedTabTexts.overflowMenus.cleanTable}
                 />
               </OverflowMenu>
               <Button
@@ -235,9 +234,9 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                 size="sm"
                 kind="primary"
                 renderIcon={Upload}
-                iconDescription="Upload file"
+                iconDescription={pageTexts.sharedTabTexts.uploadButtonIconDesc}
               >
-                Upload from file
+                {pageTexts.sharedTabTexts.uploadButtonLabel}
               </Button>
               {open && ReactDOM.createPortal(
                 <UploadFileModal open={open} setOpen={setOpen} onSubmit={testSubmit} />,
@@ -279,7 +278,7 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                         ref={(el: HTMLInputElement) => addRefs(el, `inputCone-${(row.id)}`)}
                         type="number"
                         className="table-input"
-                        placeholder="Add value"
+                        placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
                       />
                     </TableCell>
                     <TableCell>
@@ -287,7 +286,7 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                         ref={(el: HTMLInputElement) => addRefs(el, `inputPollen-${(row.id)}`)}
                         type="number"
                         className="table-input"
-                        placeholder="Add value"
+                        placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
                       />
                     </TableCell>
                     <TableCell>
@@ -295,7 +294,7 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                         ref={(el: HTMLInputElement) => addRefs(el, `inputSMP-${(row.id)}`)}
                         type="number"
                         className="table-input"
-                        placeholder="Add value"
+                        placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
                       />
                     </TableCell>
                     {
@@ -310,7 +309,7 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                             ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id)}`)}
                             type="number"
                             className="table-input"
-                            placeholder="Add value"
+                            placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
                           />
                         </TableCell>
                       ))
@@ -323,11 +322,11 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
         </TableContainer>
         <Pagination
           className="table-pagination"
-          backwardText="Previous page"
-          forwardText="Next page"
+          backwardText={pageTexts.sharedTabTexts.pagination.previous}
+          forwardText={pageTexts.sharedTabTexts.pagination.next}
           itemsPerPageText=""
           page={1}
-          pageNumberText="Page Number"
+          pageNumberText={pageTexts.sharedTabTexts.pagination.pageNumber}
           pageSize={currentPageSize}
           pageSizes={[20, 40, 60, 80, 100]}
           totalItems={parentTrees.length}
