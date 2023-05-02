@@ -180,6 +180,23 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
     fillTableAndResults(smpSuccessData, true, field);
   };
 
+  const handleTableChange = (field: string, value: string, index: number) => {
+    const smpSuccessTemp: SMPSuccessType = smpSuccessData;
+
+    switch (field) {
+      case 'inputSuccess':
+        smpSuccessTemp.smpSuccessEntries[index].successOnParent = +value;
+        break;
+      case 'inputNonOrchard':
+        smpSuccessTemp.smpSuccessEntries[index].nonOrchardPollenContam = +value;
+        break;
+      default:
+        break;
+    }
+    setSMPSuccessData(smpSuccessTemp);
+    // In the future, after this change, a recalculation will be necessary
+  };
+
   useEffect(() => {
     if (!isMount) {
       fillTableAndResults(smpSuccessData);
@@ -359,6 +376,9 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                       type="number"
                       className="table-input"
                       placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleTableChange('inputSuccess', e.target.value, i);
+                      }}
                     />
                   </TableCell>
                   <TableCell>
@@ -367,6 +387,9 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                       type="number"
                       className="table-input"
                       placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleTableChange('inputNonOrchard', e.target.value, i);
+                      }}
                     />
                   </TableCell>
                   {geneticTraits.map((trait) => (

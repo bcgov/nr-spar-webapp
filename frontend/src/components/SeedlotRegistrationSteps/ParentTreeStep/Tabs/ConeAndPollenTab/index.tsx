@@ -157,6 +157,26 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
     fillTableAndResults(coneAndPollenData);
   };
 
+  const handleTableChange = (field: string, value: string, index: number) => {
+    const coneAndPollenTemp: ConeAndPollenType = coneAndPollenData;
+
+    switch (field) {
+      case 'inputCone':
+        coneAndPollenTemp.coneAndPollenEntries[index].coneCount = +value;
+        break;
+      case 'inputPollen':
+        coneAndPollenTemp.coneAndPollenEntries[index].pollenCount = +value;
+        break;
+      case 'inputSMP':
+        coneAndPollenTemp.coneAndPollenEntries[index].smpSuccess = +value;
+        break;
+      default:
+        break;
+    }
+    setConeAndPollenData(coneAndPollenTemp);
+    // In the future, after this change, a recalculation will be necessary
+  };
+
   useEffect(() => {
     if (!isMount) {
       fillTableAndResults(coneAndPollenData);
@@ -278,6 +298,9 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                         type="number"
                         className="table-input"
                         placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          handleTableChange('inputCone', e.target.value, i);
+                        }}
                       />
                     </TableCell>
                     <TableCell>
@@ -286,6 +309,9 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                         type="number"
                         className="table-input"
                         placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          handleTableChange('inputPollen', e.target.value, i);
+                        }}
                       />
                     </TableCell>
                     <TableCell>
@@ -294,6 +320,9 @@ const ConeAndPollenTab = ({ parentTrees, species, orchards }: ConeAndPollenTabPr
                         type="number"
                         className="table-input"
                         placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          handleTableChange('inputSMP', e.target.value, i);
+                        }}
                       />
                     </TableCell>
                     {
