@@ -205,7 +205,7 @@ export const arePortionsValid = (ownershiptArray: Array<SingleOwnerForm>): boole
   ownershiptArray.forEach((obj) => {
     sum += Number(obj.ownerPortion);
   });
-  return sum === 100;
+  return Number(sum.toFixed(2)) === 100;
 };
 
 export type AllValidObj = {
