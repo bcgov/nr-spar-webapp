@@ -125,7 +125,7 @@ const SingleOwnerInfo = ({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               // The guard is needed here because onClick also trigger the onChange method
               // but it does not pass in any value
-              if (e && e.target.name && e.target.value) {
+              if (e?.target?.name && e?.target?.value) {
                 handleInputChange(e.target.name, e.target.value);
               }
             }}
@@ -138,7 +138,7 @@ const SingleOwnerInfo = ({
               ) => {
                 // A guard is needed here because any click on the input will emit a
                 //   click event, not necessarily the + - buttons
-                if (target && target.value) {
+                if (target?.value) {
                   handleInputChange('ownerPortion', String(target.value));
                 }
               }
@@ -159,7 +159,7 @@ const SingleOwnerInfo = ({
                 max={100}
                 min={0}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  if (e && e.target.name && e.target.value) {
+                  if (e?.target?.name && e?.target?.value) {
                     handleInputChange(e.target.name, e.target.value);
                   }
                 }}
@@ -170,7 +170,7 @@ const SingleOwnerInfo = ({
                     _e: React.MouseEvent<HTMLButtonElement>,
                     target: NumStepperVal | undefined
                   ) => {
-                    if (target && target.value) {
+                    if (target?.value) {
                       handleInputChange('reservedPerc', String(target.value));
                     }
                   }
@@ -189,7 +189,7 @@ const SingleOwnerInfo = ({
                 max={100}
                 min={0}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  if (e && e.target.name && e.target.value) {
+                  if (e?.target?.name && e?.target?.value) {
                     handleInputChange(e.target.name, e.target.value);
                   }
                 }}
@@ -200,7 +200,7 @@ const SingleOwnerInfo = ({
                     _e: React.MouseEvent<HTMLButtonElement>,
                     target: NumStepperVal | undefined
                   ) => {
-                    if (target && target.value) {
+                    if (target?.value) {
                       handleInputChange('surplusPerc', String(target.value));
                     }
                   }

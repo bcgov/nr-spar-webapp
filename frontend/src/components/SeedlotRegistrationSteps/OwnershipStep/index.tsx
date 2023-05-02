@@ -64,10 +64,6 @@ const OwnershipStep = (
     paymentMethods
   }: OwnershipStepProps
 ) => {
-  // const initialValidState = { ...validTemplate };
-  // initialValidState.id = DEFAULT_INDEX;
-  // const [validationArray, setValidationArray] = useState([initialValidState]);
-
   const [disableInputs, setDisableInputs] = useState(true);
 
   const [accordionControls, setAccordionControls] = useState<AccordionCtrlObj>({});
