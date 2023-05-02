@@ -1,5 +1,8 @@
-import { ownerTemplate } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/constants';
-import { FormInvalidationObj } from './definitions';
+import {
+  ownerTemplate,
+  validTemplate as ownerInvalidTemplate
+} from '../../../components/SeedlotRegistrationSteps/OwnershipStep/constants';
+import { FormInvalidationObj, OwnershipInvalidObj } from './definitions';
 
 export const initCollectionState = (
   defaultAgency: string,
@@ -80,18 +83,14 @@ export const initExtractionStorageState = (
   }
 );
 
-export const initInvalidationObj = (stepObj: object) => {
+export const initInvalidationObj = () => {
   const returnObj: FormInvalidationObj = {};
-  const inputKeys = Object.keys(stepObj);
-
-  inputKeys.forEach((key: string) => {
-    Object.assign(returnObj, {
-      [key]: {
-        isInvalid: false,
-        invalidText: ''
-      }
-    });
-  });
-
   return returnObj;
+};
+
+export const initOwnerShipInvalidState = (): OwnershipInvalidObj => {
+  const initialOwnerInvalidState = { ...ownerInvalidTemplate };
+  return {
+    0: initialOwnerInvalidState
+  };
 };

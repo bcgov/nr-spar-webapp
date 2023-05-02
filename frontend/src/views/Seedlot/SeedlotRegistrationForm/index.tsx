@@ -22,14 +22,15 @@ import InterimForm from '../../../components/SeedlotRegistrationSteps/InterimSte
 import ExtractionAndStorage from '../../../components/SeedlotRegistrationSteps/ExtractionAndStorageStep';
 import { SeedlotOrchard } from '../../../types/SeedlotTypes/SeedlotOrchard';
 import { SingleOwnerForm } from '../../../components/SeedlotRegistrationSteps/OwnershipStep/definitions';
-import { AllStepData, AllStepInvalidationObj } from './definitions';
+import { AllStepData, AllStepInvalidationObj, FormInvalidationObj } from './definitions';
 import {
   initCollectionState,
   initInterimState,
   initOrchardState,
   initOwnershipState,
   initExtractionStorageState,
-  initInvalidationObj
+  initInvalidationObj,
+  initOwnerShipInvalidState
 } from './utils';
 import { getDropDownList } from '../../../utils/DropDownUtils';
 import { CollectionForm } from '../../../components/SeedlotRegistrationSteps/CollectionStep/utils';
@@ -74,11 +75,11 @@ const SeedlotRegistrationForm = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [allInvalidationObj, setAllInvalidationObj] = useState<AllStepInvalidationObj>({
-    collectionStep: initInvalidationObj(allStepData.collectionStep),
-    interimStep: initInvalidationObj(allStepData.interimStep),
-    ownershipStep: initInvalidationObj(allStepData.orchardStep),
-    orchardStep: initInvalidationObj(allStepData.orchardStep),
-    extractionStorageStep: initInvalidationObj(allStepData.extractionStorageStep)
+    collectionStep: initInvalidationObj(),
+    interimStep: initInvalidationObj(),
+    ownershipStep: initOwnerShipInvalidState(),
+    orchardStep: initInvalidationObj(),
+    extractionStorageStep: initInvalidationObj()
   });
 
   // Can't find a good way to specify the type of stepData
@@ -86,6 +87,12 @@ const SeedlotRegistrationForm = () => {
     const newData = { ...allStepData };
     newData[stepName] = stepData;
     setAllStepData(newData);
+  };
+
+  const setInvalidState = (stepName: keyof AllStepInvalidationObj, stepInvalidData: any) => {
+    const newObj = { ...allInvalidationObj };
+    newObj[stepName] = stepInvalidData;
+    setAllInvalidationObj(newObj);
   };
 
   const logState = () => {
@@ -118,6 +125,7 @@ const SeedlotRegistrationForm = () => {
         return (
           <OwnershipStep
             state={allStepData.ownershipStep}
+            invalidState={allInvalidationObj.ownershipStep}
             defaultAgency={defaultAgency}
             defaultCode={defaultCode}
             agencyOptions={agencyOptions}
@@ -132,6 +140,7 @@ const SeedlotRegistrationForm = () => {
                 : []
             }
             setStepData={(data: Array<SingleOwnerForm>) => setStepData('ownershipStep', data)}
+            setInvalidState={(obj: Array<FormInvalidationObj>) => setInvalidState('ownershipStep', obj)}
           />
         );
       // Interim Storage

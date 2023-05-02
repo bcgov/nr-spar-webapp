@@ -18,13 +18,17 @@ type SingleInvalidObj = {
 }
 
 export type FormInvalidationObj = {
-  [key: string]: SingleInvalidObj
+  [key: string]: SingleInvalidObj;
+}
+
+export type OwnershipInvalidObj = {
+  [id: number]: FormInvalidationObj;
 }
 
 export type AllStepInvalidationObj = {
   collectionStep: FormInvalidationObj,
   interimStep: FormInvalidationObj,
-  ownershipStep: FormInvalidationObj,
+  ownershipStep: OwnershipInvalidObj,
   orchardStep: FormInvalidationObj,
   extractionStorageStep: FormInvalidationObj
 }
