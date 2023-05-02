@@ -35,7 +35,6 @@ const CollectionStep = (
     defaultCode,
     agencyOptions,
     readOnly
-    // invalidateObj
   }: CollectionStepProps
 ) => {
   const initialValidationObj: FormValidation = {
