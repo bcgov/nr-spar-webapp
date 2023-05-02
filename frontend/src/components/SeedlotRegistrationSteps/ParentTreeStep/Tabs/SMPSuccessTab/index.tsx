@@ -28,7 +28,7 @@ import UploadFileModal from '../../UploadFileModal';
 
 import { SMPSuccessType } from '../../../../../types/SeedlotTypes/ParentTree';
 
-import { pageTexts, smpSuccessFixedHeaders } from '../../constants';
+import { pageTexts, smpSuccessFixedFilters, smpSuccessFixedHeaders } from '../../constants';
 import {
   ControlFiltersType,
   GeneticTraitsType,
@@ -75,6 +75,9 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
     const returnObj = {};
     geneticTraits.forEach((trait) => {
       (returnObj as ControlFiltersType)[trait.code] = false;
+    });
+    smpSuccessFixedFilters.forEach((meanFilter) => {
+      (returnObj as ControlFiltersType)[meanFilter.description] = false;
     });
     return returnObj;
   });
@@ -263,6 +266,20 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                     }
                   />
                 ))}
+                {smpSuccessFixedFilters.map((filter) => (
+                  <Checkbox
+                    key={`checkbox-${filter.code}`}
+                    id={`checkbox-${filter.code}`}
+                    name={`checkbox-${filter.code}`}
+                    className="mean-filters-checkbox"
+                    labelText={filter.description}
+                    defaultChecked={filterControl[filter.code]}
+                    value={filterControl[filter.code]}
+                    onChange={
+                      (e: React.ChangeEvent<HTMLInputElement>) => handleFilters(e, filter.code)
+                    }
+                  />
+                ))}
               </OverflowMenu>
               <OverflowMenu
                 aria-label={pageTexts.sharedTabTexts.overflowMenus.optionsOverflow}
@@ -315,6 +332,16 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                     </TableHeader>
                   )
                 ))}
+                {smpSuccessFixedFilters.map((filter) => (
+                  filterControl[filter.code]
+                  && (
+                    <TableHeader
+                      key={`header-${filter.code}`}
+                    >
+                      {filter.description}
+                    </TableHeader>
+                  )
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -345,6 +372,21 @@ const SMPSuccessTab = ({ parentTrees, species, orchards }: SMPSuccessTabProps) =
                       >
                         <input
                           ref={(el: HTMLInputElement) => addRefs(el, `inputTrait-${trait.code}-${(row.id)}`)}
+                          type="number"
+                          className="table-input"
+                          placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
+                        />
+                      </TableCell>
+                    )
+                  ))}
+                  {smpSuccessFixedFilters.map((filter) => (
+                    filterControl[filter.code]
+                    && (
+                      <TableCell
+                        key={`cell-${filter.code}-${(row.id + i).toString()}`}
+                      >
+                        <input
+                          ref={(el: HTMLInputElement) => addRefs(el, `inputMean-${filter.code}-${(row.id)}`)}
                           type="number"
                           className="table-input"
                           placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}

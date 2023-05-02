@@ -1,4 +1,4 @@
-import { TableHeaders, ParentTreesType } from './definitions';
+import { TableHeaders, ParentTreesType, SMPSuccessFixedFiltersType } from './definitions';
 
 export const MAX_ROWS = 500;
 
@@ -94,16 +94,8 @@ export const pageTexts = {
         averageSMPSuccess: 'Average number of SMP success %',
         averageNonOrchard: 'Average number of non-orchard pollen contam. (%)'
       }
-    },
-    otherFilterOptions: {
-      meanDegreesLat: 'Mean degrees latitude',
-      meanMinutesLat: 'Mean minutes latitude',
-      meanDegreesLong: 'Mean degrees longitude',
-      meanMinutesLong: 'Mean minutes longitude',
-      meanElevation: 'Mean elevation'
     }
   }
-
 };
 
 export const geneticTraits = {
@@ -200,6 +192,29 @@ export const smpSuccessFixedHeaders:Array<TableHeaders> = [
   {
     key: '3',
     header: 'Non-orchard pollen contam. (%)'
+  }
+];
+
+export const smpSuccessFixedFilters: Array<SMPSuccessFixedFiltersType> = [
+  {
+    code: 'meanDegreesLat',
+    description: 'Mean degrees latitude'
+  },
+  {
+    code: 'meanMinutesLat',
+    description: 'Mean minutes latitude'
+  },
+  {
+    code: 'meanDegreesLong',
+    description: 'Mean degrees longitude'
+  },
+  {
+    code: 'meanMinutesLong',
+    description: 'Mean minutes longitude'
+  },
+  {
+    code: 'meanElevation',
+    description: 'Mean elevation'
   }
 ];
 

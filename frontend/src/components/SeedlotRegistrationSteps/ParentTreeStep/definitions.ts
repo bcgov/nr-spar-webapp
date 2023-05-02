@@ -17,3 +17,8 @@ export type ParentTreesType = {
   id: string;
   value: string;
 };
+
+export type SMPSuccessFixedFiltersType = {
+  code: string;
+  description: string;
+};

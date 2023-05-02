@@ -63,6 +63,9 @@ export const getGeneticWorths = (seedlotSpecies: string):Array<GeneticTraitsType
   return genenticTraitsForSpecies;
 };
 
+// This function will be removed once the real API is connected
+const getRandomFloat = () => parseFloat((Math.random() * (10 - 1) + 1).toFixed(4));
+
 export const createEmptyConeAndPollen = (parentTrees: Array<ParentTreesType>) => {
   const parentTreeEntries: ConeAndPollenEntriesType[] = [];
   parentTrees.forEach((element) => {
@@ -134,7 +137,12 @@ export const createEmptySMPSuccess = (parentTrees: Array<ParentTreesType>) => {
       iws: 0,
       wdu: 0,
       wwd: 0,
-      wve: 0
+      wve: 0,
+      meanDegreesLat: getRandomFloat(),
+      meanMinutesLat: getRandomFloat(),
+      meanDegreesLong: getRandomFloat(),
+      meanMinutesLong: getRandomFloat(),
+      meanElevation: getRandomFloat()
     };
     parentTreeEntries.push(parentTreeEntry);
   });
@@ -176,7 +184,6 @@ export const useIsMount = () => {
 };
 
 // These functions will be removed once the real API is connected
-const getRandomFloat = () => parseFloat((Math.random() * (10 - 1) + 1).toFixed(4));
 export const createRandomConeAndPollen = (
   parentTrees: Array<ParentTreesType>
 ) => {
