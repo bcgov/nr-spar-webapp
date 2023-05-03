@@ -1,5 +1,7 @@
 export enum GenericSelectors {
-  PageTitle = '.title_section h1',
+  PageTitle = '.title-section h1',
+  FavouriteButton = '.title-favourite button',
+  
 }
 
 export enum SeedlotRegistrationSelectors {
@@ -7,5 +9,5 @@ export enum SeedlotRegistrationSelectors {
 }
 
 export enum NavigationSelectors {
-  NavigationSideMenu = 'nav .bcgov--side-nav__navigation',
+  NavigationSideMenu = 'nav.bcgov--side-nav__navigation .bcgov--side-nav__item',
 }

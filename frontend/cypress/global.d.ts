@@ -56,5 +56,13 @@ declare namespace Cypress {
        * cy.isPageTitle('Page Title')
        */
        isPageTitle(pageTitle: string): void
+
+       /**
+        * Custom command to toogle favourite feature of the current page.
+        *
+        * @example
+        * cy.isPageTitle('Page Title')
+        */
+        toogleFavourite(): void
   }
 }

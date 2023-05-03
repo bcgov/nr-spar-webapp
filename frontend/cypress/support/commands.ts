@@ -54,5 +54,10 @@ Cypress.Commands.add('navigateTo', (menuItem) => {
 
 Cypress.Commands.add('isPageTitle', (pageTitle) => {
   cy.get(GenericSelectors.PageTitle)
-      .should('contains', pageTitle);
+      .should('contain.text', pageTitle);
+});
+
+Cypress.Commands.add('toogleFavourite', () => {
+  cy.get(GenericSelectors.FavouriteButton)
+      .click();
 });
