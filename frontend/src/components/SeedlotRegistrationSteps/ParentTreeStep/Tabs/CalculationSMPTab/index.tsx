@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { hashObject } from 'react-hash-string';
 import {
   FlexGrid,
   Row,
@@ -73,7 +74,7 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
   );
 
   const [open, setOpen] = useState<boolean>(false);
-  const paginationOnChange = async (pageSize: number, page: number) => {
+  const paginationOnChange = (pageSize: number, page: number) => {
     if (pageSize !== currentPageSize) {
       setCurrentPageSize(pageSize);
     }
@@ -113,7 +114,8 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
   };
 
   const fillTableAndResults = (smpMix: SMPMixType, tableOnly?: boolean) => {
-    smpMix.smpMixEntries.forEach((element, index) => {
+    // eslint-disable-next-line max-len
+    smpMix.smpMixEntries.slice(firstRowIndex, firstRowIndex + currentPageSize).forEach((element, index) => {
       const indexParentId = `${(index.toString())}`;
 
       const inputClone = `inputClone-${indexParentId}`;
@@ -206,11 +208,9 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
   };
 
   const deleteRow = (index: number) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
-    const test = tableRows.filter((value, i) => i !== index);
-    setTableRows(test);
-    const filteredEntries = smpMixData.smpMixEntries.filter((value, i) => i !== index);
+    const filteredEntries = smpMixData.smpMixEntries.filter(
+      (value, i) => i !== firstRowIndex + index
+    );
     setSMPMixData({
       ...smpMixData,
       smpMixEntries: filteredEntries
@@ -221,7 +221,7 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
     if (!isMount) {
       fillTableAndResults(smpMixData);
     }
-  }, [smpMixData, currentPageSize, tableRows]);
+  }, [smpMixData, firstRowIndex]);
 
   return (
     <FlexGrid className="parent-tree-tabs">
@@ -364,11 +364,12 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
             </TableHead>
             <TableBody>
               {
-                tableRows.slice(firstRowIndex, firstRowIndex + currentPageSize).map((row, i) => (
-                  <TableRow key={(row.id)}>
+                // eslint-disable-next-line max-len
+                smpMixData.smpMixEntries.slice(firstRowIndex, firstRowIndex + currentPageSize).map((row, i) => (
+                  <TableRow key={`${hashObject(row) + i}`}>
                     <TableCell>
                       <input
-                        ref={(el: HTMLInputElement) => addRefs(el, `inputClone-${(row.id)}`)}
+                        ref={(el: HTMLInputElement) => addRefs(el, `inputClone-${(i)}`)}
                         type="number"
                         className="table-input"
                         placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
@@ -379,7 +380,7 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
                     </TableCell>
                     <TableCell>
                       <input
-                        ref={(el: HTMLInputElement) => addRefs(el, `inputVolume-${(row.id)}`)}
+                        ref={(el: HTMLInputElement) => addRefs(el, `inputVolume-${(i)}`)}
                         type="number"
                         className="table-input"
                         placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
@@ -390,7 +391,7 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
                     </TableCell>
                     <TableCell>
                       <input
-                        ref={(el: HTMLInputElement) => addRefs(el, `inputProportion-${(row.id)}`)}
+                        ref={(el: HTMLInputElement) => addRefs(el, `inputProportion-${(i)}`)}
                         type="number"
                         className="table-input"
                         placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
@@ -405,11 +406,11 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
                           // We can't make this render dinamically, because we need the reference
                           // of the inputs to set the values correctly when importing a file
                           <TableCell
-                            key={`cell-trait-${trait.code}-${(row.id + i).toString()}-clonal`}
+                            key={`cell-trait-${trait.code}-${i.toString()}-clonal`}
                             className={filterControl[`${trait.code}-clonal`] ? '' : 'parent-tree-hide'}
                           >
                             <input
-                              ref={(el: HTMLInputElement) => addRefs(el, `inputTraitClonal-${trait.code}-${(row.id)}`)}
+                              ref={(el: HTMLInputElement) => addRefs(el, `inputTraitClonal-${trait.code}-${i}`)}
                               type="number"
                               className="table-input"
                               placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
@@ -425,11 +426,11 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
                       geneticTraits.map((trait) => (
                         (
                           <TableCell
-                            key={`cell-trait-${trait.code}-${(row.id + i).toString()}-weighted`}
+                            key={`cell-trait-${trait.code}-${i.toString()}-weighted`}
                             className={filterControl[`${trait.code}-weighted`] ? '' : 'parent-tree-hide'}
                           >
                             <input
-                              ref={(el: HTMLInputElement) => addRefs(el, `inputTraitWeighted-${trait.code}-${(row.id)}`)}
+                              ref={(el: HTMLInputElement) => addRefs(el, `inputTraitWeighted-${trait.code}-${i}`)}
                               type="number"
                               className="table-input"
                               placeholder={pageTexts.sharedTabTexts.tableInputPlaceholder}
@@ -465,13 +466,12 @@ const CalculationSMPTab = ({ species }: CalculationSMPTabProps) => {
           pageNumberText={pageTexts.sharedTabTexts.pagination.pageNumber}
           pageSize={currentPageSize}
           pageSizes={[20, 40, 60, 80, 100]}
-          totalItems={tableRows.length}
-          onChange={async ({ page, pageSize }: { page: number, pageSize: number }) => {
-            await paginationOnChange(
+          totalItems={smpMixData.smpMixEntries.length}
+          onChange={({ page, pageSize }: { page: number, pageSize: number }) => {
+            paginationOnChange(
               pageSize,
               page
             );
-            fillTableAndResults(smpMixData, true);
           }}
         />
       </Row>
