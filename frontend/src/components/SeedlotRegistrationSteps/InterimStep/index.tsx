@@ -155,7 +155,7 @@ const InterimStorage = (
   //   }
   // };
 
-  const collectorAgencyisChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const interimAgencyIsChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setIsChecked(checked);
     if (checked) {
@@ -182,14 +182,14 @@ const InterimStorage = (
             <Subtitle text="Enter the interim agency information" />
           </Column>
         </Row>
-        <Row className="collector-agency-checkbox-row">
+        <Row className="interim-agency-checkbox-row">
           <Column sm={4} md={8} lg={16}>
             <Checkbox
-              id="collector-agency-checkbox"
-              name="collector-agency"
-              labelText="Use applicant agency as collector agency"
+              id="interim-agency-checkbox"
+              name="interim-agency"
+              labelText="Use applicant agency as interim storage agency"
               defaultChecked
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => collectorAgencyisChecked(e)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => interimAgencyIsChecked(e)}
               readOnly={readOnly}
             />
           </Column>
@@ -200,13 +200,13 @@ const InterimStorage = (
               id="agency-name-combobox"
               ref={nameInputRef}
               name="name"
-              helperText="You can enter your agency number, name or acronym"
+              helperText="You can enter the agency number, name or acronym"
               onChange={(e: ComboBoxEvent) => { handleFormInput('agencyName', e.selectedItem); }}
               selectedItem={state.agencyName}
               shouldFilterItem={
                 ({ item, inputValue }: FilterObj) => filterInput({ item, inputValue })
               }
-              titleText="Interim agency name"
+              titleText="Interim agency"
               placeholder="Select Interim agency name"
               items={agencyOptions}
               invalid={validationObj.isNameInvalid}
@@ -234,7 +234,7 @@ const InterimStorage = (
         <Row className="storage-information-title">
           <Column lg={8}>
             <h2>Storage information</h2>
-            <Subtitle text="Enter the interim storage information for this lot" />
+            <Subtitle text="Enter the interim storage information for this seedlot" />
           </Column>
         </Row>
         <Row className="storage-date-row">
