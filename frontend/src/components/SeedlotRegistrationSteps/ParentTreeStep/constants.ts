@@ -1,3 +1,4 @@
+import { SMPMixEntriesType } from '../../../types/SeedlotTypes/ParentTree';
 import { TableHeaders, ParentTreesType, SMPSuccessFixedFiltersType } from './definitions';
 
 export const MAX_ROWS = 500;
@@ -44,6 +45,8 @@ export const pageTexts = {
       columnsOverflow: 'Show/Hide columns',
       breedingValues: 'Show breeding values',
       smpMixUsed: 'Show SMP mix used on parent',
+      clonalValue: 'Show clonal value',
+      weightedValue: 'Show weighted value',
       optionsOverflow: 'More options',
       downloadTable: 'Download table template',
       exportPdf: 'Export table as PDF file',
@@ -93,6 +96,27 @@ export const pageTexts = {
         totalParentTrees: 'Total number of parent trees',
         averageSMPSuccess: 'Average number of SMP success %',
         averageNonOrchard: 'Average number of non-orchard pollen contam. (%)'
+      }
+    }
+  },
+  smpMix: {
+    subtitle: 'Enter the calculation of SMP mix manually or upload a spreadsheet file with the template for the cone and pollen count table. Remember to keep your orchard updated, you can go to orchard\'s management page to edit the listed parent trees in your orchard.',
+    tableSubtitle: 'Enter the estimative volume of SMP mix used for each clone',
+    tableActions: 'Actions',
+    addButtonDesc: 'Add row',
+    deleteRow: 'Delete row',
+    clonalHeader: '- Clonal value',
+    weightedHeader: '- Weighted value',
+    notification: {
+      subtitle: 'You can import one spreadsheet file for calculation of SMP mix table with the data you want to use. For further guidance on how to organize the data, do use the SPAR\'s spreadsheet template.',
+      templateLink: 'Download calculation of SMP mix template'
+    },
+    summary: {
+      title: 'Breeding value SMP mix used',
+      subtitle: 'Check the breeding value of SMP mix used on parent',
+      fieldLabels: {
+        smpParentTrees: 'Number of SMP parents from outside',
+        totalVolume: 'Total volume (ml)'
       }
     }
   }
@@ -217,6 +241,62 @@ export const smpSuccessFixedFilters: Array<SMPSuccessFixedFiltersType> = [
     description: 'Mean elevation'
   }
 ];
+
+export const smpMixFixedHeaders:Array<TableHeaders> = [
+  {
+    key: '1',
+    header: 'Clone number'
+  },
+  {
+    key: '2',
+    header: 'Volume (ml)'
+  },
+  {
+    key: '3',
+    header: 'Proportion'
+  }
+];
+
+export const newSMPMixEntry:SMPMixEntriesType = {
+  cloneNumber: 0,
+  volume: 0,
+  proportion: 0,
+  adClonal: 0,
+  dfsClonal: 0,
+  dfuClonal: 0,
+  dfwClonal: 0,
+  dsbClonal: 0,
+  dscClonal: 0,
+  dsgClonal: 0,
+  gvoClonal: 0,
+  iwsClonal: 0,
+  wduClonal: 0,
+  wwdClonal: 0,
+  wveClonal: 0,
+  adWeighted: 0,
+  dfsWeighted: 0,
+  dfuWeighted: 0,
+  dfwWeighted: 0,
+  dsbWeighted: 0,
+  dscWeighted: 0,
+  dsgWeighted: 0,
+  gvoWeighted: 0,
+  iwsWeighted: 0,
+  wduWeighted: 0,
+  wwdWeighted: 0,
+  wveWeighted: 0
+};
+
+export const getSMPEmptyRows = (): Array<ParentTreesType> => {
+  const returnObj:Array<ParentTreesType> = [];
+  for (let index = 0; index < 20; index += 1) {
+    returnObj.push({
+      id: `${index.toString()}`,
+      value: ''
+    });
+  }
+  return returnObj;
+};
 
 // This function will be removed once we start using the real API
 export const getTestParentTrees = (orchardID: string[]): Array<ParentTreesType> => {

@@ -17,6 +17,7 @@ import api from '../../../api-service/api';
 import { pageTexts, getTestParentTrees } from './constants';
 
 import './styles.scss';
+import CalculationSMPTab from './Tabs/CalculationSMPTab';
 
 interface ParentTreeStepProps {
   orchardID: string[];
@@ -71,7 +72,9 @@ const ParentTreeStep = ({ orchardID }: ParentTreeStepProps) => {
               orchards={orchardID}
             />
           </TabPanel>
-          <TabPanel>Tab 3</TabPanel>
+          <TabPanel>
+            <CalculationSMPTab species={seedlotSpecie} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </div>

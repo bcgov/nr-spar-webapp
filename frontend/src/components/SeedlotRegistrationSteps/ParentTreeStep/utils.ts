@@ -2,6 +2,8 @@ import { useRef, useEffect } from 'react';
 import {
   ConeAndPollenEntriesType,
   ConeAndPollenType,
+  SMPMixEntriesType,
+  SMPMixType,
   SMPSuccessEntriesType,
   SMPSuccessType
 } from '../../../types/SeedlotTypes/ParentTree';
@@ -183,6 +185,64 @@ export const createEmptySMPSuccess = (parentTrees: Array<ParentTreesType>) => {
   return smpSuccessEmptyData;
 };
 
+export const createEmptySMPMix = (parentTrees: Array<ParentTreesType>) => {
+  const parentTreeEntries: SMPMixEntriesType[] = [];
+  parentTrees.forEach(() => {
+    const parentTreeEntry: SMPMixEntriesType = {
+      cloneNumber: 0,
+      volume: 0,
+      proportion: 0,
+      adClonal: 0,
+      dfsClonal: 0,
+      dfuClonal: 0,
+      dfwClonal: 0,
+      dsbClonal: 0,
+      dscClonal: 0,
+      dsgClonal: 0,
+      gvoClonal: 0,
+      iwsClonal: 0,
+      wduClonal: 0,
+      wwdClonal: 0,
+      wveClonal: 0,
+      adWeighted: 0,
+      dfsWeighted: 0,
+      dfuWeighted: 0,
+      dfwWeighted: 0,
+      dsbWeighted: 0,
+      dscWeighted: 0,
+      dsgWeighted: 0,
+      gvoWeighted: 0,
+      iwsWeighted: 0,
+      wduWeighted: 0,
+      wwdWeighted: 0,
+      wveWeighted: 0
+    };
+    parentTreeEntries.push(parentTreeEntry);
+  });
+
+  const smpSuccessEmptyData: SMPMixType = {
+    smpMixEntries: parentTreeEntries,
+    totalParentTreesFromOutside: 0,
+    totalVolume: 0,
+    geneticWorth: {
+      adTotal: 0,
+      dfsTotal: 0,
+      dfuTotal: 0,
+      dfwTotal: 0,
+      dsbTotal: 0,
+      dscTotal: 0,
+      dsgTotal: 0,
+      gvoTotal: 0,
+      iwsTotal: 0,
+      wduTotal: 0,
+      wwdTotal: 0,
+      wveTotal: 0
+    }
+  };
+
+  return smpSuccessEmptyData;
+};
+
 export const createRandomConeAndPollen = (
   parentTrees: Array<ParentTreesType>
 ) => {
@@ -289,6 +349,64 @@ export const createRandomSMPSuccess = (parentTrees: Array<ParentTreesType>) => {
       wduTotal: getRandomFloat(),
       wwdTotal: getRandomFloat(),
       wveTotal: getRandomFloat()
+    }
+  };
+
+  return smpSuccessEmptyData;
+};
+
+export const createRandomSMPMix = (parentTrees: Array<ParentTreesType>) => {
+  const parentTreeEntries: SMPMixEntriesType[] = [];
+  parentTrees.forEach(() => {
+    const parentTreeEntry: SMPMixEntriesType = {
+      cloneNumber: getRandomFloat(),
+      volume: getRandomFloat(),
+      proportion: getRandomFloat(),
+      adClonal: getRandomFloat(),
+      dfsClonal: getRandomFloat(),
+      dfuClonal: getRandomFloat(),
+      dfwClonal: getRandomFloat(),
+      dsbClonal: getRandomFloat(),
+      dscClonal: getRandomFloat(),
+      dsgClonal: getRandomFloat(),
+      gvoClonal: getRandomFloat(),
+      iwsClonal: getRandomFloat(),
+      wduClonal: getRandomFloat(),
+      wwdClonal: getRandomFloat(),
+      wveClonal: getRandomFloat(),
+      adWeighted: getRandomFloat(),
+      dfsWeighted: getRandomFloat(),
+      dfuWeighted: getRandomFloat(),
+      dfwWeighted: getRandomFloat(),
+      dsbWeighted: getRandomFloat(),
+      dscWeighted: getRandomFloat(),
+      dsgWeighted: getRandomFloat(),
+      gvoWeighted: getRandomFloat(),
+      iwsWeighted: getRandomFloat(),
+      wduWeighted: getRandomFloat(),
+      wwdWeighted: getRandomFloat(),
+      wveWeighted: getRandomFloat()
+    };
+    parentTreeEntries.push(parentTreeEntry);
+  });
+
+  const smpSuccessEmptyData: SMPMixType = {
+    smpMixEntries: parentTreeEntries,
+    totalParentTreesFromOutside: getRandomFloat(),
+    totalVolume: getRandomFloat(),
+    geneticWorth: {
+      adTotal: getRandomFloat(),
+      dfsTotal: getRandomFloat(),
+      dfuTotal: getRandomFloat(),
+      dfwTotal: getRandomFloat(),
+      dsbTotal: getRandomFloat(),
+      dscTotal: getRandomFloat(),
+      dsgTotal: getRandomFloat(),
+      gvoTotal: getRandomFloat(),
+      iwsTotal: getRandomFloat(),
+      wduTotal: getRandomFloat(),
+      wwdTotal: getRandomFloat(),
+      wveTotal: 0
     }
   };
 

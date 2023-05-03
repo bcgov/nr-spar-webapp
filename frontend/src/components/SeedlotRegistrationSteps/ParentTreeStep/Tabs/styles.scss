@@ -58,6 +58,10 @@
   .parent-tree-table-row {
     margin-left: 0;
 
+    .parent-tree-hide {
+      display: none;
+    }
+
     .#{vars.$bcgov-prefix}--data-table tr th {
       background-color: var(--bcgov-layer-accent-01);
     }
