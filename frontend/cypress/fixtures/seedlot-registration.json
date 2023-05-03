@@ -8,6 +8,18 @@
   "seedlotInformation": {
     "species": "PLI - Lodgepole pine"
   },
+  "collection": {
+    "agency": "0035 - Weak Seeds Orchard - WSO",
+    "locationCode": "15",
+    "startDate": "2023/04/10",
+    "endDate": "2023/04/14",
+    "invalidEndDate": "2023/04/09",
+    "numberOfContainers": "2.5",
+    "volumePerContainers": "3999.9996",
+    "volumeOfCones": "9999.999",
+    "nonMatchVolumeOfCones": "4",
+    "comments": "Automated testing"
+  },
   "ownership": {
     "agency": "0032 - Strong Seeds Orchard - SSO",
     "locationCode": "15",
@@ -15,7 +27,7 @@
     "reserved": "60",
     "surplus": "40",
     "fundingSource": "FTL - Forests for Tomorrow - Licensee Administered",
-    "methodPayment": "ITC - Invoice to client address"
+    "methodPayment": "ITC - Invoice to Client Address"
   },
   "secondOwnership": {
     "agency": "0035 - Weak Seeds Orchard - WSO",
@@ -24,7 +36,7 @@
     "reserved": "70",
     "surplus": "30",
     "fundingSource": "BCT - BC Timber Sales",
-    "methodPayment": "ITC - Invoice to client address"
+    "methodPayment": "ITC - Invoice to Client Address"
   },
   "interimAgency": {
     "agency": "0032 - Strong Seeds Orchard - SSO",
@@ -40,5 +52,14 @@
     "number": "802",
     "name": "Mcbean",
     "contributionMethodology": "F1 - Visual estimate"
+  },
+  "extractionStorage": {
+    "extractoryAgency": "0035 - Weak Seeds Orchard - WSO",
+    "extractoryLocationCode": "35",
+    "storageAgency": "0038 - Okay Seeds Orchard - OSO",
+    "storageLocationCode": "38",
+    "startDate": "2023/04/10",
+    "endDate": "2023/04/14",
+    "invalidEndDate": "2023/04/09"
   }
 }
