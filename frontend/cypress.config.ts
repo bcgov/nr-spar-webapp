@@ -1,5 +1,7 @@
 import { defineConfig } from 'cypress';
 
+declare const require: any;
+
 export default defineConfig({
   e2e: {
     baseUrl: 'https://nr-spar-webapp-test-frontend.apps.silver.devops.gov.bc.ca/',
@@ -9,9 +11,11 @@ export default defineConfig({
     env: {
       apiUrl: 'https://nrbestapi-test-service-api.apps.silver.devops.gov.bc.ca'
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      require('@cypress/code-coverage/task')(on, config);
+      // It's IMPORTANT to return the config object
+      // with any changed environment variables
+      return config;
     }
   }
 });
